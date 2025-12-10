@@ -14,6 +14,10 @@ public class SolutionDecoder {
     private final ClassroomAssignmentProblem problem;
     private final int[] minClassroomsPerSubject;
 
+    private static final int BLOCKS_PER_DAY = ProblemInstance.SLOTS_PER_CLASSROOM_PER_DAY
+            * ProblemInstance.BLOCKS_PER_SLOT;
+    private static final int TOTAL_BLOCKS = BLOCKS_PER_DAY * ProblemInstance.MAX_DAYS;
+
     public SolutionDecoder(ProblemInstance instance, ClassroomAssignmentProblem problem) {
         this.instance = instance;
         this.problem = problem;
@@ -49,6 +53,91 @@ public class SolutionDecoder {
         }
 
         return minClassrooms;
+    }
+
+    public String[][] decodeToMatrix(IntegerSolution solution) {
+        String[][] matrix = new String[TOTAL_BLOCKS][ProblemInstance.NUM_CLASSROOMS];
+
+        for (int i = 0; i < TOTAL_BLOCKS; i++) {
+            for (int j = 0; j < ProblemInstance.NUM_CLASSROOMS; j++) {
+                matrix[i][j] = ProblemInstance.EMPTY_SUBJECT_ID;
+            }
+        }
+
+        Map<Integer, Set<Integer>> assignments = problem.decodeAssignments(solution);
+
+        int[] nextAvailableBlock = new int[ProblemInstance.NUM_CLASSROOMS];
+
+        List<Map.Entry<Integer, Set<Integer>>> sortedAssignments = new ArrayList<>(assignments.entrySet());
+        sortedAssignments.sort((a, b) -> Integer.compare(
+                instance.getSubjectByIndex(b.getKey()).getEnrolledStudents(),
+                instance.getSubjectByIndex(a.getKey()).getEnrolledStudents()));
+
+        for (Map.Entry<Integer, Set<Integer>> entry : sortedAssignments) {
+            int subjectIdx = entry.getKey();
+            Set<Integer> classrooms = entry.getValue();
+            Subject subject = instance.getSubjectByIndex(subjectIdx);
+
+            int durationBlocks = subject.getDurationBlocks();
+
+            for (int classroomIdx : classrooms) {
+                int startBlock = nextAvailableBlock[classroomIdx];
+
+                if (startBlock + durationBlocks > TOTAL_BLOCKS) {
+                    continue;
+                }
+
+                for (int b = 0; b < durationBlocks; b++) {
+                    matrix[startBlock + b][classroomIdx] = subject.getId();
+                }
+
+                nextAvailableBlock[classroomIdx] = startBlock + durationBlocks;
+            }
+        }
+
+        return matrix;
+    }
+
+    public void printMatrix(IntegerSolution solution, int maxDays) {
+        String[][] matrix = decodeToMatrix(solution);
+
+        int daysToShow = Math.min(maxDays, ProblemInstance.MAX_DAYS);
+
+        System.out.println("\n=== Matriz de Asignacion ===");
+        System.out.println("Filas: Bloques de 0.5h | Columnas: Salones");
+        System.out.printf("Total: %d filas (bloques) x %d columnas (salones)\n", TOTAL_BLOCKS,
+                ProblemInstance.NUM_CLASSROOMS);
+        System.out.printf("Mostrando primeros %d dias y primeros 10 salones\n", daysToShow);
+
+        for (int day = 0; day < daysToShow; day++) {
+            System.out.println("\n--- Dia " + (day + 1) + " ---");
+
+            System.out.print("Hora\\Salon  ");
+            for (int c = 0; c < Math.min(10, ProblemInstance.NUM_CLASSROOMS); c++) {
+                String id = instance.getClassroomByIndex(c).getId();
+                System.out.printf("%6s ", id.length() > 6 ? id.substring(0, 6) : id);
+            }
+            if (ProblemInstance.NUM_CLASSROOMS > 10) {
+                System.out.print("...");
+            }
+            System.out.println();
+
+            int startBlock = day * BLOCKS_PER_DAY;
+            for (int b = 0; b < BLOCKS_PER_DAY; b++) {
+                int blockNum = startBlock + b;
+                double hour = b * 0.5;
+                System.out.printf("%5.1fh      ", hour);
+
+                for (int c = 0; c < Math.min(10, ProblemInstance.NUM_CLASSROOMS); c++) {
+                    String subjectId = matrix[blockNum][c];
+                    System.out.printf("%6s ", subjectId);
+                }
+                if (ProblemInstance.NUM_CLASSROOMS > 10) {
+                    System.out.print("...");
+                }
+                System.out.println();
+            }
+        }
     }
 
     public void printSummary(IntegerSolution solution) {
@@ -160,30 +249,6 @@ public class SolutionDecoder {
                 System.out.printf("  %s (%d inscr)\n", s.getName(), s.getEnrolledStudents());
                 showUnassigned++;
             }
-        }
-    }
-
-    public void printClassroomUsage(IntegerSolution solution) {
-        Map<Integer, Set<Integer>> assignments = problem.decodeAssignments(solution);
-
-        Map<Integer, List<Integer>> classroomToSubjects = new HashMap<>();
-        for (Map.Entry<Integer, Set<Integer>> entry : assignments.entrySet()) {
-            int subjectIdx = entry.getKey();
-            for (int classroomIdx : entry.getValue()) {
-                classroomToSubjects.computeIfAbsent(classroomIdx, k -> new ArrayList<>()).add(subjectIdx);
-            }
-        }
-
-        System.out.println("\n--- Uso de salones ---");
-        List<Integer> sortedClassrooms = new ArrayList<>(classroomToSubjects.keySet());
-        sortedClassrooms.sort((a, b) -> Integer.compare(
-                instance.getClassroomByIndex(b).getCapacity(),
-                instance.getClassroomByIndex(a).getCapacity()));
-
-        for (int classroomIdx : sortedClassrooms) {
-            Classroom c = instance.getClassroomByIndex(classroomIdx);
-            List<Integer> subjects = classroomToSubjects.get(classroomIdx);
-            System.out.printf("  %s (cap=%d): %d materia(s)\n", c.getId(), c.getCapacity(), subjects.size());
         }
     }
 }
