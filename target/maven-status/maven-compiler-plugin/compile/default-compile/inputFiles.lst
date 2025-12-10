@@ -4,4 +4,5 @@
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/Main.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/domain/ProblemInstance.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/decoder/SolutionDecoder.java
+/Users/martinochoa/classroom-assignment/src/main/java/com/university/problem/SolutionRepairOperator.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/domain/Classroom.java
