@@ -7,11 +7,10 @@ import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import java.util.*;
 
 /**
- * Operador de reparación que garantiza factibilidad:
+ * Operador de reparación que garantiza factibilidad y elimina redundancias:
  * - Cada materia tiene al menos un salón asignado
  * - La capacidad total cubre los inscriptos
- * 
- * Permite exploración de NSGA-II pero asegura soluciones factibles.
+ * - Elimina salones redundantes cuando es posible
  */
 public class SoftRepairOperator {
 
@@ -34,7 +33,7 @@ public class SoftRepairOperator {
     }
 
     /**
-     * Repara la solución asegurando factibilidad.
+     * Repara la solución asegurando factibilidad y eliminando redundancias.
      */
     public void repair(IntegerSolution solution) {
         for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
@@ -59,13 +58,57 @@ public class SoftRepairOperator {
         // 2. Calcular capacidad actual
         int totalCapacity = calculateCapacity(assignedClassrooms);
 
-        // 3. Si no hay asignaciones o capacidad insuficiente, reparar
+        // 3. Si no hay asignaciones o capacidad insuficiente, reparar agregando salones
         if (assignedClassrooms.isEmpty() || totalCapacity < enrolled) {
             assignedClassrooms = repairCapacity(assignedClassrooms, enrolled, totalCapacity);
         }
 
-        // 4. Escribir los salones reparados de vuelta a la solución
+        // 4. Eliminar salones redundantes si hay más de uno asignado
+        if (assignedClassrooms.size() > 1) {
+            assignedClassrooms = removeRedundantClassrooms(assignedClassrooms, enrolled);
+        }
+
+        // 5. Escribir los salones reparados de vuelta a la solución
         writeToSolution(solution, basePos, assignedClassrooms);
+    }
+
+    /**
+     * Elimina salones redundantes.
+     * Recorre los salones ordenados por capacidad ascendente (más pequeños primero)
+     * y elimina aquellos que son innecesarios para cubrir la capacidad requerida.
+     */
+    private Set<Integer> removeRedundantClassrooms(Set<Integer> classrooms, int enrolled) {
+        if (classrooms.size() <= 1) {
+            return classrooms;
+        }
+
+        // Ordenar por capacidad ascendente (más pequeños primero para eliminar)
+        List<Integer> sortedByCapacityAsc = new ArrayList<>(classrooms);
+        sortedByCapacityAsc.sort((a, b) -> Integer.compare(
+                instance.getClassroomByIndex(a).getCapacity(),
+                instance.getClassroomByIndex(b).getCapacity()));
+
+        Set<Integer> result = new LinkedHashSet<>(classrooms);
+        int currentCapacity = calculateCapacity(result);
+
+        // Intentar eliminar salones pequeños mientras la capacidad siga siendo suficiente
+        for (int classroomIdx : sortedByCapacityAsc) {
+            if (result.size() <= 1) {
+                // Siempre mantener al menos un salón
+                break;
+            }
+
+            int classroomCapacity = instance.getClassroomByIndex(classroomIdx).getCapacity();
+            int capacityAfterRemoval = currentCapacity - classroomCapacity;
+
+            // Solo eliminar si la capacidad restante cubre los inscriptos
+            if (capacityAfterRemoval >= enrolled) {
+                result.remove(classroomIdx);
+                currentCapacity = capacityAfterRemoval;
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -99,23 +142,15 @@ public class SoftRepairOperator {
      * capacidad.
      */
     private Set<Integer> replaceSmallestWithLargest(Set<Integer> currentClassrooms, int enrolled) {
-        // Convertir a lista ordenada por capacidad ascendente (más pequeños primero)
-        List<Integer> sortedCurrent = new ArrayList<>(currentClassrooms);
-        sortedCurrent.sort((a, b) -> Integer.compare(
-                instance.getClassroomByIndex(a).getCapacity(),
-                instance.getClassroomByIndex(b).getCapacity()));
-
         Set<Integer> result = new LinkedHashSet<>();
-        Set<Integer> usedClassrooms = new HashSet<>(currentClassrooms);
         int capacity = 0;
 
-        // Primero, intentar usar los salones más grandes disponibles
+        // Usar los salones más grandes disponibles
         for (int classroomIdx : sortedClassroomsByCapacityDesc) {
             if (capacity >= enrolled || result.size() >= maxClassroomsPerSubject) {
                 break;
             }
             result.add(classroomIdx);
-            usedClassrooms.add(classroomIdx);
             capacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
         }
 
