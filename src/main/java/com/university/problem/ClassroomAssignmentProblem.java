@@ -96,26 +96,66 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
 
     @Override
     public IntegerSolution createSolution() {
-        IntegerSolution solution = super.createSolution();
+        return createRandomSolution();
+    }
 
+    /**
+     * Crea una solución completamente aleatoria para dar libertad a NSGA-II.
+     * Para cada materia, asigna entre 1 y maxClassroomsPerSubject salones
+     * aleatorios.
+     */
+    public IntegerSolution createRandomSolution() {
+        IntegerSolution solution = super.createSolution();
         Random random = new Random();
+        int numClassrooms = instance.getClassrooms().size();
+
+        for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
+            int basePos = subjectIdx * maxClassroomsPerSubject;
+            Subject subject = instance.getSubjectByIndex(subjectIdx);
+            int enrolled = subject.getEnrolledStudents();
+
+            // Decidir cuántos salones asignar (1 a 3 aleatorios)
+            int numToAssign = 1 + random.nextInt(3);
+
+            Set<Integer> assignedSet = new HashSet<>();
+
+            for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
+                if (slot < numToAssign) {
+                    // Asignar un salón aleatorio que no esté repetido
+                    int attempts = 0;
+                    int classroom;
+                    do {
+                        classroom = random.nextInt(numClassrooms);
+                        attempts++;
+                    } while (assignedSet.contains(classroom) && attempts < 20);
+
+                    assignedSet.add(classroom);
+                    solution.variables().set(basePos + slot, classroom);
+                } else {
+                    solution.variables().set(basePos + slot, -1);
+                }
+            }
+        }
+
+        return solution;
+    }
+
+    /**
+     * Crea una solución usando la heurística greedy (best-fit).
+     * Útil para comparar con NSGA-II.
+     */
+    public IntegerSolution createGreedySolution() {
+        IntegerSolution solution = super.createSolution();
 
         for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
             int[] optimalClassrooms = optimalClassroomsPerSubject[subjectIdx];
+            int basePos = subjectIdx * maxClassroomsPerSubject;
 
             for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
-                int pos = subjectIdx * maxClassroomsPerSubject + slot;
-
                 if (slot < optimalClassrooms.length) {
-                    if (random.nextDouble() < 0.8) {
-                        solution.variables().set(pos, optimalClassrooms[slot]);
-                    } else {
-                        int randomClassroom = sortedClassroomsByCapacityDesc.get(
-                                random.nextInt(Math.min(10, sortedClassroomsByCapacityDesc.size())));
-                        solution.variables().set(pos, randomClassroom);
-                    }
+                    solution.variables().set(basePos + slot, optimalClassrooms[slot]);
                 } else {
-                    solution.variables().set(pos, -1);
+                    solution.variables().set(basePos + slot, -1);
                 }
             }
         }
@@ -276,6 +316,10 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
 
     public int getMinClassroomsForSubject(int subjectIndex) {
         return minClassroomsPerSubject[subjectIndex];
+    }
+
+    public int[] getMinClassroomsPerSubject() {
+        return minClassroomsPerSubject;
     }
 
     public int[] getOptimalClassroomsForSubject(int subjectIndex) {
