@@ -96,12 +96,14 @@ public class Main {
             System.out.println("Materias no asignadas: " + (int) (-bestSolution.constraints()[1]));
 
             decoder.printSummary(bestSolution);
-            decoder.printMatrix(bestSolution, 2);
+            decoder.printScheduleSummary(bestSolution);
+            decoder.printMatrix(bestSolution, 3);
         } else {
             System.out.println("\nNo se encontro solucion factible con NSGA-II.");
             System.out.println("Usando solucion greedy.");
             decoder.printSummary(greedySolution);
-            decoder.printMatrix(greedySolution, 2);
+            decoder.printScheduleSummary(greedySolution);
+            decoder.printMatrix(greedySolution, 3);
         }
     }
 
