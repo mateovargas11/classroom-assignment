@@ -94,36 +94,117 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
         return -1;
     }
 
+    private final Random random = new Random();
+
+    /**
+     * INICIALIZACIÓN HÍBRIDA para NSGA-II:
+     * - 30% de la población: basada en greedy con mutaciones
+     * - 40% de la población: inicialización inteligente (mínimo de salones)
+     * - 30% de la población: completamente aleatoria (diversidad)
+     */
     @Override
     public IntegerSolution createSolution() {
-        return createRandomSolution();
+        double rand = random.nextDouble();
+
+        if (rand < 0.30) {
+            // 30%: Greedy con pequeñas mutaciones
+            return createGreedyWithNoise();
+        } else if (rand < 0.70) {
+            // 40%: Inicialización inteligente (usa mínimo de salones necesarios)
+            return createSmartRandomSolution();
+        } else {
+            // 30%: Completamente aleatoria (para diversidad)
+            return createFullyRandomSolution();
+        }
     }
 
     /**
-     * Crea una solución completamente aleatoria para dar libertad a NSGA-II.
-     * Para cada materia, asigna entre 1 y maxClassroomsPerSubject salones
-     * aleatorios.
+     * Crea una solución basada en greedy pero con mutaciones aleatorias.
+     * Esto permite explorar variaciones de la solución óptima.
      */
-    public IntegerSolution createRandomSolution() {
+    private IntegerSolution createGreedyWithNoise() {
+        IntegerSolution solution = createGreedySolution();
+
+        // Aplicar mutaciones al 15% de las asignaciones
+        for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
+            if (random.nextDouble() < 0.15) {
+                int basePos = subjectIdx * maxClassroomsPerSubject;
+                int currentClassroom = solution.variables().get(basePos);
+
+                if (currentClassroom >= 0) {
+                    // Cambiar por otro salón aleatorio
+                    int newClassroom = random.nextInt(instance.getClassrooms().size());
+                    solution.variables().set(basePos, newClassroom);
+                }
+            }
+        }
+
+        return solution;
+    }
+
+    /**
+     * Crea una solución inteligente que usa el mínimo de salones necesarios
+     * pero con variación en la selección de cuáles salones usar.
+     */
+    private IntegerSolution createSmartRandomSolution() {
         IntegerSolution solution = super.createSolution();
-        Random random = new Random();
         int numClassrooms = instance.getClassrooms().size();
 
         for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
             int basePos = subjectIdx * maxClassroomsPerSubject;
-            Subject subject = instance.getSubjectByIndex(subjectIdx);
-            int enrolled = subject.getEnrolledStudents();
-
-            // Decidir cuántos salones asignar (1 a 3 aleatorios)
-            int numToAssign = 1 + random.nextInt(3);
+            int minNeeded = minClassroomsPerSubject[subjectIdx];
+            int[] optimal = optimalClassroomsPerSubject[subjectIdx];
 
             Set<Integer> assignedSet = new HashSet<>();
 
             for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
-                if (slot < numToAssign) {
-                    // Asignar un salón aleatorio que no esté repetido
-                    int attempts = 0;
+                if (slot < minNeeded) {
                     int classroom;
+                    if (random.nextDouble() < 0.6 && slot < optimal.length) {
+                        // 60% probabilidad: usar el salón óptimo
+                        classroom = optimal[slot];
+                    } else {
+                        // 40% probabilidad: elegir un salón aleatorio grande
+                        int idx = random.nextInt(Math.min(15, numClassrooms));
+                        classroom = sortedClassroomsByCapacityDesc.get(idx);
+                    }
+
+                    // Evitar duplicados
+                    int attempts = 0;
+                    while (assignedSet.contains(classroom) && attempts < 20) {
+                        classroom = random.nextInt(numClassrooms);
+                        attempts++;
+                    }
+
+                    assignedSet.add(classroom);
+                    solution.variables().set(basePos + slot, classroom);
+                } else {
+                    solution.variables().set(basePos + slot, -1);
+                }
+            }
+        }
+
+        return solution;
+    }
+
+    /**
+     * Crea una solución completamente aleatoria para diversidad.
+     */
+    private IntegerSolution createFullyRandomSolution() {
+        IntegerSolution solution = super.createSolution();
+        int numClassrooms = instance.getClassrooms().size();
+
+        for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
+            int basePos = subjectIdx * maxClassroomsPerSubject;
+
+            // Asignar entre 1 y 3 salones aleatorios
+            int numToAssign = 1 + random.nextInt(3);
+            Set<Integer> assignedSet = new HashSet<>();
+
+            for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
+                if (slot < numToAssign) {
+                    int classroom;
+                    int attempts = 0;
                     do {
                         classroom = random.nextInt(numClassrooms);
                         attempts++;

@@ -7,24 +7,21 @@ import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import java.util.*;
 
 /**
- * Operador de reparación "suave" que solo corrige restricciones críticas:
- * - Materias sin asignar
- * - Capacidad insuficiente
+ * Operador de reparación que garantiza factibilidad:
+ * - Cada materia tiene al menos un salón asignado
+ * - La capacidad total cubre los inscriptos
  * 
- * NO optimiza el número de salones asignados, permitiendo que NSGA-II explore
- * libremente diferentes configuraciones.
+ * Permite exploración de NSGA-II pero asegura soluciones factibles.
  */
 public class SoftRepairOperator {
 
     private final ProblemInstance instance;
     private final int maxClassroomsPerSubject;
     private final List<Integer> sortedClassroomsByCapacityDesc;
-    private final Random random;
 
     public SoftRepairOperator(ProblemInstance instance, int maxClassroomsPerSubject) {
         this.instance = instance;
         this.maxClassroomsPerSubject = maxClassroomsPerSubject;
-        this.random = new Random();
 
         // Ordenar salones por capacidad descendente
         this.sortedClassroomsByCapacityDesc = new ArrayList<>();
@@ -37,11 +34,7 @@ public class SoftRepairOperator {
     }
 
     /**
-     * Repara la solución asegurando que:
-     * 1. Cada materia tenga al menos un salón asignado
-     * 2. La capacidad total sea suficiente para los inscriptos
-     * 
-     * NO elimina salones "extras" - permite que NSGA-II explore.
+     * Repara la solución asegurando factibilidad.
      */
     public void repair(IntegerSolution solution) {
         for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
@@ -54,60 +47,90 @@ public class SoftRepairOperator {
         int enrolled = subject.getEnrolledStudents();
         int basePos = subjectIdx * maxClassroomsPerSubject;
 
-        // Obtener salones actualmente asignados y calcular capacidad
-        Set<Integer> assignedClassrooms = new HashSet<>();
-        int totalCapacity = 0;
-
+        // 1. Recopilar salones actualmente asignados (válidos y únicos)
+        Set<Integer> assignedClassrooms = new LinkedHashSet<>();
         for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
             int classroomIdx = solution.variables().get(basePos + slot);
             if (classroomIdx >= 0 && classroomIdx < instance.getClassrooms().size()) {
-                if (assignedClassrooms.add(classroomIdx)) {
-                    totalCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
-                }
+                assignedClassrooms.add(classroomIdx);
             }
         }
 
-        // Si no hay ningún salón asignado, asignar uno aleatorio
-        if (assignedClassrooms.isEmpty()) {
-            int randomClassroom = random.nextInt(instance.getClassrooms().size());
-            solution.variables().set(basePos, randomClassroom);
-            assignedClassrooms.add(randomClassroom);
-            totalCapacity = instance.getClassroomByIndex(randomClassroom).getCapacity();
+        // 2. Calcular capacidad actual
+        int totalCapacity = calculateCapacity(assignedClassrooms);
+
+        // 3. Si no hay asignaciones o capacidad insuficiente, reparar
+        if (assignedClassrooms.isEmpty() || totalCapacity < enrolled) {
+            assignedClassrooms = repairCapacity(assignedClassrooms, enrolled, totalCapacity);
         }
 
-        // Si la capacidad es insuficiente, agregar más salones
-        if (totalCapacity < enrolled) {
-            int slot = findNextEmptySlot(solution, basePos);
-
-            for (int classroomIdx : sortedClassroomsByCapacityDesc) {
-                if (totalCapacity >= enrolled || slot >= maxClassroomsPerSubject) {
-                    break;
-                }
-
-                if (!assignedClassrooms.contains(classroomIdx)) {
-                    solution.variables().set(basePos + slot, classroomIdx);
-                    assignedClassrooms.add(classroomIdx);
-                    totalCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
-                    slot++;
-                }
-            }
-        }
-
-        // Eliminar duplicados (mismo salón en múltiples slots)
-        removeDuplicatesFromSlots(solution, basePos, assignedClassrooms);
+        // 4. Escribir los salones reparados de vuelta a la solución
+        writeToSolution(solution, basePos, assignedClassrooms);
     }
 
-    private int findNextEmptySlot(IntegerSolution solution, int basePos) {
-        for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
-            if (solution.variables().get(basePos + slot) < 0) {
-                return slot;
+    /**
+     * Repara la capacidad agregando salones grandes hasta cubrir los inscriptos.
+     */
+    private Set<Integer> repairCapacity(Set<Integer> currentClassrooms, int enrolled, int currentCapacity) {
+        Set<Integer> result = new LinkedHashSet<>(currentClassrooms);
+        int capacity = currentCapacity;
+
+        // Agregar salones grandes hasta cubrir la capacidad
+        for (int classroomIdx : sortedClassroomsByCapacityDesc) {
+            if (capacity >= enrolled) {
+                break;
+            }
+            if (result.size() >= maxClassroomsPerSubject) {
+                // No hay más slots, necesitamos reemplazar salones pequeños
+                result = replaceSmallestWithLargest(result, enrolled);
+                break;
+            }
+            if (!result.contains(classroomIdx)) {
+                result.add(classroomIdx);
+                capacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
             }
         }
-        return maxClassroomsPerSubject; // No hay slots vacíos
+
+        return result;
     }
 
-    private void removeDuplicatesFromSlots(IntegerSolution solution, int basePos, Set<Integer> uniqueClassrooms) {
-        List<Integer> classroomList = new ArrayList<>(uniqueClassrooms);
+    /**
+     * Reemplaza los salones más pequeños con los más grandes hasta cubrir capacidad.
+     */
+    private Set<Integer> replaceSmallestWithLargest(Set<Integer> currentClassrooms, int enrolled) {
+        // Convertir a lista ordenada por capacidad ascendente (más pequeños primero)
+        List<Integer> sortedCurrent = new ArrayList<>(currentClassrooms);
+        sortedCurrent.sort((a, b) -> Integer.compare(
+                instance.getClassroomByIndex(a).getCapacity(),
+                instance.getClassroomByIndex(b).getCapacity()));
+
+        Set<Integer> result = new LinkedHashSet<>();
+        Set<Integer> usedClassrooms = new HashSet<>(currentClassrooms);
+        int capacity = 0;
+
+        // Primero, intentar usar los salones más grandes disponibles
+        for (int classroomIdx : sortedClassroomsByCapacityDesc) {
+            if (capacity >= enrolled || result.size() >= maxClassroomsPerSubject) {
+                break;
+            }
+            result.add(classroomIdx);
+            usedClassrooms.add(classroomIdx);
+            capacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
+        }
+
+        return result;
+    }
+
+    private int calculateCapacity(Set<Integer> classrooms) {
+        int total = 0;
+        for (int idx : classrooms) {
+            total += instance.getClassroomByIndex(idx).getCapacity();
+        }
+        return total;
+    }
+
+    private void writeToSolution(IntegerSolution solution, int basePos, Set<Integer> classrooms) {
+        List<Integer> classroomList = new ArrayList<>(classrooms);
         for (int slot = 0; slot < maxClassroomsPerSubject; slot++) {
             if (slot < classroomList.size()) {
                 solution.variables().set(basePos + slot, classroomList.get(slot));
