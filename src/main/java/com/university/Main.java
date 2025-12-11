@@ -58,7 +58,7 @@ public class Main {
         System.out.println("=".repeat(60));
 
         int populationSize = 100;
-        int maxEvaluations = 250000;
+        int maxEvaluations = 25000;
 
         double crossoverProbability = 0.9;
         double crossoverDistributionIndex = 20.0;

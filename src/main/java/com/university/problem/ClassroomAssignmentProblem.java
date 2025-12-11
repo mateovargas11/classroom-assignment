@@ -13,19 +13,23 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
     private final int maxClassroomsPerSubject;
     private final int[] minClassroomsPerSubject;
     private final int[][] optimalClassroomsPerSubject;
-    private final List<Integer> sortedClassroomsByCapacity;
+    private final List<Integer> sortedClassroomsByCapacityDesc;
+    private final List<Integer> sortedClassroomsByCapacityAsc;
 
     public ClassroomAssignmentProblem(ProblemInstance instance) {
         this.instance = instance;
         this.maxClassroomsPerSubject = 5;
 
-        this.sortedClassroomsByCapacity = new ArrayList<>();
+        this.sortedClassroomsByCapacityDesc = new ArrayList<>();
         for (int i = 0; i < instance.getClassrooms().size(); i++) {
-            sortedClassroomsByCapacity.add(i);
+            sortedClassroomsByCapacityDesc.add(i);
         }
-        sortedClassroomsByCapacity.sort((a, b) -> Integer.compare(
+        sortedClassroomsByCapacityDesc.sort((a, b) -> Integer.compare(
                 instance.getClassroomByIndex(b).getCapacity(),
                 instance.getClassroomByIndex(a).getCapacity()));
+
+        this.sortedClassroomsByCapacityAsc = new ArrayList<>(sortedClassroomsByCapacityDesc);
+        Collections.reverse(sortedClassroomsByCapacityAsc);
 
         this.minClassroomsPerSubject = new int[instance.getSubjects().size()];
         this.optimalClassroomsPerSubject = new int[instance.getSubjects().size()][];
@@ -58,13 +62,19 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
             List<Integer> selectedClassrooms = new ArrayList<>();
             int capacityAccumulated = 0;
 
-            for (int classroomIdx : sortedClassroomsByCapacity) {
-                if (capacityAccumulated >= enrolled)
-                    break;
-                int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
-                if (cap > 0) {
-                    selectedClassrooms.add(classroomIdx);
-                    capacityAccumulated += cap;
+            int bestFitClassroom = findBestFitClassroom(enrolled);
+            if (bestFitClassroom >= 0) {
+                selectedClassrooms.add(bestFitClassroom);
+                capacityAccumulated = instance.getClassroomByIndex(bestFitClassroom).getCapacity();
+            } else {
+                for (int classroomIdx : sortedClassroomsByCapacityDesc) {
+                    if (capacityAccumulated >= enrolled)
+                        break;
+                    int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
+                    if (cap > 0) {
+                        selectedClassrooms.add(classroomIdx);
+                        capacityAccumulated += cap;
+                    }
                 }
             }
 
@@ -72,6 +82,16 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
             optimalClassroomsPerSubject[i] = selectedClassrooms.stream()
                     .mapToInt(Integer::intValue).toArray();
         }
+    }
+
+    private int findBestFitClassroom(int enrolled) {
+        for (int classroomIdx : sortedClassroomsByCapacityAsc) {
+            int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
+            if (cap >= enrolled) {
+                return classroomIdx;
+            }
+        }
+        return -1;
     }
 
     @Override
@@ -90,8 +110,8 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
                     if (random.nextDouble() < 0.8) {
                         solution.variables().set(pos, optimalClassrooms[slot]);
                     } else {
-                        int randomClassroom = sortedClassroomsByCapacity.get(
-                                random.nextInt(Math.min(10, sortedClassroomsByCapacity.size())));
+                        int randomClassroom = sortedClassroomsByCapacityDesc.get(
+                                random.nextInt(Math.min(10, sortedClassroomsByCapacityDesc.size())));
                         solution.variables().set(pos, randomClassroom);
                     }
                 } else {
