@@ -95,7 +95,8 @@ public class SoftRepairOperator {
     }
 
     /**
-     * Reemplaza los salones más pequeños con los más grandes hasta cubrir capacidad.
+     * Reemplaza los salones más pequeños con los más grandes hasta cubrir
+     * capacidad.
      */
     private Set<Integer> replaceSmallestWithLargest(Set<Integer> currentClassrooms, int enrolled) {
         // Convertir a lista ordenada por capacidad ascendente (más pequeños primero)
