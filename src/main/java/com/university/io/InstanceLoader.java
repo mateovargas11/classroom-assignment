@@ -17,55 +17,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InstanceLoader {
-    
+
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    
+
     public static ProblemInstance loadFromResources(String instanceName) throws IOException {
         String path = "processed/" + instanceName + ".json";
         try (InputStream is = InstanceLoader.class.getClassLoader().getResourceAsStream(path);
-             InputStreamReader reader = new InputStreamReader(is)) {
+                InputStreamReader reader = new InputStreamReader(is)) {
             JsonObject data = gson.fromJson(reader, JsonObject.class);
             return parseInstance(data);
         }
     }
-    
+
     public static ProblemInstance loadFromJson(String filePath) throws IOException {
         try (FileReader reader = new FileReader(filePath)) {
             JsonObject data = gson.fromJson(reader, JsonObject.class);
             return parseInstance(data);
         }
     }
-    
+
     private static ProblemInstance parseInstance(JsonObject data) {
         List<Subject> subjects = new ArrayList<>();
         JsonArray examenesArray = data.getAsJsonArray("examenes");
         for (int i = 0; i < examenesArray.size(); i++) {
             JsonObject exam = examenesArray.get(i).getAsJsonObject();
             subjects.add(new Subject(
-                String.valueOf(exam.get("id").getAsInt()),
-                exam.get("nombre").getAsString(),
-                exam.get("inscritos").getAsInt(),
-                exam.get("duracion").getAsDouble()
-            ));
+                    String.valueOf(exam.get("id").getAsInt()),
+                    exam.get("nombre").getAsString(),
+                    exam.get("inscritos").getAsInt(),
+                    exam.get("duracion").getAsDouble()));
         }
-        
+
         List<Classroom> classrooms = new ArrayList<>();
         JsonArray salonesArray = data.getAsJsonArray("salones");
         for (int i = 0; i < salonesArray.size(); i++) {
             JsonObject salon = salonesArray.get(i).getAsJsonObject();
             classrooms.add(new Classroom(
-                salon.get("id").getAsString(),
-                salon.get("nombre").getAsString(),
-                salon.get("aforo").getAsInt()
-            ));
+                    salon.get("id").getAsString(),
+                    salon.get("nombre").getAsString(),
+                    salon.get("aforo").getAsInt()));
         }
-        
-        return new ProblemInstance(subjects, classrooms);
+
+        List<int[]> conflictPairs = new ArrayList<>();
+        if (data.has("conflict_pairs")) {
+            JsonArray pairsArray = data.getAsJsonArray("conflict_pairs");
+            for (int i = 0; i < pairsArray.size(); i++) {
+                JsonArray pair = pairsArray.get(i).getAsJsonArray();
+                conflictPairs.add(new int[] { pair.get(0).getAsInt(), pair.get(1).getAsInt() });
+            }
+        }
+
+        return new ProblemInstance(subjects, classrooms, conflictPairs);
     }
-    
+
     public static void saveToJson(ProblemInstance instance, String filePath) throws IOException {
         JsonObject data = new JsonObject();
-        
+
         JsonArray examenesArray = new JsonArray();
         for (int i = 0; i < instance.getSubjects().size(); i++) {
             Subject s = instance.getSubjects().get(i);
@@ -77,7 +84,7 @@ public class InstanceLoader {
             examenesArray.add(exam);
         }
         data.add("examenes", examenesArray);
-        
+
         JsonArray salonesArray = new JsonArray();
         for (Classroom c : instance.getClassrooms()) {
             JsonObject salon = new JsonObject();
@@ -87,12 +94,12 @@ public class InstanceLoader {
             salonesArray.add(salon);
         }
         data.add("salones", salonesArray);
-        
+
         try (FileWriter writer = new FileWriter(filePath)) {
             gson.toJson(data, writer);
         }
     }
-    
+
     public static ProblemInstance createSampleInstance() {
         List<Subject> subjects = new ArrayList<>();
         subjects.add(new Subject("MAT1", "Matematica I", 45, 3.0));
@@ -100,12 +107,7 @@ public class InstanceLoader {
         subjects.add(new Subject("PRG1", "Programacion I", 60, 4.0));
         subjects.add(new Subject("QUI1", "Quimica I", 32, 2.0));
         subjects.add(new Subject("ALG1", "Algebra", 50, 3.0));
-        subjects.add(new Subject("EST1", "Estadistica", 42, 2.0));
-        subjects.add(new Subject("CAL1", "Calculo", 55, 3.0));
-        subjects.add(new Subject("BD1", "Bases de Datos", 48, 3.0));
-        subjects.add(new Subject("RED1", "Redes", 35, 2.0));
-        subjects.add(new Subject("SO1", "Sistemas Operativos", 40, 3.0));
-        
+
         List<Classroom> classrooms = new ArrayList<>();
         for (int i = 0; i < ProblemInstance.NUM_CLASSROOMS; i++) {
             char letter = (char) ('A' + (i % 26));
@@ -114,7 +116,7 @@ public class InstanceLoader {
             int capacity = 30 + (i % 5) * 10;
             classrooms.add(new Classroom(String.valueOf(i + 1), name, capacity));
         }
-        
+
         return new ProblemInstance(subjects, classrooms);
     }
 }
