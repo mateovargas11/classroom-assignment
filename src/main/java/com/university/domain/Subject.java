@@ -6,7 +6,8 @@ public class Subject {
     private int enrolledStudents;
     private double durationHours;
 
-    public Subject() {}
+    public Subject() {
+    }
 
     public Subject(String id, String name, int enrolledStudents, double durationHours) {
         this.id = id;
@@ -51,9 +52,16 @@ public class Subject {
         return (int) Math.ceil(durationHours * 2);
     }
 
+    /**
+     * Devuelve la duración en slots de 1 hora (redondeado hacia arriba).
+     */
+    public int getDurationSlots() {
+        return (int) Math.ceil(durationHours);
+    }
+
     @Override
     public String toString() {
-        return String.format("Subject[id=%s, name=%s, enrolled=%d, duration=%.1fh]", 
-            id, name, enrolledStudents, durationHours);
+        return String.format("Subject[id=%s, name=%s, enrolled=%d, duration=%.1fh]",
+                id, name, enrolledStudents, durationHours);
     }
 }

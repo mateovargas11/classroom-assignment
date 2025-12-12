@@ -5,7 +5,7 @@ import com.university.decoder.SolutionDecoder;
 import com.university.domain.ProblemInstance;
 import com.university.io.InstanceLoader;
 import com.university.problem.ClassroomAssignmentProblem;
-import com.university.problem.SoftRepairOperator;
+import com.university.problem.SolutionRepairOperator;
 import com.university.solver.GreedySolver;
 import com.university.telemetry.EvolutionTracker;
 import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
@@ -18,6 +18,7 @@ import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
 
@@ -30,6 +31,7 @@ public class Main {
 
         System.out.println("╔════════════════════════════════════════════════════════════╗");
         System.out.println("║     COMPARACIÓN: GREEDY vs NSGA-II                        ║");
+        System.out.println("║     (Modelo de Matriz Directa - Días decididos por NSGA-II)║");
         System.out.println("╚════════════════════════════════════════════════════════════╝");
         System.out.println();
         System.out.println("Instancia: " + instanceName);
@@ -41,6 +43,10 @@ public class Main {
         ClassroomAssignmentProblem problem = new ClassroomAssignmentProblem(instance);
         SolutionDecoder decoder = new SolutionDecoder(instance, problem);
 
+        System.out.println("Tamaño del vector de decisión: " + problem.getVectorSize());
+        System.out.println("  = " + problem.getNumClassrooms() + " salones × "
+                + ClassroomAssignmentProblem.BLOCKS_PER_DAY + " bloques/día × "
+                + ProblemInstance.MAX_DAYS + " días");
         System.out.println("Mínimo teórico de asignaciones: " + problem.getTotalMinClassrooms());
 
         // ═══════════════════════════════════════════════════════════════
@@ -74,28 +80,35 @@ public class Main {
         System.out.println("Configuración:");
         System.out.println("  - Objetivo 1: Minimizar asignaciones materia-salón");
         System.out.println("  - Objetivo 2: Maximizar separación entre materias conflictivas");
-        System.out.println("  - Inicialización: ALEATORIA (sin heurística)");
-        System.out.println("  - Reparación: MÍNIMA (solo restricciones críticas)");
+        System.out.println("  - Restricción 1: Capacidad suficiente para todos los estudiantes");
+        System.out.println("  - Restricción 2: Todas las materias deben estar asignadas");
+        System.out.println("  - Restricción 3: Materias con múltiples salones deben estar sincronizadas");
+        System.out.println("  - Modelo: Matriz directa (NSGA-II decide días y salones)");
+        System.out.println("  - Inicialización: Híbrida (50% greedy, 30% greedy+ruido, 20% aleatoria)");
+        System.out.println("  - Sincronización: NSGA-II decide si sincronizar múltiples salones");
         System.out.println();
 
         // Configuración NSGA-II
         int populationSize = 100;
-        int maxEvaluations = 200000; // Evaluaciones totales
-        int recordEveryNGenerations = 10; // Registrar cada N generaciones
+        int maxEvaluations = 10000;
+        int recordEveryNGenerations = 10;
 
         double crossoverProbability = 0.9;
         double crossoverDistributionIndex = 20.0;
         var crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
 
-        double mutationProbability = 0.001;
+        // Mutación más baja para vector grande
+        double mutationProbability = 1.0 / problem.getVectorSize();
         double mutationDistributionIndex = 20.0;
         var mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());
 
-        // Operador de reparación
-        SoftRepairOperator softRepair = new SoftRepairOperator(instance, problem.getMaxClassroomsPerSubject());
+        // Operador de reparación (usa SolutionRepairOperator para reasignar materias
+        // faltantes)
+        SolutionRepairOperator repairOperator = new SolutionRepairOperator(instance,
+                problem.getMaxClassroomsPerSubject());
 
         // Tracker de evolución para telemetría
         EvolutionTracker tracker = new EvolutionTracker(problem);
@@ -114,7 +127,7 @@ public class Main {
                 selection,
                 new SequentialSolutionListEvaluator<>(),
                 tracker,
-                softRepair,
+                repairOperator,
                 recordEveryNGenerations);
 
         algorithm.run();
@@ -123,7 +136,7 @@ public class Main {
 
         // Reparar y evaluar soluciones finales
         for (IntegerSolution sol : population) {
-            softRepair.repair(sol);
+            repairOperator.repair(sol);
             problem.evaluate(sol);
         }
 
@@ -301,6 +314,7 @@ public class Main {
         System.out.println("  - Separación promedio: " + String.format("%.2f días", -solution.objectives()[1]));
         System.out.println("  - Déficit capacidad: " + (int) (-solution.constraints()[0]));
         System.out.println("  - Materias sin asignar: " + (int) (-solution.constraints()[1]));
+        System.out.println("  - Materias no sincronizadas: " + (int) (-solution.constraints()[2]));
         System.out.println("  - Factible: " + (isFeasible(solution) ? "Sí" : "No"));
     }
 
@@ -346,21 +360,23 @@ public class Main {
      * Es decir, el número total de pares materia-salón asignados.
      */
     private static int countRealAssignments(IntegerSolution solution, ClassroomAssignmentProblem problem) {
-        var assignments = problem.decodeAssignments(solution);
-        return assignments.values().stream().mapToInt(java.util.Set::size).sum();
+        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        return assignments.values().stream()
+                .mapToInt(a -> a.classrooms.size())
+                .sum();
     }
 
     /**
      * Cuenta el exceso de salones asignados por encima del mínimo necesario.
      */
     private static int countExcessClassrooms(IntegerSolution solution, ClassroomAssignmentProblem problem) {
-        var assignments = problem.decodeAssignments(solution);
+        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
         int excess = 0;
         int[] minClassrooms = problem.getMinClassroomsPerSubject();
 
         for (var entry : assignments.entrySet()) {
             int subjectIdx = entry.getKey();
-            int assigned = entry.getValue().size();
+            int assigned = entry.getValue().classrooms.size();
             int min = minClassrooms[subjectIdx];
             if (assigned > min) {
                 excess += (assigned - min);

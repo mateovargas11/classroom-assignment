@@ -1,6 +1,6 @@
 package com.university.algorithm;
 
-import com.university.problem.SoftRepairOperator;
+import com.university.problem.SolutionRepairOperator;
 import com.university.telemetry.EvolutionTracker;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
@@ -14,11 +14,13 @@ import java.util.List;
 
 /**
  * NSGA-II con telemetría integrada para rastrear la evolución del algoritmo.
+ * Usa SolutionRepairOperator para reparar soluciones después de operadores
+ * genéticos.
  */
 public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
 
     private final EvolutionTracker tracker;
-    private final SoftRepairOperator repairOperator;
+    private final SolutionRepairOperator repairOperator;
     private final int recordEveryNGenerations;
     private int generationCount;
 
@@ -33,7 +35,7 @@ public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
             SelectionOperator<List<IntegerSolution>, IntegerSolution> selectionOperator,
             SolutionListEvaluator<IntegerSolution> evaluator,
             EvolutionTracker tracker,
-            SoftRepairOperator repairOperator,
+            SolutionRepairOperator repairOperator,
             int recordEveryNGenerations) {
 
         super(problem, maxEvaluations, populationSize, matingPoolSize, offspringPopulationSize,
@@ -63,7 +65,7 @@ public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
 
     @Override
     protected List<IntegerSolution> evaluatePopulation(List<IntegerSolution> population) {
-        // Reparar soluciones antes de evaluar
+        // Reparar soluciones antes de evaluar (importante para mantener factibilidad)
         for (IntegerSolution sol : population) {
             repairOperator.repair(sol);
         }

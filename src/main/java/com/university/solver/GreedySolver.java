@@ -10,23 +10,32 @@ import java.util.*;
 /**
  * Algoritmo Greedy puro para asignación de salones.
  * Usa una estrategia best-fit para asignar materias a salones.
+ * 
+ * Este solver genera soluciones usando el modelo de matriz directa,
+ * donde NSGA-II decide tanto los salones como los días.
  */
 public class GreedySolver {
 
     private final ProblemInstance instance;
     private final ClassroomAssignmentProblem problem;
-    private final int maxClassroomsPerSubject;
+    private final int numClassrooms;
+    private final int numSubjects;
+    private final int emptySubjectIndex;
+
     private final List<Integer> sortedClassroomsByCapacityAsc;
     private final List<Integer> sortedClassroomsByCapacityDesc;
+    private final int[] blocksPerSubject;
 
     public GreedySolver(ProblemInstance instance, ClassroomAssignmentProblem problem) {
         this.instance = instance;
         this.problem = problem;
-        this.maxClassroomsPerSubject = problem.getMaxClassroomsPerSubject();
+        this.numClassrooms = instance.getClassrooms().size();
+        this.numSubjects = instance.getSubjects().size();
+        this.emptySubjectIndex = instance.getEmptySubjectIndex();
 
         // Ordenar salones por capacidad ascendente (para best-fit)
         this.sortedClassroomsByCapacityAsc = new ArrayList<>();
-        for (int i = 0; i < instance.getClassrooms().size(); i++) {
+        for (int i = 0; i < numClassrooms; i++) {
             sortedClassroomsByCapacityAsc.add(i);
         }
         sortedClassroomsByCapacityAsc.sort((a, b) -> Integer.compare(
@@ -35,6 +44,12 @@ public class GreedySolver {
 
         this.sortedClassroomsByCapacityDesc = new ArrayList<>(sortedClassroomsByCapacityAsc);
         Collections.reverse(sortedClassroomsByCapacityDesc);
+
+        // Calcular slots por materia (1 hora = 1 slot)
+        this.blocksPerSubject = new int[numSubjects];
+        for (int i = 0; i < numSubjects; i++) {
+            blocksPerSubject[i] = instance.getSubjects().get(i).getDurationSlots();
+        }
     }
 
     /**
@@ -42,75 +57,14 @@ public class GreedySolver {
      * Para cada materia, asigna el salón más pequeño que pueda contener a todos los
      * inscriptos.
      * Si no cabe en un solo salón, usa múltiples salones grandes.
+     * Los días se asignan secuencialmente (primer día disponible donde quepan todos
+     * los salones).
      */
     public IntegerSolution solve() {
-        IntegerSolution solution = problem.createSolution();
-
-        // Limpiar la solución
-        for (int i = 0; i < solution.variables().size(); i++) {
-            solution.variables().set(i, -1);
-        }
-
-        // Ordenar materias por inscriptos descendente (asignar las más grandes primero)
-        List<Integer> subjectOrder = new ArrayList<>();
-        for (int i = 0; i < instance.getSubjects().size(); i++) {
-            subjectOrder.add(i);
-        }
-        subjectOrder.sort((a, b) -> Integer.compare(
-                instance.getSubjectByIndex(b).getEnrolledStudents(),
-                instance.getSubjectByIndex(a).getEnrolledStudents()));
-
-        // Asignar cada materia de forma greedy
-        for (int subjectIdx : subjectOrder) {
-            assignSubjectGreedy(solution, subjectIdx);
-        }
-
+        // Usar la solución greedy del problema
+        IntegerSolution solution = problem.createGreedySolution();
         problem.evaluate(solution);
         return solution;
-    }
-
-    private void assignSubjectGreedy(IntegerSolution solution, int subjectIdx) {
-        Subject subject = instance.getSubjectByIndex(subjectIdx);
-        int enrolled = subject.getEnrolledStudents();
-        int basePos = subjectIdx * maxClassroomsPerSubject;
-
-        // Estrategia best-fit: buscar el salón más pequeño que pueda contener a todos
-        int bestFitClassroom = findBestFitClassroom(enrolled);
-
-        if (bestFitClassroom >= 0) {
-            // Un solo salón es suficiente
-            solution.variables().set(basePos, bestFitClassroom);
-        } else {
-            // Necesita múltiples salones - usar los más grandes
-            int capacityAccumulated = 0;
-            int slot = 0;
-
-            for (int classroomIdx : sortedClassroomsByCapacityDesc) {
-                if (capacityAccumulated >= enrolled || slot >= maxClassroomsPerSubject) {
-                    break;
-                }
-
-                int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
-                if (cap > 0) {
-                    solution.variables().set(basePos + slot, classroomIdx);
-                    capacityAccumulated += cap;
-                    slot++;
-                }
-            }
-        }
-    }
-
-    /**
-     * Encuentra el salón más pequeño que pueda contener la cantidad de inscriptos.
-     */
-    private int findBestFitClassroom(int enrolled) {
-        for (int classroomIdx : sortedClassroomsByCapacityAsc) {
-            int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
-            if (cap >= enrolled) {
-                return classroomIdx;
-            }
-        }
-        return -1; // No hay un solo salón suficiente
     }
 
     /**
@@ -140,10 +94,10 @@ public class GreedySolver {
     public GreedyMetrics calculateMetrics(IntegerSolution solution) {
         GreedyMetrics metrics = new GreedyMetrics();
 
-        Map<Integer, Set<Integer>> assignments = problem.decodeAssignments(solution);
+        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
 
-        for (Map.Entry<Integer, Set<Integer>> entry : assignments.entrySet()) {
-            Set<Integer> classrooms = entry.getValue();
+        for (Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment> entry : assignments.entrySet()) {
+            Set<Integer> classrooms = entry.getValue().classrooms;
             if (classrooms.size() == 1) {
                 metrics.subjectsWithSingleClassroom++;
             } else if (classrooms.size() > 1) {

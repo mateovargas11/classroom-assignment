@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Clase para rastrear la evolución del algoritmo NSGA-II.
@@ -118,8 +117,10 @@ public class EvolutionTracker {
      * Cuenta las asignaciones reales (sin penalización) de una solución.
      */
     private int countRealAssignments(IntegerSolution solution) {
-        Map<Integer, Set<Integer>> assignments = problem.decodeAssignments(solution);
-        return assignments.values().stream().mapToInt(Set::size).sum();
+        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        return assignments.values().stream()
+                .mapToInt(a -> a.classrooms.size())
+                .sum();
     }
 
     /**
