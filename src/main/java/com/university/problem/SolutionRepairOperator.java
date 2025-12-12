@@ -283,21 +283,64 @@ public class SolutionRepairOperator {
         List<Integer> result = new ArrayList<>();
         int capacityAccumulated = 0;
 
-        // Primero intentar con un solo salón
+        // Primero intentar con un solo salón (best-fit)
+        // Mezclar aleatoriamente salones con la misma capacidad para distribuir mejor
+        List<Integer> candidates = new ArrayList<>();
         for (int classroomIdx : sortedClassroomsByCapacityAsc) {
             int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
             if (cap >= enrolled) {
-                result.add(classroomIdx);
+                candidates.add(classroomIdx);
+            }
+        }
+
+        // Si hay candidatos, elegir uno aleatoriamente entre los que tienen capacidad
+        // suficiente
+        if (!candidates.isEmpty()) {
+            // Agrupar por capacidad y elegir aleatoriamente dentro del grupo
+            Map<Integer, List<Integer>> byCapacity = new HashMap<>();
+            for (int idx : candidates) {
+                int cap = instance.getClassroomByIndex(idx).getCapacity();
+                byCapacity.computeIfAbsent(cap, k -> new ArrayList<>()).add(idx);
+            }
+
+            // Elegir el grupo con la menor capacidad suficiente
+            int minCapacity = byCapacity.keySet().stream()
+                    .filter(cap -> cap >= enrolled)
+                    .min(Integer::compare)
+                    .orElse(Integer.MAX_VALUE);
+
+            if (minCapacity != Integer.MAX_VALUE) {
+                List<Integer> bestFitGroup = byCapacity.get(minCapacity);
+                result.add(bestFitGroup.get(random.nextInt(bestFitGroup.size())));
                 return result;
             }
         }
 
-        // Si no, usar los más grandes
+        // Si no cabe en uno solo, usar los más grandes
+        // Agrupar por capacidad y mezclar aleatoriamente dentro de cada grupo
+        Map<Integer, List<Integer>> byCapacity = new HashMap<>();
         for (int classroomIdx : sortedClassroomsByCapacityDesc) {
+            int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
+            byCapacity.computeIfAbsent(cap, k -> new ArrayList<>()).add(classroomIdx);
+        }
+
+        // Ordenar grupos por capacidad (descendente) y mezclar dentro de cada grupo
+        List<Integer> sortedCapacities = new ArrayList<>(byCapacity.keySet());
+        sortedCapacities.sort(Collections.reverseOrder());
+
+        for (int capacity : sortedCapacities) {
+            List<Integer> group = new ArrayList<>(byCapacity.get(capacity));
+            Collections.shuffle(group, random); // Mezclar aleatoriamente dentro del grupo
+
+            for (int classroomIdx : group) {
+                if (capacityAccumulated >= enrolled)
+                    break;
+                result.add(classroomIdx);
+                capacityAccumulated += instance.getClassroomByIndex(classroomIdx).getCapacity();
+            }
+
             if (capacityAccumulated >= enrolled)
                 break;
-            result.add(classroomIdx);
-            capacityAccumulated += instance.getClassroomByIndex(classroomIdx).getCapacity();
         }
 
         return result;
