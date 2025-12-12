@@ -279,7 +279,7 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
             }
         }
 
-        double objective1 = totalClassroomAssignments + (excessClassrooms * 10000);
+        double objective1 = totalClassroomAssignments + (excessClassrooms * 10);
 
         int[] subjectDays = calculateSubjectDays(assignments);
         double separationScore = calculateSeparationScore(subjectDays);

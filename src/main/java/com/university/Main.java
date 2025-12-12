@@ -1,18 +1,19 @@
 package com.university;
 
+import com.university.algorithm.NSGAII_WithTelemetry;
 import com.university.decoder.SolutionDecoder;
 import com.university.domain.ProblemInstance;
 import com.university.io.InstanceLoader;
 import com.university.problem.ClassroomAssignmentProblem;
 import com.university.problem.SoftRepairOperator;
 import com.university.solver.GreedySolver;
-import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import com.university.telemetry.EvolutionTracker;
 import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.IntegerPolynomialMutation;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -79,32 +80,42 @@ public class Main {
 
         // Configuración NSGA-II
         int populationSize = 100;
-        int maxEvaluations = 1000000; // Más evaluaciones para dar tiempo a NSGA-II
+        int maxEvaluations = 200000; // Evaluaciones totales
+        int recordEveryNGenerations = 10; // Registrar cada N generaciones
 
         double crossoverProbability = 0.9;
         double crossoverDistributionIndex = 20.0;
         var crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
 
-        double mutationProbability = 1.0 / problem.numberOfVariables();
+        double mutationProbability = 0.001;
         double mutationDistributionIndex = 20.0;
         var mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());
 
-        // Operador de reparación SUAVE (solo restricciones críticas)
+        // Operador de reparación
         SoftRepairOperator softRepair = new SoftRepairOperator(instance, problem.getMaxClassroomsPerSubject());
+
+        // Tracker de evolución para telemetría
+        EvolutionTracker tracker = new EvolutionTracker(problem);
 
         long nsgaStartTime = System.currentTimeMillis();
 
-        Algorithm<List<IntegerSolution>> algorithm = new NSGAIIBuilder<>(
+        // NSGA-II con telemetría integrada
+        NSGAII_WithTelemetry algorithm = new NSGAII_WithTelemetry(
                 problem,
+                maxEvaluations,
+                populationSize,
+                populationSize, // matingPoolSize
+                populationSize, // offspringPopulationSize
                 crossover,
                 mutation,
-                populationSize)
-                .setSelectionOperator(selection)
-                .setMaxEvaluations(maxEvaluations)
-                .build();
+                selection,
+                new SequentialSolutionListEvaluator<>(),
+                tracker,
+                softRepair,
+                recordEveryNGenerations);
 
         algorithm.run();
 
@@ -118,6 +129,9 @@ public class Main {
 
         long nsgaEndTime = System.currentTimeMillis();
         long nsgaTime = nsgaEndTime - nsgaStartTime;
+
+        // Mostrar resumen de evolución
+        tracker.printSummary();
 
         System.out.println("Tiempo de ejecución: " + nsgaTime + " ms");
         System.out.println("Evaluaciones: " + maxEvaluations);
@@ -255,6 +269,14 @@ public class Main {
         if (bestNSGAII != null) {
             decoder.exportToCSV(bestNSGAII, "output/" + instanceName + "_nsga2");
             System.out.println("  ✓ NSGA-II exportado a: output/" + instanceName + "_nsga2.csv");
+        }
+
+        // Exportar telemetría de evolución
+        String telemetryBasePath = "output/" + instanceName + "_evolucion";
+        String scriptPath = "output/plot_evolucion.py";
+        String telemetryPath = tracker.saveToCsv(telemetryBasePath);
+        if (telemetryPath != null) {
+            tracker.generatePythonPlotScript(telemetryPath, scriptPath);
         }
 
         // Mostrar detalle de la mejor solución

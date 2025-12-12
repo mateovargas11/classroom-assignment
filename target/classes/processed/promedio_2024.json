@@ -234,9 +234,9 @@
       "duracion": 3.0,
       "semestre": 3,
       "carreras": [
-        "naval",
+        "electronica",
         "civil",
-        "electronica"
+        "naval"
       ]
     },
     {
@@ -254,8 +254,8 @@
       "duracion": 4.0,
       "semestre": 9,
       "carreras": [
-        "civil",
-        "agrimensura"
+        "agrimensura",
+        "civil"
       ]
     },
     {
@@ -327,9 +327,9 @@
       "duracion": 3.0,
       "semestre": 5,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -339,8 +339,8 @@
       "duracion": 3.5,
       "semestre": 6,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -358,9 +358,9 @@
       "duracion": 3.0,
       "semestre": 4,
       "carreras": [
-        "naval",
         "agrimensura",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -417,9 +417,9 @@
       "duracion": 4.0,
       "semestre": 4,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -533,8 +533,8 @@
       "duracion": 4.0,
       "semestre": 4,
       "carreras": [
-        "mecanica",
-        "electronica"
+        "electronica",
+        "mecanica"
       ]
     },
     {
@@ -584,9 +584,9 @@
       "duracion": 2.5,
       "semestre": 7,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -596,8 +596,8 @@
       "duracion": 3.0,
       "semestre": 6,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -617,10 +617,10 @@
       "duracion": 4.0,
       "semestre": 4,
       "carreras": [
-        "naval",
-        "civil",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "civil",
+        "naval"
       ]
     },
     {
@@ -638,10 +638,10 @@
       "duracion": 3.0,
       "semestre": 5,
       "carreras": [
-        "naval",
-        "civil",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "civil",
+        "naval"
       ]
     },
     {
@@ -669,8 +669,8 @@
       "duracion": 3.0,
       "semestre": 7,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -742,8 +742,8 @@
       "duracion": 4.0,
       "semestre": 5,
       "carreras": [
-        "quimica",
         "alimentos",
+        "quimica",
         "produccion"
       ]
     },
@@ -765,9 +765,9 @@
       "semestre": 2,
       "carreras": [
         "electronica",
-        "naval",
+        "alimentos",
         "civil",
-        "alimentos"
+        "naval"
       ]
     },
     {
@@ -777,10 +777,10 @@
       "duracion": 3.0,
       "semestre": 3,
       "carreras": [
-        "naval",
-        "civil",
         "electronica",
-        "agrimensura"
+        "agrimensura",
+        "civil",
+        "naval"
       ]
     },
     {
@@ -790,9 +790,9 @@
       "duracion": 3.5,
       "semestre": 4,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -802,8 +802,8 @@
       "duracion": 4.0,
       "semestre": 8,
       "carreras": [
-        "quimica",
         "alimentos",
+        "quimica",
         "produccion"
       ]
     },
@@ -1085,8 +1085,8 @@
       "duracion": 4.0,
       "semestre": 9,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -1096,8 +1096,8 @@
       "duracion": 4.0,
       "semestre": 7,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -1107,8 +1107,8 @@
       "duracion": 2.0,
       "semestre": 8,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -1168,8 +1168,8 @@
       "duracion": 4.0,
       "semestre": 8,
       "carreras": [
-        "mecanica",
-        "electronica"
+        "electronica",
+        "mecanica"
       ]
     },
     {
@@ -1187,9 +1187,9 @@
       "duracion": 4.0,
       "semestre": 9,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1215,9 +1215,9 @@
       "duracion": 1.5,
       "semestre": 5,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1301,8 +1301,8 @@
       "duracion": 4.0,
       "semestre": 8,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -1399,9 +1399,9 @@
       "duracion": 4.0,
       "semestre": 9,
       "carreras": [
-        "naval",
         "produccion",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1411,11 +1411,11 @@
       "duracion": 3.0,
       "semestre": 4,
       "carreras": [
-        "naval",
-        "alimentos",
         "produccion",
         "electrica",
-        "civil"
+        "alimentos",
+        "civil",
+        "naval"
       ]
     },
     {
@@ -1504,9 +1504,9 @@
       "semestre": 10,
       "carreras": [
         "produccion",
-        "naval",
         "electronica",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1573,8 +1573,8 @@
       "duracion": 3.0,
       "semestre": 7,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1722,11 +1722,11 @@
       "duracion": 4.0,
       "semestre": 3,
       "carreras": [
-        "naval",
         "produccion",
+        "electronica",
         "mecanica",
         "civil",
-        "electronica"
+        "naval"
       ]
     },
     {
@@ -1754,8 +1754,8 @@
       "duracion": 4.0,
       "semestre": 7,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1765,8 +1765,8 @@
       "duracion": 4.0,
       "semestre": 6,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -1794,8 +1794,8 @@
       "duracion": 3.0,
       "semestre": 4,
       "carreras": [
-        "computacion",
         "electronica",
+        "computacion",
         "produccion"
       ]
     },
@@ -1830,8 +1830,8 @@
       "duracion": 3.0,
       "semestre": 9,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -2202,8 +2202,8 @@
       "duracion": 4.0,
       "semestre": 8,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -2451,8 +2451,8 @@
       "duracion": 4.0,
       "semestre": 6,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -2462,8 +2462,8 @@
       "duracion": 4.0,
       "semestre": 7,
       "carreras": [
-        "naval",
-        "mecanica"
+        "mecanica",
+        "naval"
       ]
     },
     {
@@ -2473,8 +2473,8 @@
       "duracion": 4.0,
       "semestre": 6,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -2484,8 +2484,8 @@
       "duracion": 4.0,
       "semestre": 7,
       "carreras": [
-        "quimica",
-        "alimentos"
+        "alimentos",
+        "quimica"
       ]
     },
     {
@@ -2980,7 +2980,8 @@
     ],
     "3_computacion": [
       1,
-      159
+      159,
+      202
     ],
     "7_produccion": [
       3,
@@ -3020,6 +3021,7 @@
     ],
     "4_computacion": [
       12,
+      52,
       188,
       207
     ],
@@ -3037,36 +3039,102 @@
     "9_sistemas_comunicacion": [
       21
     ],
-    "1_todas": [
+    "1_tecnologo_telecom": [
       22,
       78,
       95,
+      169,
+      170,
       176
     ],
-    "2_todas": [
+    "1_produccion": [
+      22,
+      78,
+      95,
+      176,
+      201
+    ],
+    "1_computacion": [
+      22,
+      78,
+      95,
+      172,
+      176
+    ],
+    "1_civil": [
+      22,
+      78,
+      95,
+      176,
+      201
+    ],
+    "1_naval": [
+      22,
+      78,
+      95,
+      140,
+      176
+    ],
+    "2_tecnologo_telecom": [
       23,
+      97,
+      171
+    ],
+    "2_computacion": [
+      23,
+      97,
+      173
+    ],
+    "2_electronica": [
+      23,
+      79,
+      97,
+      206
+    ],
+    "2_alimentos": [
+      23,
+      79,
       97
     ],
-    "3_naval": [
-      24,
-      80,
-      181
+    "2_civil": [
+      23,
+      79,
+      97
     ],
-    "3_civil": [
-      24,
-      80,
-      181
+    "2_naval": [
+      23,
+      79,
+      97
     ],
     "3_electronica": [
       24,
       80,
-      181
+      181,
+      202
+    ],
+    "3_civil": [
+      24,
+      80,
+      181,
+      202
+    ],
+    "3_naval": [
+      24,
+      80,
+      181,
+      202
     ],
     "9_civil": [
       26,
       72,
       266,
       269
+    ],
+    "5_mecanica": [
+      34,
+      66,
+      127,
+      142
     ],
     "5_naval": [
       34,
@@ -3082,11 +3150,11 @@
       127,
       142
     ],
-    "5_mecanica": [
-      34,
-      66,
-      127,
-      142
+    "6_mecanica": [
+      35,
+      62,
+      185,
+      260
     ],
     "6_naval": [
       35,
@@ -3095,21 +3163,9 @@
       249,
       260
     ],
-    "6_mecanica": [
-      35,
-      62,
-      185,
-      260
-    ],
-    "4_naval": [
-      37,
-      43,
-      64,
-      81,
-      148
-    ],
     "4_agrimensura": [
       37,
+      52,
       284,
       285
     ],
@@ -3117,10 +3173,19 @@
       37,
       41,
       43,
+      52,
       56,
       64,
       81,
       273
+    ],
+    "4_naval": [
+      37,
+      43,
+      52,
+      64,
+      81,
+      148
     ],
     "7_sistemas_comunicacion": [
       38,
@@ -3129,6 +3194,7 @@
     "4_produccion": [
       41,
       43,
+      52,
       64,
       81,
       138,
@@ -3144,12 +3210,26 @@
     ],
     "4_electronica": [
       50,
+      52,
       56,
       188,
       245
     ],
-    "4_todas": [
-      52
+    "4_electrica": [
+      52,
+      148
+    ],
+    "4_alimentos": [
+      52,
+      138,
+      148
+    ],
+    "4_civil": [
+      52,
+      64,
+      118,
+      148,
+      223
     ],
     "5_civil": [
       55,
@@ -3171,6 +3251,14 @@
       182,
       218
     ],
+    "7_mecanica": [
+      61,
+      69,
+      150,
+      165,
+      184,
+      261
+    ],
     "7_naval": [
       61,
       69,
@@ -3180,52 +3268,33 @@
       184,
       261
     ],
-    "7_mecanica": [
-      61,
-      69,
-      150,
-      165,
-      184,
-      261
-    ],
-    "4_civil": [
-      64,
-      118,
-      148,
-      223
-    ],
     "10_civil": [
       75,
       155,
+      210,
       264,
       267,
       270,
       279
     ],
-    "5_quimica": [
-      77
-    ],
     "5_alimentos": [
       77,
       253
     ],
-    "2_electronica": [
-      79,
-      206
-    ],
-    "2_naval": [
-      79
-    ],
-    "2_civil": [
-      79
-    ],
-    "2_alimentos": [
-      79
+    "5_quimica": [
+      77
     ],
     "3_agrimensura": [
       80,
+      202,
       231,
       278
+    ],
+    "8_alimentos": [
+      82,
+      108,
+      115,
+      137
     ],
     "8_quimica": [
       82,
@@ -3233,12 +3302,6 @@
       137,
       178,
       243
-    ],
-    "8_alimentos": [
-      82,
-      108,
-      115,
-      137
     ],
     "8_produccion": [
       82
@@ -3250,6 +3313,7 @@
     "10_mecanica": [
       88,
       158,
+      210,
       211
     ],
     "6_civil": [
@@ -3278,10 +3342,10 @@
       225,
       271
     ],
-    "9_quimica": [
+    "9_alimentos": [
       113
     ],
-    "9_alimentos": [
+    "9_quimica": [
       113
     ],
     "7_quimica": [
@@ -3289,24 +3353,17 @@
       242,
       263
     ],
+    "8_electronica": [
+      122
+    ],
     "8_mecanica": [
       122,
       166,
       219,
       232
     ],
-    "8_electronica": [
-      122
-    ],
-    "4_alimentos": [
-      138,
-      148
-    ],
     "7_computacion": [
       139
-    ],
-    "1_naval": [
-      140
     ],
     "5_computacion": [
       142,
@@ -3314,73 +3371,50 @@
       233,
       250
     ],
-    "4_electrica": [
-      148
-    ],
     "5_electrica": [
       152
     ],
-    "10_produccion": [
-      158
+    "10_electronica": [
+      158,
+      210
     ],
     "10_naval": [
-      158
+      158,
+      210
     ],
-    "10_electronica": [
-      158
+    "10_produccion": [
+      158,
+      210
     ],
     "3_electrica": [
-      159
+      159,
+      202
     ],
     "8_naval": [
       162,
       232
     ],
-    "1_tecnologo_telecom": [
-      169,
-      170
-    ],
-    "2_tecnologo_telecom": [
-      171
-    ],
-    "1_computacion": [
-      172
-    ],
-    "2_computacion": [
-      173
-    ],
     "3_produccion": [
-      181
+      181,
+      202
     ],
     "3_mecanica": [
-      181
+      181,
+      202
     ],
     "6_produccion": [
       194,
       254
     ],
-    "1_civil": [
-      201
-    ],
-    "1_produccion": [
-      201
-    ],
-    "3_todas": [
-      202
-    ],
-    "10_todas": [
-      210,
-      212
-    ],
     "9_electronica": [
       235
-    ],
-    "6_quimica": [
-      262
     ],
     "6_alimentos": [
       262,
       276
+    ],
+    "6_quimica": [
+      262
     ]
   },
   "conflict_pairs": [
@@ -4694,10 +4728,6 @@
     ],
     [
       210,
-      212
-    ],
-    [
-      210,
       264
     ],
     [
@@ -4794,7 +4824,7 @@
     "num_salones": 39,
     "total_inscritos": 5694,
     "total_aforo": 2706,
-    "num_conflict_pairs": 351,
+    "num_conflict_pairs": 350,
     "max_inscritos": 527,
     "min_inscritos": 1
   }

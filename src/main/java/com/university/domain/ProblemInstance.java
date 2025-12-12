@@ -23,17 +23,6 @@ public class ProblemInstance {
     private Map<String, Integer> subjectIndexMap;
     private Map<String, Integer> classroomIndexMap;
 
-    public ProblemInstance() {
-        this.conflictPairs = new ArrayList<>();
-    }
-
-    public ProblemInstance(List<Subject> subjects, List<Classroom> classrooms) {
-        this.subjects = subjects;
-        this.classrooms = classrooms;
-        this.conflictPairs = new ArrayList<>();
-        buildIndexMaps();
-    }
-
     public ProblemInstance(List<Subject> subjects, List<Classroom> classrooms, List<int[]> conflictPairs) {
         this.subjects = subjects;
         this.classrooms = classrooms;
@@ -127,9 +116,5 @@ public class ProblemInstance {
 
     public List<int[]> getConflictPairs() {
         return conflictPairs;
-    }
-
-    public void setConflictPairs(List<int[]> conflictPairs) {
-        this.conflictPairs = conflictPairs != null ? conflictPairs : new ArrayList<>();
     }
 }

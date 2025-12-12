@@ -1,0 +1,4620 @@
+{
+  "instance_name": "julio_2024",
+  "examenes": [
+    {
+      "id": 0,
+      "nombre": "ELECTRONICA FUNDAMENTAL",
+      "inscritos": 19,
+      "duracion": 3.5,
+      "semestre": 5,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 1,
+      "nombre": "PROGRAMACION 2",
+      "inscritos": 110,
+      "duracion": 3.0,
+      "semestre": 3,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 2,
+      "nombre": "ADMINISTRACION DE INFRAESTRUCTURAS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 3,
+      "nombre": "ADMINISTRACION DE OPERACIONES",
+      "inscritos": 6,
+      "duracion": 2.5,
+      "semestre": 7,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 4,
+      "nombre": "AGRIMENSURA LEGAL 1",
+      "inscritos": 7,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 5,
+      "nombre": "AGRIMENSURA LEGAL 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 6,
+      "nombre": "AGRIMENSURA LEGAL 3",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 7,
+      "nombre": "AGRIMENSURA LEGAL 4",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 8,
+      "nombre": "ALISTAMIENTO NAVAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 9,
+      "nombre": "ANTENAS Y PROPAGACION",
+      "inscritos": 7,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "electrica"
+      ]
+    },
+    {
+      "id": 10,
+      "nombre": "APLICACIONES DEL ALGEBRA LINEAL",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 11,
+      "nombre": "ARQUITECTURA DE COMPUTADORAS",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 12,
+      "nombre": "ASPECTOS BASICOS DE REDES DE COMPUT",
+      "inscritos": 2,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 13,
+      "nombre": "ASTRONOMIA GEODESICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 14,
+      "nombre": "AUTOMATAS PROGRAMABLES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 15,
+      "nombre": "AVALUACIONES 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 16,
+      "nombre": "AVALUACIONES 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 17,
+      "nombre": "AVALUACIONES 3",
+      "inscritos": 11,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 18,
+      "nombre": "BASES DE DATOS I",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 19,
+      "nombre": "BASES DE DATOS II",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 20,
+      "nombre": "BASES DE DATOS PARA INGENIERIA",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 9,
+      "carreras": [
+        "sistemas_comunicacion"
+      ]
+    },
+    {
+      "id": 21,
+      "nombre": "CALCULO DIF. E INTEGRAL EN UNA VARIABLE",
+      "inscritos": 611,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 22,
+      "nombre": "CALCULO DIF. E INTEGRAL EN VARIAS VARIABLES",
+      "inscritos": 304,
+      "duracion": 4.0,
+      "semestre": 2,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 23,
+      "nombre": "CALCULO VECTORIAL",
+      "inscritos": 83,
+      "duracion": 3.0,
+      "semestre": 3,
+      "carreras": [
+        "naval",
+        "civil",
+        "electronica"
+      ]
+    },
+    {
+      "id": 24,
+      "nombre": "CALIDAD DE AGUAS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 25,
+      "nombre": "CAMINOS Y CALLES 1",
+      "inscritos": 17,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "civil",
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 26,
+      "nombre": "CAPTURA DE DATOS POR PERCEPCION REMOTA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 27,
+      "nombre": "CARTOGRAFIA MATEMATICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 28,
+      "nombre": "CARTOGRAFÍA TEMÁTICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 29,
+      "nombre": "CARTOGRAFÍA TEMÁTICA (ÁREA)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 30,
+      "nombre": "CATASTRO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 31,
+      "nombre": "COMERCIALIZACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 32,
+      "nombre": "COMPL.ARQUITECTURA DE COMPUTADORAS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 33,
+      "nombre": "COMPORTAMIENTO MECANICO DE MATERIALES 1",
+      "inscritos": 20,
+      "duracion": 3.0,
+      "semestre": 5,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 34,
+      "nombre": "COMPORTAMIENTO MECANICO DE MATERIALES 2",
+      "inscritos": 1,
+      "duracion": 3.5,
+      "semestre": 6,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 35,
+      "nombre": "COMPORTAMIENTO MEC. DE MATERIALES",
+      "inscritos": 11,
+      "duracion": 3.5,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 36,
+      "nombre": "COMPUTACION 1",
+      "inscritos": 10,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "naval",
+        "agrimensura",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 37,
+      "nombre": "COMUNICACIONES DIGITALES",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "sistemas_comunicacion"
+      ]
+    },
+    {
+      "id": 38,
+      "nombre": "COMUNICACION ORAL Y ESCRITA (ACT.COMPL3)",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 39,
+      "nombre": "CONTABILIDAD (ACT.COMPL.4)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 40,
+      "nombre": "CONTROL DE CALIDAD",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "mecanica",
+        "produccion"
+      ]
+    },
+    {
+      "id": 41,
+      "nombre": "COSTOS",
+      "inscritos": 15,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 42,
+      "nombre": "COSTOS PARA INGENIERIA",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 43,
+      "nombre": "DINAMICA DE MAQUINAS Y VIBRACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 44,
+      "nombre": "DISEÑO ASISTIDO POR COMPUTADOR",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 45,
+      "nombre": "DISEÑO CATASTRAL",
+      "inscritos": 5,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 46,
+      "nombre": "DISEÑO DE PROCESOS QUIMICOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 47,
+      "nombre": "DISEÑO DE REDES DE COND.EN ING.SANITARIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 48,
+      "nombre": "DISEÑO HIDROLOGICO",
+      "inscritos": 9,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 49,
+      "nombre": "DISEÑO LOGICO",
+      "inscritos": 10,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 50,
+      "nombre": "DISEÑO Y MONTAJE DE LAS INDUSTRIAS DE PROCESOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 51,
+      "nombre": "ECONOMIA",
+      "inscritos": 111,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 52,
+      "nombre": "ECONOMÍA (AREA)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 53,
+      "nombre": "EJERCICIOS DE INGENIERIA SANITARIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 54,
+      "nombre": "ELASTICIDAD",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 55,
+      "nombre": "ELECTROMAGNETISMO",
+      "inscritos": 9,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "mecanica",
+        "electronica"
+      ]
+    },
+    {
+      "id": 56,
+      "nombre": "ELECTRONICA AVANZADA 1",
+      "inscritos": 7,
+      "duracion": 3.0,
+      "semestre": 6,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 57,
+      "nombre": "ELECTRONICA AVANZADA 2",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 58,
+      "nombre": "ELECTRONICA DE POTENCIA",
+      "inscritos": 13,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 59,
+      "nombre": "ELECTROTECNICA",
+      "inscritos": 23,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 60,
+      "nombre": "ELECTROTECNICA I",
+      "inscritos": 48,
+      "duracion": 2.5,
+      "semestre": 7,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 61,
+      "nombre": "ELECTROTECNICA II",
+      "inscritos": 2,
+      "duracion": 3.0,
+      "semestre": 6,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 62,
+      "nombre": "ELEMENTOS DE GESTION LOGISTICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 63,
+      "nombre": "ELEMENTOS DE INGENIERIA AMBIENTAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "naval",
+        "civil",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 64,
+      "nombre": "ELEMENTOS DE MAQUINAS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 65,
+      "nombre": "ELEMENTOS DE MECANICA DE LOS FLUIDOS",
+      "inscritos": 69,
+      "duracion": 3.0,
+      "semestre": 5,
+      "carreras": [
+        "naval",
+        "civil",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 66,
+      "nombre": "ELEMENTOS DE NAVEGACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 67,
+      "nombre": "ELEMENTOS DE TOPOGRAFIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 68,
+      "nombre": "ENERGIA 1- COMBUSTION",
+      "inscritos": 50,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 69,
+      "nombre": "ENERGIA 2:GEN ENERG PLANTAS VAPOR Y GAS",
+      "inscritos": 7,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 70,
+      "nombre": "ENSAYOS ELECTRICOS Y EQUIPOS DE MEDIA TENSION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 71,
+      "nombre": "ESTRUCTURAS DE ACERO",
+      "inscritos": 7,
+      "duracion": 2.0,
+      "semestre": 9,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 72,
+      "nombre": "ESTRUCTURAS DE BUQUES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 73,
+      "nombre": "ESTRUCTURAS DE DATOS Y ALGORITMOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 74,
+      "nombre": "ESTRUCTURAS DE MADERA",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 75,
+      "nombre": "ESTUDIO DEL TRABAJO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 76,
+      "nombre": "FENOMENOS DE TRANSPORTE EN ING. DE PROCESOS",
+      "inscritos": 32,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "quimica",
+        "alimentos",
+        "produccion"
+      ]
+    },
+    {
+      "id": 77,
+      "nombre": "FISICA 1",
+      "inscritos": 416,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 78,
+      "nombre": "FISICA 2",
+      "inscritos": 94,
+      "duracion": 3.0,
+      "semestre": 2,
+      "carreras": [
+        "electronica",
+        "naval",
+        "civil",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 79,
+      "nombre": "FISICA 3",
+      "inscritos": 103,
+      "duracion": 3.0,
+      "semestre": 3,
+      "carreras": [
+        "naval",
+        "civil",
+        "electronica",
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 80,
+      "nombre": "FISICA TERMICA",
+      "inscritos": 12,
+      "duracion": 3.5,
+      "semestre": 4,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 81,
+      "nombre": "FLUIDODINAMICA",
+      "inscritos": 33,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "quimica",
+        "alimentos",
+        "produccion"
+      ]
+    },
+    {
+      "id": 82,
+      "nombre": "FOTOGRAMETRIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 83,
+      "nombre": "FUNCIONES DE VARIABLE COMPLEJA",
+      "inscritos": 19,
+      "duracion": 3.0,
+      "semestre": 5,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 84,
+      "nombre": "FUNDAMENTOS DE BASES DE DATOS",
+      "inscritos": 8,
+      "duracion": 3.0,
+      "semestre": 6,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 85,
+      "nombre": "FUNDAMENTOS DE ROBOTICA INDUSTRIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 86,
+      "nombre": "FUND. DE LA PROD. DE CELULOSA Y PAPEL",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 87,
+      "nombre": "GENERADORES DE VAPOR",
+      "inscritos": 5,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "mecanica"
+      ]
+    },
+    {
+      "id": 88,
+      "nombre": "GEODESIA 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 89,
+      "nombre": "GEODESIA 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 90,
+      "nombre": "GEODESIA 3",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 91,
+      "nombre": "GEOESTADISTICA APLICADA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 92,
+      "nombre": "GEOFISICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 93,
+      "nombre": "GEOLOGIA DE INGENIERIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 94,
+      "nombre": "GEOMETRIA Y ALGEBRA LINEAL 1",
+      "inscritos": 423,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 95,
+      "nombre": "GEOMETRIA Y ALGEBRA LINEAL 1 INTERACTIVA",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 96,
+      "nombre": "GEOMETRIA Y ALGEBRA LINEAL 2",
+      "inscritos": 266,
+      "duracion": 3.5,
+      "semestre": 2,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 97,
+      "nombre": "GESTION DE CALIDAD",
+      "inscritos": 9,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 98,
+      "nombre": "GESTION DE CALIDAD AMBIENTAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 99,
+      "nombre": "GESTION DEL MANTENIMIENTO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 100,
+      "nombre": "GESTION DE LOS RRHH. EN LA PROD. DE BIENES Y SERV.",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 101,
+      "nombre": "GESTION DE MANTENIMIENTO",
+      "inscritos": 39,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "mecanica",
+        "produccion"
+      ]
+    },
+    {
+      "id": 102,
+      "nombre": "HIDRAULICA FLUVIAL Y MARITIMA",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 103,
+      "nombre": "HIDRAULICA Y NEUMATICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 104,
+      "nombre": "HIDRODINAMICA NAVAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 105,
+      "nombre": "HIDROLOGIA AVANZADA II",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 106,
+      "nombre": "HIDROLOGIA E HIDRAULICA APLICADAS",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 107,
+      "nombre": "HIGIENE Y SERV. DE PLANTAS PROC. DE ALIMENTOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "alimentos"
+      ]
+    },
+    {
+      "id": 108,
+      "nombre": "HORMIGON ESTRUCTURAL 1",
+      "inscritos": 16,
+      "duracion": 3.5,
+      "semestre": 7,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 109,
+      "nombre": "HORMIGON ESTRUCTURAL 2",
+      "inscritos": 12,
+      "duracion": 2.0,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 110,
+      "nombre": "HORMIGON ESTRUCTURAL 3",
+      "inscritos": 10,
+      "duracion": 5.5,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 111,
+      "nombre": "INGENIERIA AMBIENTAL PARA LA INDUSTRIA DE PROCESOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 112,
+      "nombre": "INGENIERIA BIOQUIMICA",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 113,
+      "nombre": "INGENIERIA DE LAS REACCIONES QUIMICAS 1",
+      "inscritos": 39,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 114,
+      "nombre": "INGENIERIA DE LAS REACCIONES QUIMICAS 2",
+      "inscritos": 12,
+      "duracion": 2.0,
+      "semestre": 8,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 115,
+      "nombre": "INGENIERIA DE LOS PROCESOS ELECTROQUIMICOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 116,
+      "nombre": "INGENIERIA DE SOFTWARE",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 117,
+      "nombre": "INGENIERIA LEGAL",
+      "inscritos": 12,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 118,
+      "nombre": "INGLES CONVERSACIONAL (ACT.COMPL.2)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 119,
+      "nombre": "INGLES TECNICO",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 120,
+      "nombre": "INGLES TECNICO 1 (ACT.COMPL.1)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 121,
+      "nombre": "INSTALACIONES ELECTRICAS",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "mecanica",
+        "electronica"
+      ]
+    },
+    {
+      "id": 122,
+      "nombre": "INSTALACIONES GENERALES DE GASES COMBUSTIBLES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 123,
+      "nombre": "INSTRUMENTACION INDUSTRIAL",
+      "inscritos": 12,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 124,
+      "nombre": "INSTRUMENTACION Y CONTROL",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 125,
+      "nombre": "INT. A LA CIENCIA DE LOS MATERIALES",
+      "inscritos": 9,
+      "duracion": 1.5,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 126,
+      "nombre": "INT. A LA CIENCIA DE MATERIALES",
+      "inscritos": 52,
+      "duracion": 1.5,
+      "semestre": 5,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 127,
+      "nombre": "INT. A LA COMBUSTION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 128,
+      "nombre": "INT. A LA CONSTRUCCION",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 129,
+      "nombre": "INT. A LA CORROSION DEL HORMIGON ARMADO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 130,
+      "nombre": "INT. A LA ELECTROTECNIA",
+      "inscritos": 7,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 131,
+      "nombre": "INT. A LA EVAL.DE LA CAL.DE LA INF.GEOGR.",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 132,
+      "nombre": "INT. A LA EVAL.DE LA CAL.DE LA INF.GEOGR.(ÁREA)",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 133,
+      "nombre": "INT. A LA EVALUACION Y GESTION AMBIENTAL",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 134,
+      "nombre": "INT. A LA FISICA MODERNA",
+      "inscritos": 14,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 135,
+      "nombre": "INT. A LA GEODESIA Y SIST. DE POS. GLOBAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 136,
+      "nombre": "INT. A LA INGENIERIA BIOQUIMICA",
+      "inscritos": 10,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 137,
+      "nombre": "INT. A LA INGENIERIA DE PROCESOS",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "alimentos",
+        "produccion"
+      ]
+    },
+    {
+      "id": 138,
+      "nombre": "INT. A LA INGENIERIA DE SOFTWARE",
+      "inscritos": 12,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 139,
+      "nombre": "INT. A LA INGENIERIA NAVAL",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 1,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 140,
+      "nombre": "INT. A LA INGENIERIA SANITARIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 141,
+      "nombre": "INT. A LA INVESTIGACION DE OPERACIONES",
+      "inscritos": 68,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "mecanica",
+        "computacion",
+        "produccion"
+      ]
+    },
+    {
+      "id": 142,
+      "nombre": "INT. A LA MECANICA DE LOS FLUIDOS",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 143,
+      "nombre": "INT. A LA MECANICA DE SUELOS",
+      "inscritos": 22,
+      "duracion": 3.5,
+      "semestre": 7,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 144,
+      "nombre": "INT. AL ANALISIS RURAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 145,
+      "nombre": "INT. A LA OPTICA",
+      "inscritos": 1,
+      "duracion": 3.5,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 146,
+      "nombre": "INT. A LA PREVENCION DE RIESGOS LABORALES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 147,
+      "nombre": "INT. A LAS ECUACIONES DIFERENCIALES",
+      "inscritos": 20,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "naval",
+        "alimentos",
+        "produccion",
+        "electrica",
+        "civil"
+      ]
+    },
+    {
+      "id": 148,
+      "nombre": "INT. A LA TERMODINAMICA",
+      "inscritos": 2,
+      "duracion": 3.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 149,
+      "nombre": "INT. AL CONTROL INDUSTRIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "mecanica"
+      ]
+    },
+    {
+      "id": 150,
+      "nombre": "INT. AL DERECHO",
+      "inscritos": 9,
+      "duracion": 2.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 151,
+      "nombre": "INT. A LOS MICROPROCESADORES",
+      "inscritos": 14,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "electrica"
+      ]
+    },
+    {
+      "id": 152,
+      "nombre": "INT. A LOS SIST. DE PROT. DE SIST. ELECT. DE POT.",
+      "inscritos": 5,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 153,
+      "nombre": "INT. AL SISTEMA CLIMATICO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 154,
+      "nombre": "INT. AL TRANSPORTE",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 155,
+      "nombre": "LABORATORIO DE TECNOLOGIA DEL HORMIGON",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 156,
+      "nombre": "LEGISLACION TERRITORIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 157,
+      "nombre": "LEGISLACION Y RELACIONES INDUSTRIALES",
+      "inscritos": 9,
+      "duracion": 2.0,
+      "semestre": 10,
+      "carreras": [
+        "produccion",
+        "naval",
+        "electronica",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 158,
+      "nombre": "LOGICA",
+      "inscritos": 109,
+      "duracion": 4.0,
+      "semestre": 3,
+      "carreras": [
+        "electrica",
+        "computacion"
+      ]
+    },
+    {
+      "id": 159,
+      "nombre": "MAMPOSTERIA ESTRUCTURAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 160,
+      "nombre": "MANTENIMIENTO DE BUQUES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 161,
+      "nombre": "MAQUINARIA NAVAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 162,
+      "nombre": "MAQUINAS ELECTRICAS",
+      "inscritos": 3,
+      "duracion": 2.5,
+      "semestre": 6,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 163,
+      "nombre": "MAQUINAS PARA FLUIDOS",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 164,
+      "nombre": "MAQUINAS PARA FLUIDOS I",
+      "inscritos": 30,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 165,
+      "nombre": "MAQUINAS PARA FLUIDOS II",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "mecanica"
+      ]
+    },
+    {
+      "id": 166,
+      "nombre": "MAQUINAS Y EQUIPOS PARA TRANSPORTE",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 167,
+      "nombre": "MATEMATICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 168,
+      "nombre": "MATEMATICA 1",
+      "inscritos": 12,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "tecnologo_telecom"
+      ]
+    },
+    {
+      "id": 169,
+      "nombre": "MATEMATICA 2",
+      "inscritos": 2,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "tecnologo_telecom"
+      ]
+    },
+    {
+      "id": 170,
+      "nombre": "MATEMATICA 3",
+      "inscritos": 10,
+      "duracion": 3.0,
+      "semestre": 2,
+      "carreras": [
+        "tecnologo_telecom"
+      ]
+    },
+    {
+      "id": 171,
+      "nombre": "MATEMATICA DISCRETA 1",
+      "inscritos": 542,
+      "duracion": 3.0,
+      "semestre": 1,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 172,
+      "nombre": "MATEMATICA DISCRETA 2",
+      "inscritos": 86,
+      "duracion": 3.0,
+      "semestre": 2,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 173,
+      "nombre": "MATEMATICA DISCRETA Y LOGICA 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 174,
+      "nombre": "MATEMATICA DISCRETA Y LOGICA 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 175,
+      "nombre": "MATEMATICA INICIAL",
+      "inscritos": 223,
+      "duracion": 4.0,
+      "semestre": 1,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 176,
+      "nombre": "MATERIALES Y ENSAYOS",
+      "inscritos": 18,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 177,
+      "nombre": "MECANICA APLICADA (ING.QUÍM)",
+      "inscritos": 7,
+      "duracion": 3.0,
+      "semestre": 8,
+      "carreras": [
+        "quimica"
+      ]
+    },
+    {
+      "id": 178,
+      "nombre": "MECANICA DE LOS FLUIDOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 179,
+      "nombre": "MECANICA ESTRUCTURAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 180,
+      "nombre": "MECANICA NEWTONIANA",
+      "inscritos": 88,
+      "duracion": 4.0,
+      "semestre": 3,
+      "carreras": [
+        "naval",
+        "produccion",
+        "mecanica",
+        "civil",
+        "electronica"
+      ]
+    },
+    {
+      "id": 181,
+      "nombre": "MEDIDAS ELECTRICAS",
+      "inscritos": 27,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 182,
+      "nombre": "MEDIDAS ELECTRICAS EN INGENIERIA DE PROCESOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 183,
+      "nombre": "METALURGIA DE TRANSFORMACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 184,
+      "nombre": "METALURGIA FISICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 185,
+      "nombre": "MET. COMPUT.APLIC.AL CALCULO ESTRUCTURAL",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 186,
+      "nombre": "METEOROLOGIA DINAMICA Y SINOPTICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 187,
+      "nombre": "METODOS NUMERICOS",
+      "inscritos": 59,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "computacion",
+        "electronica",
+        "produccion"
+      ]
+    },
+    {
+      "id": 188,
+      "nombre": "MODULO TALLER EXTENSION ING.AMBIENTAL 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 189,
+      "nombre": "MODULO TALLER EXTENSION ING.AMBIENTAL 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 190,
+      "nombre": "MOTORES DE COMB. INT. Y TURBINAS DE GAS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 191,
+      "nombre": "MOTORES DE COMBUSTION INTERNA",
+      "inscritos": 5,
+      "duracion": 3.0,
+      "semestre": 9,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 192,
+      "nombre": "OBRAS HIDRAULICAS",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 193,
+      "nombre": "OPTICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 194,
+      "nombre": "ORDENAMIENTO TERRITORIAL 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 195,
+      "nombre": "ORDENAMIENTO TERRITORIAL 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 196,
+      "nombre": "PATOLOGIA DE LAS ESTRUCTURAS",
+      "inscritos": 5,
+      "duracion": 2.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 197,
+      "nombre": "PLANEAMIENTO ESTRATEGICO Y ESTRATEGIA COMPETITIVA",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 198,
+      "nombre": "POTABILIZACION DE AGUAS",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 199,
+      "nombre": "PRINCIPIOS DE PROGRAMACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 200,
+      "nombre": "PRINCIPIOS DE QUIMICA GENERAL",
+      "inscritos": 113,
+      "duracion": 4.0,
+      "semestre": 1,
+      "carreras": [
+        "civil",
+        "produccion"
+      ]
+    },
+    {
+      "id": 201,
+      "nombre": "PROBABILIDAD Y ESTADISTICA",
+      "inscritos": 127,
+      "duracion": 3.0,
+      "semestre": 3,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 202,
+      "nombre": "PROCEDIMIENTOS CONST. OBRAS VIALES Y SUELO",
+      "inscritos": 2,
+      "duracion": 1.5,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 203,
+      "nombre": "PROCEDIMIENTOS CONST.PARA ESTRUCTURAS",
+      "inscritos": 11,
+      "duracion": 2.0,
+      "semestre": 7,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 204,
+      "nombre": "PRODUCCION CARTOGRAFICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 205,
+      "nombre": "PROGRAMACION 1",
+      "inscritos": 235,
+      "duracion": 3.0,
+      "semestre": 2,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 206,
+      "nombre": "PROGRAMACION 3",
+      "inscritos": 42,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 207,
+      "nombre": "PROGRAMACION 4",
+      "inscritos": 130,
+      "duracion": 3.0,
+      "semestre": 5,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 208,
+      "nombre": "PROGRAMACION AVANZADA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 209,
+      "nombre": "PROYECTO",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 10,
+      "carreras": [
+        "todas"
+      ]
+    },
+    {
+      "id": 210,
+      "nombre": "PROYECTO DE INVERSION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": []
+    },
+    {
+      "id": 211,
+      "nombre": "PUENTES",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 212,
+      "nombre": "REDES DE ACCESO",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 213,
+      "nombre": "REDES DE COMPUTADORAS",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 6,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 214,
+      "nombre": "REDES DE DATOS 1",
+      "inscritos": 3,
+      "duracion": 2.0,
+      "semestre": 6,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 215,
+      "nombre": "REDES DE DATOS 2",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "sistemas_comunicacion"
+      ]
+    },
+    {
+      "id": 216,
+      "nombre": "REDES ELECTRICAS",
+      "inscritos": 4,
+      "duracion": 3.0,
+      "semestre": 7,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 217,
+      "nombre": "REFRIGERACION",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "mecanica"
+      ]
+    },
+    {
+      "id": 218,
+      "nombre": "REFRIGERACION INDUSTRIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 219,
+      "nombre": "RELACIONES PERSONALES Y LABORALES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 220,
+      "nombre": "REPRESENTACION GRAFICA PARA INDUSTRIAS DE PROC.",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 221,
+      "nombre": "RESISTENCIA DE MATERIALES 1",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 222,
+      "nombre": "RESISTENCIA DE MATERIALES 2",
+      "inscritos": 1,
+      "duracion": 3.0,
+      "semestre": 6,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 223,
+      "nombre": "SEGURIDAD EN LA CONSTRUCCION",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 224,
+      "nombre": "SEGURIDAD INDUSTRIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 225,
+      "nombre": "SEÑALES ALEATORIAS Y MODULACION",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 226,
+      "nombre": "SEÑALES Y SISTEMAS",
+      "inscritos": 64,
+      "duracion": 3.5,
+      "semestre": 5,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 227,
+      "nombre": "SISTEMAS DE CONDUCCION EN ING.SANITARIA",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 228,
+      "nombre": "SISTEMAS DE INFORMACION GEOGR. AVANZADO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 229,
+      "nombre": "SISTEMAS DE REFERENCIA EN GEODESIA",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 3,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 230,
+      "nombre": "SISTEMAS OLEOHIDRAULICOS Y NEUMATICOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 231,
+      "nombre": "SISTEMAS OPERATIVOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 232,
+      "nombre": "SISTEMAS Y CONTROL",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 233,
+      "nombre": "SUBESTACIONES EN MEDIA TENSION",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 234,
+      "nombre": "TALLER DE CARTOGRAFIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 235,
+      "nombre": "TALLER DE DATOS ESPAC.Y SIST.DE INF.GEO.",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 236,
+      "nombre": "TALLER REPR. Y COM. GRAFICA - MODULO_CIVIL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 237,
+      "nombre": "TECNOLOGIA DEL HORMIGON",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 238,
+      "nombre": "TECNOLOGIA DE SERVICIOS AUDIOVISUALES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 239,
+      "nombre": "TECNOLOGIAS DE REDES Y SERVICIOS DE TELECOMUNICACIONES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 240,
+      "nombre": "TECNOLOGIA Y SERV. INDUSTRIALES 1",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "quimica"
+      ]
+    },
+    {
+      "id": 241,
+      "nombre": "TECNOLOGIA Y SERV. INDUSTRIALES 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "quimica"
+      ]
+    },
+    {
+      "id": 242,
+      "nombre": "TEC.Y UTILIZACION DE GASES COMBUSTIBLES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 243,
+      "nombre": "TEORIA DE CIRCUITOS",
+      "inscritos": 15,
+      "duracion": 3.0,
+      "semestre": 4,
+      "carreras": [
+        "electronica"
+      ]
+    },
+    {
+      "id": 244,
+      "nombre": "TEORIA DE ERRORES 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 245,
+      "nombre": "TEORIA DE ERRORES 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 246,
+      "nombre": "TEORIA DE INSTRUMENTAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 247,
+      "nombre": "TEORIA DEL BUQUE",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "naval"
+      ]
+    },
+    {
+      "id": 248,
+      "nombre": "TEORIA DE LENGUAJES",
+      "inscritos": 44,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "computacion"
+      ]
+    },
+    {
+      "id": 249,
+      "nombre": "TEORIA DE MAQUINAS Y MECANISMOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 250,
+      "nombre": "TEORIA DE RESTRICCIONES",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 251,
+      "nombre": "TERMODINAMICA APL. A LA ING.DE PROCESOS",
+      "inscritos": 27,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "alimentos"
+      ]
+    },
+    {
+      "id": 252,
+      "nombre": "TIEMPOS Y METODOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "produccion"
+      ]
+    },
+    {
+      "id": 253,
+      "nombre": "TOPOGRAFIA 1",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 254,
+      "nombre": "TOPOGRAFIA 2",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 255,
+      "nombre": "TOPOGRAFIA 3",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 256,
+      "nombre": "TOPOMETRIA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 257,
+      "nombre": "TRANSFERENCIA DE CALOR",
+      "inscritos": 7,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 258,
+      "nombre": "TRANSFERENCIA DE CALOR 1",
+      "inscritos": 8,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 259,
+      "nombre": "TRANSFERENCIA DE CALOR 2",
+      "inscritos": 51,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "naval",
+        "mecanica"
+      ]
+    },
+    {
+      "id": 260,
+      "nombre": "TRANSFERENCIA DE CALOR Y MASA 1",
+      "inscritos": 27,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 261,
+      "nombre": "TRANSFERENCIA DE CALOR Y MASA 2",
+      "inscritos": 24,
+      "duracion": 4.0,
+      "semestre": 7,
+      "carreras": [
+        "quimica",
+        "alimentos"
+      ]
+    },
+    {
+      "id": 262,
+      "nombre": "TRANSPORTE AEREO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 263,
+      "nombre": "TRANSPORTE DE ENERGIA ELECTRICA",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 264,
+      "nombre": "TRANSPORTE FERROVIARIO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 265,
+      "nombre": "TRANSPORTE FLUVIAL Y MARITIMO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 266,
+      "nombre": "TRANSPORTE INDUSTRIAL",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 267,
+      "nombre": "TRANSPORTE POR CARRETERA",
+      "inscritos": 10,
+      "duracion": 4.0,
+      "semestre": 9,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 268,
+      "nombre": "TRANSPORTE URBANO",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 10,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 269,
+      "nombre": "TRATAMIENTO DE EFLUENTES",
+      "inscritos": 2,
+      "duracion": 4.0,
+      "semestre": 8,
+      "carreras": [
+        "civil"
+      ]
+    },
+    {
+      "id": 270,
+      "nombre": "TRATAMIENTO DE EFLUENTES Y RESIDUOS SOLIDOS",
+      "inscritos": 3,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 271,
+      "nombre": "VIBRACIONES Y ONDAS",
+      "inscritos": 4,
+      "duracion": 4.0,
+      "semestre": 4,
+      "carreras": [
+        "mecanica"
+      ]
+    },
+    {
+      "id": 272,
+      "nombre": "CALCULO Y AJUSTE DE LAS OBSERVACIONES",
+      "inscritos": 6,
+      "duracion": 4.0,
+      "semestre": 5,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 273,
+      "nombre": "GEODESIA GEOMETRICA",
+      "inscritos": 7,
+      "duracion": 2.0,
+      "semestre": 5,
+      "carreras": [
+        "agrimensura"
+      ]
+    },
+    {
+      "id": 274,
+      "nombre": "QUIMICA DE ALIMENTOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 6,
+      "carreras": [
+        "alimentos"
+      ]
+    },
+    {
+      "id": 275,
+      "nombre": "TALLER DE CALIDAD DE DATOS GEOGRAFICOS",
+      "inscritos": 1,
+      "duracion": 4.0,
+      "semestre": 0,
+      "carreras": []
+    },
+    {
+      "id": 276,
+      "nombre": "TOPOGRAFIA PLANIMETRICA",
+      "inscritos": 28,
+      "duracion": 3.0,
+      "semestre": 3,
+      "carreras": [
+        "agrimensura"
+      ]
+    }
+  ],
+  "salones": [
+    {
+      "id": "B01",
+      "nombre": "B01 FCEA Massera Planta Baja 377 223 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "Planta",
+      "aforo": 223
+    },
+    {
+      "id": "C01",
+      "nombre": "C01 FADU-FCEA-FING Massera Planta Baja 328 -- anfiteatro",
+      "edificio": "Massera",
+      "ubicacion": "Planta",
+      "aforo": 194
+    },
+    {
+      "id": "307",
+      "nombre": "307 Grado Central 3er. Piso 330 180 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 180
+    },
+    {
+      "id": "A01",
+      "nombre": "A01 FADU Massera Planta Baja 242 145 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "Planta",
+      "aforo": 145
+    },
+    {
+      "id": "B12",
+      "nombre": "B12 FADU Massera 1er. Piso 247 141 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 141
+    },
+    {
+      "id": "C12",
+      "nombre": "C12 FCEA Massera 1er. Piso 215 131 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 131
+    },
+    {
+      "id": "Actos",
+      "nombre": "Actos FING Central 1er. Piso 248 128 anfiteatro",
+      "edificio": "Central",
+      "ubicacion": "1er.",
+      "aforo": 128
+    },
+    {
+      "id": "A22",
+      "nombre": "A22 FCEA Massera 2do. Piso 207 124 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 124
+    },
+    {
+      "id": "A12",
+      "nombre": "A12 FING Massera 1er. Piso 196 119 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 119
+    },
+    {
+      "id": "C22",
+      "nombre": "C22 FING Massera 2do. Piso 175 102 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 102
+    },
+    {
+      "id": "B23",
+      "nombre": "B23 FING Massera 2do. Piso 177 101 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 101
+    },
+    {
+      "id": "Hall",
+      "nombre": "Hall 1º piso FING Central 1er. Piso 0 100 --",
+      "edificio": "Central",
+      "ubicacion": "1er.",
+      "aforo": 100
+    },
+    {
+      "id": "312",
+      "nombre": "312 Grado Central 3er. Piso 156 94 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 94
+    },
+    {
+      "id": "301",
+      "nombre": "301 Grado Central 3er. Piso 127 76 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 76
+    },
+    {
+      "id": "303",
+      "nombre": "303 Grado Central 3er. Piso 127 76 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 76
+    },
+    {
+      "id": "A21",
+      "nombre": "A21 FING Massera 2do. Piso 112 72 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 72
+    },
+    {
+      "id": "Piso",
+      "nombre": "Piso Verde FING Central 3er. Subsuelo - Nivel 1 0 70 --",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 70
+    },
+    {
+      "id": "501",
+      "nombre": "501 Grado Central 5to. Piso 130 62 anfiteatro",
+      "edificio": "Central",
+      "ubicacion": "5to.",
+      "aforo": 62
+    },
+    {
+      "id": "601",
+      "nombre": "601 Grado Central 6to. Piso 120 60 anfiteatro",
+      "edificio": "Central",
+      "ubicacion": "6to.",
+      "aforo": 60
+    },
+    {
+      "id": "B11",
+      "nombre": "B11 FING Massera 1er. Piso 88 50 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 50
+    },
+    {
+      "id": "115",
+      "nombre": "115 Grado Central 1er. Piso (Bandejas Metálicas - Nivel 4) 80 40 sillas SIN pupitres",
+      "edificio": "Central",
+      "ubicacion": "1er.",
+      "aforo": 40
+    },
+    {
+      "id": "B21",
+      "nombre": "B21 FING Massera 2do. Piso 65 39 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 39
+    },
+    {
+      "id": "31",
+      "nombre": "031 Grado Central 3er. Subsuelo (Bandejas Metálicas - Nivel 1) 58 35 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 35
+    },
+    {
+      "id": "305",
+      "nombre": "305 Grado Central 3er. Piso 59 35 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 35
+    },
+    {
+      "id": "B22",
+      "nombre": "B22 FING Massera 2do. Piso 54 32 sillas con pupitres",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 32
+    },
+    {
+      "id": "311",
+      "nombre": "311 Grado Central 3er. Piso 49 29 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 29
+    },
+    {
+      "id": "102",
+      "nombre": "102 Grado Central 1er. Piso 55 25 anfiteatro",
+      "edificio": "Central",
+      "ubicacion": "1er.",
+      "aforo": 25
+    },
+    {
+      "id": "A11",
+      "nombre": "A11 FADU Massera 1er. Piso 100-50 25 25 mesas",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 25
+    },
+    {
+      "id": "C11",
+      "nombre": "C11 FADU Massera 1er. Piso 100-50 25 25 mesas",
+      "edificio": "Massera",
+      "ubicacion": "1er.",
+      "aforo": 25
+    },
+    {
+      "id": "C21",
+      "nombre": "C21 FADU Massera 2do. Piso 100-50 25 25 mesas",
+      "edificio": "Massera",
+      "ubicacion": "2do.",
+      "aforo": 25
+    },
+    {
+      "id": "502",
+      "nombre": "502 - Azul Posgrado Central 5to. Piso 50 20 Híbrido",
+      "edificio": "Central",
+      "ubicacion": "5to.",
+      "aforo": 20
+    },
+    {
+      "id": "703",
+      "nombre": "703 - Rojo Posgrado Central 7mo. Piso 40 20 Híbrido",
+      "edificio": "Rojo",
+      "ubicacion": "7mo.",
+      "aforo": 20
+    },
+    {
+      "id": "705",
+      "nombre": "705 - Marrón Posgrado Central 7mo. Piso 40 20 Híbrido",
+      "edificio": "Marrón",
+      "ubicacion": "7mo.",
+      "aforo": 20
+    },
+    {
+      "id": "725",
+      "nombre": "725 - Beige Posgrado Central 7mo. Piso 40 20 sillas con pupitres",
+      "edificio": "Beige",
+      "ubicacion": "7mo.",
+      "aforo": 20
+    },
+    {
+      "id": "727",
+      "nombre": "727 - Gris Posgrado Central 7mo. Piso 50 20 sillas con pupitres",
+      "edificio": "Gris",
+      "ubicacion": "7mo.",
+      "aforo": 20
+    },
+    {
+      "id": "309",
+      "nombre": "309 Grado Central 3er. Piso 32 16 16 mesas",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 16
+    },
+    {
+      "id": "310",
+      "nombre": "310 Grado Central 3er. Piso 32 16 16 mesas",
+      "edificio": "Central",
+      "ubicacion": "3er.",
+      "aforo": 16
+    },
+    {
+      "id": "722",
+      "nombre": "722 - Naranja Grado Central 7mo. Piso 20 10 sillas con pupitres",
+      "edificio": "Naranja",
+      "ubicacion": "7mo.",
+      "aforo": 10
+    },
+    {
+      "id": "116",
+      "nombre": "116 Grado Central 1er. Piso (Bandejas Metálicas - Nivel 5) 15 6 sillas con pupitres",
+      "edificio": "Central",
+      "ubicacion": "1er.",
+      "aforo": 6
+    }
+  ],
+  "conflict_groups": {
+    "5_electronica": [
+      0,
+      83,
+      226
+    ],
+    "3_computacion": [
+      1,
+      158
+    ],
+    "7_produccion": [
+      3,
+      60,
+      62
+    ],
+    "5_agrimensura": [
+      4,
+      26,
+      272,
+      273
+    ],
+    "6_agrimensura": [
+      5,
+      27,
+      82
+    ],
+    "7_agrimensura": [
+      6,
+      15
+    ],
+    "9_naval": [
+      8,
+      123,
+      146,
+      160,
+      191
+    ],
+    "7_electrica": [
+      9
+    ],
+    "4_computacion": [
+      11,
+      187,
+      206
+    ],
+    "8_agrimensura": [
+      16,
+      30,
+      194
+    ],
+    "9_agrimensura": [
+      17,
+      25,
+      195
+    ],
+    "9_sistemas_comunicacion": [
+      20
+    ],
+    "1_todas": [
+      21,
+      77,
+      94,
+      175
+    ],
+    "2_todas": [
+      22,
+      96
+    ],
+    "3_naval": [
+      23,
+      79,
+      180
+    ],
+    "3_civil": [
+      23,
+      79,
+      180
+    ],
+    "3_electronica": [
+      23,
+      79,
+      180
+    ],
+    "9_civil": [
+      25,
+      71,
+      264,
+      267
+    ],
+    "5_naval": [
+      33,
+      65,
+      126
+    ],
+    "5_produccion": [
+      33,
+      65,
+      76,
+      85,
+      97,
+      126,
+      141
+    ],
+    "5_mecanica": [
+      33,
+      65,
+      126,
+      141
+    ],
+    "6_naval": [
+      34,
+      61,
+      184,
+      247,
+      258
+    ],
+    "6_mecanica": [
+      34,
+      61,
+      184,
+      258
+    ],
+    "4_naval": [
+      36,
+      42,
+      63,
+      80,
+      147
+    ],
+    "4_agrimensura": [
+      36
+    ],
+    "4_mecanica": [
+      36,
+      40,
+      42,
+      55,
+      63,
+      80,
+      271
+    ],
+    "7_sistemas_comunicacion": [
+      37,
+      215
+    ],
+    "4_produccion": [
+      40,
+      42,
+      63,
+      80,
+      137,
+      147,
+      187
+    ],
+    "7_civil": [
+      41,
+      108,
+      143,
+      203,
+      237
+    ],
+    "4_electronica": [
+      49,
+      55,
+      187,
+      243
+    ],
+    "4_todas": [
+      51
+    ],
+    "5_civil": [
+      54,
+      65,
+      67,
+      176
+    ],
+    "6_electronica": [
+      56,
+      162,
+      214,
+      225,
+      232
+    ],
+    "7_electronica": [
+      57,
+      58,
+      59,
+      181,
+      216
+    ],
+    "7_naval": [
+      60,
+      68,
+      72,
+      104,
+      164,
+      183,
+      259
+    ],
+    "7_mecanica": [
+      60,
+      68,
+      149,
+      164,
+      183,
+      259
+    ],
+    "4_civil": [
+      63,
+      117,
+      147,
+      221
+    ],
+    "10_civil": [
+      74,
+      154,
+      262,
+      265,
+      268
+    ],
+    "5_quimica": [
+      76
+    ],
+    "5_alimentos": [
+      76,
+      251
+    ],
+    "2_electronica": [
+      78,
+      205
+    ],
+    "2_naval": [
+      78
+    ],
+    "2_civil": [
+      78
+    ],
+    "2_alimentos": [
+      78
+    ],
+    "3_agrimensura": [
+      79,
+      229,
+      276
+    ],
+    "8_quimica": [
+      81,
+      114,
+      136,
+      177,
+      241
+    ],
+    "8_alimentos": [
+      81,
+      107,
+      114,
+      136
+    ],
+    "8_produccion": [
+      81
+    ],
+    "6_computacion": [
+      84,
+      213
+    ],
+    "10_mecanica": [
+      87,
+      157
+    ],
+    "6_civil": [
+      93,
+      106,
+      128,
+      222
+    ],
+    "9_mecanica": [
+      101,
+      123,
+      146,
+      191
+    ],
+    "9_produccion": [
+      101,
+      123,
+      146,
+      197
+    ],
+    "8_civil": [
+      109,
+      140,
+      185,
+      202,
+      223,
+      269
+    ],
+    "9_quimica": [
+      112
+    ],
+    "9_alimentos": [
+      112
+    ],
+    "7_quimica": [
+      113,
+      240,
+      261
+    ],
+    "7_alimentos": [
+      113,
+      261
+    ],
+    "8_mecanica": [
+      121,
+      165,
+      217,
+      230
+    ],
+    "8_electronica": [
+      121
+    ],
+    "4_alimentos": [
+      137,
+      147
+    ],
+    "7_computacion": [
+      138
+    ],
+    "1_naval": [
+      139
+    ],
+    "5_computacion": [
+      141,
+      207,
+      231,
+      248
+    ],
+    "4_electrica": [
+      147
+    ],
+    "5_electrica": [
+      151
+    ],
+    "10_produccion": [
+      157
+    ],
+    "10_naval": [
+      157
+    ],
+    "10_electronica": [
+      157
+    ],
+    "3_electrica": [
+      158
+    ],
+    "8_naval": [
+      161,
+      230
+    ],
+    "1_tecnologo_telecom": [
+      168,
+      169
+    ],
+    "2_tecnologo_telecom": [
+      170
+    ],
+    "1_computacion": [
+      171
+    ],
+    "2_computacion": [
+      172
+    ],
+    "3_produccion": [
+      180
+    ],
+    "3_mecanica": [
+      180
+    ],
+    "6_produccion": [
+      193,
+      252
+    ],
+    "1_civil": [
+      200
+    ],
+    "1_produccion": [
+      200
+    ],
+    "3_todas": [
+      201
+    ],
+    "10_todas": [
+      209,
+      210
+    ],
+    "9_electronica": [
+      233
+    ],
+    "6_quimica": [
+      260
+    ],
+    "6_alimentos": [
+      260,
+      274
+    ]
+  },
+  "conflict_pairs": [
+    [
+      0,
+      83
+    ],
+    [
+      0,
+      226
+    ],
+    [
+      1,
+      158
+    ],
+    [
+      1,
+      201
+    ],
+    [
+      3,
+      60
+    ],
+    [
+      3,
+      62
+    ],
+    [
+      4,
+      26
+    ],
+    [
+      4,
+      272
+    ],
+    [
+      4,
+      273
+    ],
+    [
+      5,
+      27
+    ],
+    [
+      5,
+      82
+    ],
+    [
+      6,
+      15
+    ],
+    [
+      8,
+      123
+    ],
+    [
+      8,
+      146
+    ],
+    [
+      8,
+      160
+    ],
+    [
+      8,
+      191
+    ],
+    [
+      11,
+      51
+    ],
+    [
+      11,
+      187
+    ],
+    [
+      11,
+      206
+    ],
+    [
+      16,
+      30
+    ],
+    [
+      16,
+      194
+    ],
+    [
+      17,
+      25
+    ],
+    [
+      17,
+      195
+    ],
+    [
+      21,
+      77
+    ],
+    [
+      21,
+      94
+    ],
+    [
+      21,
+      139
+    ],
+    [
+      21,
+      168
+    ],
+    [
+      21,
+      169
+    ],
+    [
+      21,
+      171
+    ],
+    [
+      21,
+      175
+    ],
+    [
+      21,
+      200
+    ],
+    [
+      22,
+      78
+    ],
+    [
+      22,
+      96
+    ],
+    [
+      22,
+      170
+    ],
+    [
+      22,
+      172
+    ],
+    [
+      22,
+      205
+    ],
+    [
+      23,
+      79
+    ],
+    [
+      23,
+      180
+    ],
+    [
+      23,
+      201
+    ],
+    [
+      25,
+      71
+    ],
+    [
+      25,
+      195
+    ],
+    [
+      25,
+      264
+    ],
+    [
+      25,
+      267
+    ],
+    [
+      26,
+      272
+    ],
+    [
+      26,
+      273
+    ],
+    [
+      27,
+      82
+    ],
+    [
+      30,
+      194
+    ],
+    [
+      33,
+      65
+    ],
+    [
+      33,
+      76
+    ],
+    [
+      33,
+      85
+    ],
+    [
+      33,
+      97
+    ],
+    [
+      33,
+      126
+    ],
+    [
+      33,
+      141
+    ],
+    [
+      34,
+      61
+    ],
+    [
+      34,
+      184
+    ],
+    [
+      34,
+      247
+    ],
+    [
+      34,
+      258
+    ],
+    [
+      36,
+      40
+    ],
+    [
+      36,
+      42
+    ],
+    [
+      36,
+      51
+    ],
+    [
+      36,
+      55
+    ],
+    [
+      36,
+      63
+    ],
+    [
+      36,
+      80
+    ],
+    [
+      36,
+      147
+    ],
+    [
+      36,
+      271
+    ],
+    [
+      37,
+      215
+    ],
+    [
+      40,
+      42
+    ],
+    [
+      40,
+      51
+    ],
+    [
+      40,
+      55
+    ],
+    [
+      40,
+      63
+    ],
+    [
+      40,
+      80
+    ],
+    [
+      40,
+      137
+    ],
+    [
+      40,
+      147
+    ],
+    [
+      40,
+      187
+    ],
+    [
+      40,
+      271
+    ],
+    [
+      41,
+      108
+    ],
+    [
+      41,
+      143
+    ],
+    [
+      41,
+      203
+    ],
+    [
+      41,
+      237
+    ],
+    [
+      42,
+      51
+    ],
+    [
+      42,
+      55
+    ],
+    [
+      42,
+      63
+    ],
+    [
+      42,
+      80
+    ],
+    [
+      42,
+      137
+    ],
+    [
+      42,
+      147
+    ],
+    [
+      42,
+      187
+    ],
+    [
+      42,
+      271
+    ],
+    [
+      49,
+      51
+    ],
+    [
+      49,
+      55
+    ],
+    [
+      49,
+      187
+    ],
+    [
+      49,
+      243
+    ],
+    [
+      51,
+      55
+    ],
+    [
+      51,
+      63
+    ],
+    [
+      51,
+      80
+    ],
+    [
+      51,
+      117
+    ],
+    [
+      51,
+      137
+    ],
+    [
+      51,
+      147
+    ],
+    [
+      51,
+      187
+    ],
+    [
+      51,
+      206
+    ],
+    [
+      51,
+      221
+    ],
+    [
+      51,
+      243
+    ],
+    [
+      51,
+      271
+    ],
+    [
+      54,
+      65
+    ],
+    [
+      54,
+      67
+    ],
+    [
+      54,
+      176
+    ],
+    [
+      55,
+      63
+    ],
+    [
+      55,
+      80
+    ],
+    [
+      55,
+      187
+    ],
+    [
+      55,
+      243
+    ],
+    [
+      55,
+      271
+    ],
+    [
+      56,
+      162
+    ],
+    [
+      56,
+      214
+    ],
+    [
+      56,
+      225
+    ],
+    [
+      56,
+      232
+    ],
+    [
+      57,
+      58
+    ],
+    [
+      57,
+      59
+    ],
+    [
+      57,
+      181
+    ],
+    [
+      57,
+      216
+    ],
+    [
+      58,
+      59
+    ],
+    [
+      58,
+      181
+    ],
+    [
+      58,
+      216
+    ],
+    [
+      59,
+      181
+    ],
+    [
+      59,
+      216
+    ],
+    [
+      60,
+      62
+    ],
+    [
+      60,
+      68
+    ],
+    [
+      60,
+      72
+    ],
+    [
+      60,
+      104
+    ],
+    [
+      60,
+      149
+    ],
+    [
+      60,
+      164
+    ],
+    [
+      60,
+      183
+    ],
+    [
+      60,
+      259
+    ],
+    [
+      61,
+      184
+    ],
+    [
+      61,
+      247
+    ],
+    [
+      61,
+      258
+    ],
+    [
+      63,
+      80
+    ],
+    [
+      63,
+      117
+    ],
+    [
+      63,
+      137
+    ],
+    [
+      63,
+      147
+    ],
+    [
+      63,
+      187
+    ],
+    [
+      63,
+      221
+    ],
+    [
+      63,
+      271
+    ],
+    [
+      65,
+      67
+    ],
+    [
+      65,
+      76
+    ],
+    [
+      65,
+      85
+    ],
+    [
+      65,
+      97
+    ],
+    [
+      65,
+      126
+    ],
+    [
+      65,
+      141
+    ],
+    [
+      65,
+      176
+    ],
+    [
+      67,
+      176
+    ],
+    [
+      68,
+      72
+    ],
+    [
+      68,
+      104
+    ],
+    [
+      68,
+      149
+    ],
+    [
+      68,
+      164
+    ],
+    [
+      68,
+      183
+    ],
+    [
+      68,
+      259
+    ],
+    [
+      71,
+      264
+    ],
+    [
+      71,
+      267
+    ],
+    [
+      72,
+      104
+    ],
+    [
+      72,
+      164
+    ],
+    [
+      72,
+      183
+    ],
+    [
+      72,
+      259
+    ],
+    [
+      74,
+      154
+    ],
+    [
+      74,
+      209
+    ],
+    [
+      74,
+      262
+    ],
+    [
+      74,
+      265
+    ],
+    [
+      74,
+      268
+    ],
+    [
+      76,
+      85
+    ],
+    [
+      76,
+      97
+    ],
+    [
+      76,
+      126
+    ],
+    [
+      76,
+      141
+    ],
+    [
+      76,
+      251
+    ],
+    [
+      77,
+      94
+    ],
+    [
+      77,
+      139
+    ],
+    [
+      77,
+      168
+    ],
+    [
+      77,
+      169
+    ],
+    [
+      77,
+      171
+    ],
+    [
+      77,
+      175
+    ],
+    [
+      77,
+      200
+    ],
+    [
+      78,
+      96
+    ],
+    [
+      78,
+      205
+    ],
+    [
+      79,
+      180
+    ],
+    [
+      79,
+      201
+    ],
+    [
+      79,
+      229
+    ],
+    [
+      79,
+      276
+    ],
+    [
+      80,
+      137
+    ],
+    [
+      80,
+      147
+    ],
+    [
+      80,
+      187
+    ],
+    [
+      80,
+      271
+    ],
+    [
+      81,
+      107
+    ],
+    [
+      81,
+      114
+    ],
+    [
+      81,
+      136
+    ],
+    [
+      81,
+      177
+    ],
+    [
+      81,
+      241
+    ],
+    [
+      83,
+      226
+    ],
+    [
+      84,
+      213
+    ],
+    [
+      85,
+      97
+    ],
+    [
+      85,
+      126
+    ],
+    [
+      85,
+      141
+    ],
+    [
+      87,
+      157
+    ],
+    [
+      87,
+      209
+    ],
+    [
+      93,
+      106
+    ],
+    [
+      93,
+      128
+    ],
+    [
+      93,
+      222
+    ],
+    [
+      94,
+      139
+    ],
+    [
+      94,
+      168
+    ],
+    [
+      94,
+      169
+    ],
+    [
+      94,
+      171
+    ],
+    [
+      94,
+      175
+    ],
+    [
+      94,
+      200
+    ],
+    [
+      96,
+      170
+    ],
+    [
+      96,
+      172
+    ],
+    [
+      96,
+      205
+    ],
+    [
+      97,
+      126
+    ],
+    [
+      97,
+      141
+    ],
+    [
+      101,
+      123
+    ],
+    [
+      101,
+      146
+    ],
+    [
+      101,
+      191
+    ],
+    [
+      101,
+      197
+    ],
+    [
+      104,
+      164
+    ],
+    [
+      104,
+      183
+    ],
+    [
+      104,
+      259
+    ],
+    [
+      106,
+      128
+    ],
+    [
+      106,
+      222
+    ],
+    [
+      107,
+      114
+    ],
+    [
+      107,
+      136
+    ],
+    [
+      108,
+      143
+    ],
+    [
+      108,
+      203
+    ],
+    [
+      108,
+      237
+    ],
+    [
+      109,
+      140
+    ],
+    [
+      109,
+      185
+    ],
+    [
+      109,
+      202
+    ],
+    [
+      109,
+      223
+    ],
+    [
+      109,
+      269
+    ],
+    [
+      113,
+      240
+    ],
+    [
+      113,
+      261
+    ],
+    [
+      114,
+      136
+    ],
+    [
+      114,
+      177
+    ],
+    [
+      114,
+      241
+    ],
+    [
+      117,
+      147
+    ],
+    [
+      117,
+      221
+    ],
+    [
+      121,
+      165
+    ],
+    [
+      121,
+      217
+    ],
+    [
+      121,
+      230
+    ],
+    [
+      123,
+      146
+    ],
+    [
+      123,
+      160
+    ],
+    [
+      123,
+      191
+    ],
+    [
+      123,
+      197
+    ],
+    [
+      126,
+      141
+    ],
+    [
+      128,
+      222
+    ],
+    [
+      136,
+      177
+    ],
+    [
+      136,
+      241
+    ],
+    [
+      137,
+      147
+    ],
+    [
+      137,
+      187
+    ],
+    [
+      139,
+      175
+    ],
+    [
+      140,
+      185
+    ],
+    [
+      140,
+      202
+    ],
+    [
+      140,
+      223
+    ],
+    [
+      140,
+      269
+    ],
+    [
+      141,
+      207
+    ],
+    [
+      141,
+      231
+    ],
+    [
+      141,
+      248
+    ],
+    [
+      143,
+      203
+    ],
+    [
+      143,
+      237
+    ],
+    [
+      146,
+      160
+    ],
+    [
+      146,
+      191
+    ],
+    [
+      146,
+      197
+    ],
+    [
+      147,
+      187
+    ],
+    [
+      147,
+      221
+    ],
+    [
+      149,
+      164
+    ],
+    [
+      149,
+      183
+    ],
+    [
+      149,
+      259
+    ],
+    [
+      154,
+      209
+    ],
+    [
+      154,
+      262
+    ],
+    [
+      154,
+      265
+    ],
+    [
+      154,
+      268
+    ],
+    [
+      157,
+      209
+    ],
+    [
+      158,
+      201
+    ],
+    [
+      160,
+      191
+    ],
+    [
+      161,
+      230
+    ],
+    [
+      162,
+      214
+    ],
+    [
+      162,
+      225
+    ],
+    [
+      162,
+      232
+    ],
+    [
+      164,
+      183
+    ],
+    [
+      164,
+      259
+    ],
+    [
+      165,
+      217
+    ],
+    [
+      165,
+      230
+    ],
+    [
+      168,
+      169
+    ],
+    [
+      168,
+      175
+    ],
+    [
+      169,
+      175
+    ],
+    [
+      171,
+      175
+    ],
+    [
+      175,
+      200
+    ],
+    [
+      177,
+      241
+    ],
+    [
+      180,
+      201
+    ],
+    [
+      181,
+      216
+    ],
+    [
+      183,
+      259
+    ],
+    [
+      184,
+      247
+    ],
+    [
+      184,
+      258
+    ],
+    [
+      185,
+      202
+    ],
+    [
+      185,
+      223
+    ],
+    [
+      185,
+      269
+    ],
+    [
+      187,
+      206
+    ],
+    [
+      187,
+      243
+    ],
+    [
+      193,
+      252
+    ],
+    [
+      201,
+      229
+    ],
+    [
+      201,
+      276
+    ],
+    [
+      202,
+      223
+    ],
+    [
+      202,
+      269
+    ],
+    [
+      203,
+      237
+    ],
+    [
+      207,
+      231
+    ],
+    [
+      207,
+      248
+    ],
+    [
+      209,
+      210
+    ],
+    [
+      209,
+      262
+    ],
+    [
+      209,
+      265
+    ],
+    [
+      209,
+      268
+    ],
+    [
+      214,
+      225
+    ],
+    [
+      214,
+      232
+    ],
+    [
+      217,
+      230
+    ],
+    [
+      223,
+      269
+    ],
+    [
+      225,
+      232
+    ],
+    [
+      229,
+      276
+    ],
+    [
+      231,
+      248
+    ],
+    [
+      240,
+      261
+    ],
+    [
+      247,
+      258
+    ],
+    [
+      260,
+      274
+    ],
+    [
+      262,
+      265
+    ],
+    [
+      262,
+      268
+    ],
+    [
+      264,
+      267
+    ],
+    [
+      265,
+      268
+    ],
+    [
+      272,
+      273
+    ]
+  ],
+  "stats": {
+    "num_examenes": 277,
+    "num_salones": 39,
+    "total_inscritos": 5941,
+    "total_aforo": 2706,
+    "num_conflict_pairs": 329,
+    "max_inscritos": 611,
+    "min_inscritos": 1
+  }
+}

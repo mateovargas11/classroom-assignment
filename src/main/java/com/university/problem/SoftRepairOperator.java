@@ -37,11 +37,13 @@ public class SoftRepairOperator {
      */
     public void repair(IntegerSolution solution) {
         for (int subjectIdx = 0; subjectIdx < instance.getSubjects().size(); subjectIdx++) {
-            repairSubjectAssignment(solution, subjectIdx);
+            if (repairSubjectAssignment(solution, subjectIdx)) {
+                break;
+            }
         }
     }
 
-    private void repairSubjectAssignment(IntegerSolution solution, int subjectIdx) {
+    private boolean repairSubjectAssignment(IntegerSolution solution, int subjectIdx) {
         Subject subject = instance.getSubjectByIndex(subjectIdx);
         int enrolled = subject.getEnrolledStudents();
         int basePos = subjectIdx * maxClassroomsPerSubject;
@@ -58,18 +60,22 @@ public class SoftRepairOperator {
         // 2. Calcular capacidad actual
         int totalCapacity = calculateCapacity(assignedClassrooms);
 
+        boolean assigned = false;
+
         // 3. Si no hay asignaciones o capacidad insuficiente, reparar agregando salones
         if (assignedClassrooms.isEmpty() || totalCapacity < enrolled) {
             assignedClassrooms = repairCapacity(assignedClassrooms, enrolled, totalCapacity);
+            assigned = true;
         }
 
-        // 4. Eliminar salones redundantes si hay más de uno asignado
-        if (assignedClassrooms.size() > 1) {
-            assignedClassrooms = removeRedundantClassrooms(assignedClassrooms, enrolled);
-        }
+//        // 4. Eliminar salones redundantes si hay más de uno asignado
+//        if (assignedClassrooms.size() > 1) {
+//            assignedClassrooms = removeRedundantClassrooms(assignedClassrooms, enrolled);
+//        }
 
         // 5. Escribir los salones reparados de vuelta a la solución
         writeToSolution(solution, basePos, assignedClassrooms);
+        return assigned;
     }
 
     /**
@@ -91,7 +97,8 @@ public class SoftRepairOperator {
         Set<Integer> result = new LinkedHashSet<>(classrooms);
         int currentCapacity = calculateCapacity(result);
 
-        // Intentar eliminar salones pequeños mientras la capacidad siga siendo suficiente
+        // Intentar eliminar salones pequeños mientras la capacidad siga siendo
+        // suficiente
         for (int classroomIdx : sortedByCapacityAsc) {
             if (result.size() <= 1) {
                 // Siempre mantener al menos un salón

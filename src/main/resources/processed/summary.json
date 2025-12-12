@@ -4,7 +4,7 @@
     "num_salones": 39,
     "total_inscritos": 4812,
     "total_aforo": 2706,
-    "num_conflict_pairs": 325,
+    "num_conflict_pairs": 324,
     "max_inscritos": 452,
     "min_inscritos": 1
   },
@@ -13,7 +13,7 @@
     "num_salones": 39,
     "total_inscritos": 5941,
     "total_aforo": 2706,
-    "num_conflict_pairs": 329,
+    "num_conflict_pairs": 328,
     "max_inscritos": 611,
     "min_inscritos": 1
   },
@@ -22,7 +22,7 @@
     "num_salones": 39,
     "total_inscritos": 5941,
     "total_aforo": 2706,
-    "num_conflict_pairs": 346,
+    "num_conflict_pairs": 345,
     "max_inscritos": 517,
     "min_inscritos": 1
   },
@@ -31,7 +31,7 @@
     "num_salones": 39,
     "total_inscritos": 5694,
     "total_aforo": 2706,
-    "num_conflict_pairs": 351,
+    "num_conflict_pairs": 350,
     "max_inscritos": 527,
     "min_inscritos": 1
   }
