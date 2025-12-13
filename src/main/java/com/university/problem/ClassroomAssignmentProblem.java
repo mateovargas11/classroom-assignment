@@ -730,7 +730,7 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
         }
 
         // Objetivo 1: Minimizar asignaciones + penalización por exceso
-        double objective1 = totalAssignments + (excessClassrooms * 10);
+        double objective1 = totalAssignments;
 
         // Objetivo 2: Maximizar separación entre materias en conflicto
         double separationScore = calculateSeparationScore(assignments);

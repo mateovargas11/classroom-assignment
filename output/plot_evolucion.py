@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Cargar datos
-df = pd.read_csv('output/promedio_2024_evolucion_2025-12-13_10-51-51.csv')
+df = pd.read_csv('output/promedio_2024_evolucion_2025-12-13_11-34-29.csv')
 df = df.sort_values('generacion').reset_index(drop=True)
 
 print(f'Datos cargados: {len(df)} registros')
