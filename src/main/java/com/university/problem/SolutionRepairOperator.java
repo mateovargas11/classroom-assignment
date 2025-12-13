@@ -319,7 +319,7 @@ public class SolutionRepairOperator {
 
             if (!classrooms.isEmpty()) {
                 Subject subject = instance.getSubjectByIndex(examIdx);
-                int duration = subject.getDurationSlots();
+                int duration = subject.getDurationBlocks();
                 int enrolled = subject.getEnrolledStudents();
 
                 // Calcular "dificultad": más salones, más duración, más estudiantes = más

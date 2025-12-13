@@ -10,7 +10,6 @@ import com.university.problem.SolutionRepairOperator;
 import com.university.solver.GreedySolver;
 import com.university.telemetry.EvolutionTracker;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
-import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
 import org.uma.jmetal.operator.crossover.impl.TwoPointCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.IntegerPolynomialMutation;
@@ -94,7 +93,7 @@ public class Main {
         System.out.println();
 
         // Configuración NSGA-II
-        int populationSize = 100;
+        int populationSize = 200;
         int maxEvaluations = 25000;
         int recordEveryNGenerations = 10;
 
@@ -289,6 +288,10 @@ public class Main {
             tracker.generatePythonPlotScript(telemetryPath, scriptPath);
         }
 
+        // Exportar frente de Pareto completo
+        exportParetoFront(population, "output/" + instanceName + "_pareto_front.csv");
+        System.out.println("  ✓ Frente de Pareto exportado a: output/" + instanceName + "_pareto_front.csv");
+
         // Mostrar detalle de la mejor solución
         System.out.println();
         System.out.println("╔════════════════════════════════════════════════════════════╗");
@@ -382,5 +385,25 @@ public class Main {
             excess += (assigned - min);
         }
         return excess;
+    }
+
+    /**
+     * Exporta todas las soluciones del frente de Pareto a un archivo CSV.
+     * Formato: f1,f2 (donde f1=asignaciones, f2=separación)
+     */
+    private static void exportParetoFront(List<IntegerSolution> population, String filePath) throws IOException {
+        new java.io.File("output").mkdirs();
+
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(filePath))) {
+            // Encabezado
+            writer.println("f1,f2");
+
+            // Escribir cada solución
+            for (IntegerSolution solution : population) {
+                double obj1 = solution.objectives()[0]; // Asignaciones (minimizar)
+                double obj2 = -solution.objectives()[1]; // Separación (maximizar, pero almacenada como negativa)
+                writer.printf("%.6f,%.6f\n", obj1, obj2);
+            }
+        }
     }
 }

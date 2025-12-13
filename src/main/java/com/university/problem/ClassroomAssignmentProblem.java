@@ -88,7 +88,7 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
         // Calcular bloques necesarios por materia
         this.blocksPerSubject = new int[numSubjects];
         for (int i = 0; i < numSubjects; i++) {
-            blocksPerSubject[i] = instance.getSubjects().get(i).getDurationSlots();
+            blocksPerSubject[i] = instance.getSubjects().get(i).getDurationBlocks();
         }
 
         // Calcular mínimo de salones por materia
