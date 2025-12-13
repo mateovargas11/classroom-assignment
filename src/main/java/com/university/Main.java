@@ -9,7 +9,10 @@ import com.university.problem.ClassroomAssignmentProblem.DecodedAssignment;
 import com.university.problem.SolutionRepairOperator;
 import com.university.solver.GreedySolver;
 import com.university.telemetry.EvolutionTracker;
+import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
+import org.uma.jmetal.operator.crossover.impl.TwoPointCrossover;
+import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.IntegerPolynomialMutation;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
@@ -92,17 +95,11 @@ public class Main {
 
         // Configuración NSGA-II
         int populationSize = 100;
-        int maxEvaluations = 1000000;
+        int maxEvaluations = 25000;
         int recordEveryNGenerations = 10;
 
-        double crossoverProbability = 0.6;
-        double crossoverDistributionIndex = 20.0;
-        var crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
-
-        // Mutación más alta para el vector más pequeño
-        double mutationProbability = 0.001;
-        double mutationDistributionIndex = 20.0;
-        var mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
+        CrossoverOperator<IntegerSolution> crossover = new TwoPointCrossover(0.8);
+        MutationOperator<IntegerSolution> mutation = new IntegerPolynomialMutation(0.001, 5);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());
