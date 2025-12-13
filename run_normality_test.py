@@ -18,13 +18,14 @@ import time
 from pathlib import Path
 from typing import List, Dict, Optional
 import re
+import os
 
 OUTPUT_DIR = Path("output")
-NUM_REPLICATES = 50
+NUM_REPLICATES = 30
 INSTANCE_NAME = "promedio_2024"
 POPULATION_SIZE = 50
-CROSSOVER_PROB = 0.8
-MUTATION_PROB = 0.001
+CROSSOVER_PROB = 0.7
+MUTATION_PROB = 0.01
 
 
 def run_java_experiment(seed: int, replicate_num: int, total_replicates: int) -> Optional[float]:
@@ -49,7 +50,6 @@ def run_java_experiment(seed: int, replicate_num: int, total_replicates: int) ->
         "exec:java",
         "-Dexec.mainClass=com.university.Main",
         "-Dexec.args=" + f"{INSTANCE_NAME} {POPULATION_SIZE} {CROSSOVER_PROB} {MUTATION_PROB} {seed}",
-        "-q"  # Modo silencioso
     ]
     
     try:
