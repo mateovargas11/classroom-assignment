@@ -7,30 +7,30 @@ import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import java.util.*;
 
 /**
- * Operador de reparación para el modelo de matriz directa.
- * Asegura que cada materia tenga bloques consecutivos asignados y capacidad
- * suficiente.
+ * Operador de reparación para la representación basada en slots.
+ * 
+ * Asegura que:
+ * 1. Cada examen aparezca exactamente una vez en el vector
+ * 2. Cada slot tenga salones válidos con capacidad suficiente
+ * 3. No haya salones duplicados dentro de un mismo slot
  */
 public class SolutionRepairOperator {
 
     private final ProblemInstance instance;
+    private final ClassroomAssignmentProblem problem;
     private final int numClassrooms;
     private final int numSubjects;
-    private final int emptySubjectIndex;
-    private final int vectorSize;
 
     private final List<Integer> sortedClassroomsByCapacityDesc;
     private final List<Integer> sortedClassroomsByCapacityAsc;
-    private final int[] blocksPerSubject;
 
     private final Random random = new Random();
 
     public SolutionRepairOperator(ProblemInstance instance, int maxClassroomsPerSubject) {
         this.instance = instance;
+        this.problem = null; // Se establecerá después si es necesario
         this.numClassrooms = instance.getClassrooms().size();
         this.numSubjects = instance.getSubjects().size();
-        this.emptySubjectIndex = instance.getEmptySubjectIndex();
-        this.vectorSize = numClassrooms * ClassroomAssignmentProblem.BLOCKS_PER_DAY * ProblemInstance.MAX_DAYS;
 
         // Ordenar salones por capacidad
         this.sortedClassroomsByCapacityDesc = new ArrayList<>();
@@ -43,330 +43,387 @@ public class SolutionRepairOperator {
 
         this.sortedClassroomsByCapacityAsc = new ArrayList<>(sortedClassroomsByCapacityDesc);
         Collections.reverse(sortedClassroomsByCapacityAsc);
+    }
 
-        // Calcular slots por materia (1 hora = 1 slot)
-        this.blocksPerSubject = new int[numSubjects];
-        for (int i = 0; i < numSubjects; i++) {
-            blocksPerSubject[i] = instance.getSubjects().get(i).getDurationSlots();
+    public SolutionRepairOperator(ProblemInstance instance, ClassroomAssignmentProblem problem) {
+        this.instance = instance;
+        this.problem = problem;
+        this.numClassrooms = instance.getClassrooms().size();
+        this.numSubjects = instance.getSubjects().size();
+
+        // Ordenar salones por capacidad
+        this.sortedClassroomsByCapacityDesc = new ArrayList<>();
+        for (int i = 0; i < numClassrooms; i++) {
+            sortedClassroomsByCapacityDesc.add(i);
         }
+        sortedClassroomsByCapacityDesc.sort((a, b) -> Integer.compare(
+                instance.getClassroomByIndex(b).getCapacity(),
+                instance.getClassroomByIndex(a).getCapacity()));
+
+        this.sortedClassroomsByCapacityAsc = new ArrayList<>(sortedClassroomsByCapacityDesc);
+        Collections.reverse(sortedClassroomsByCapacityAsc);
     }
 
     /**
-     * Repara una solución asegurando que todas las materias estén correctamente
-     * asignadas.
+     * Repara una solución asegurando que sea válida.
      */
     public void repair(IntegerSolution solution) {
-        // Primero, limpiar asignaciones inconsistentes
-        cleanInconsistentAssignments(solution);
+        // 1. Asegurar que cada examen aparezca exactamente una vez
+        ensureUniqueExams(solution);
 
-        // Luego, asegurar que todas las materias estén asignadas
-        ensureAllSubjectsAssigned(solution);
+        // 2. Asegurar que los salones dentro de cada slot sean válidos
+        repairClassroomsInSlots(solution);
+
+        // 3. Asegurar capacidad suficiente para cada examen
+        ensureSufficientCapacity(solution);
+
+        // 4. Intentar asegurar que todos los exámenes puedan ser programados
+        // Esto es crítico porque decode() puede fallar si no hay slots disponibles
+        ensureAllExamsCanBeScheduled(solution);
     }
 
     /**
-     * Limpia asignaciones donde una materia aparece en bloques no contiguos.
+     * Asegura que cada examen aparezca exactamente una vez en el vector.
+     * Si un examen aparece múltiples veces, se mantiene solo la primera ocurrencia.
+     * Si un examen no aparece, se asigna a un slot vacío.
      */
-    private void cleanInconsistentAssignments(IntegerSolution solution) {
-        for (int subjectIdx = 0; subjectIdx < numSubjects; subjectIdx++) {
-            List<int[]> blocks = findSubjectBlocks(solution, subjectIdx);
+    private void ensureUniqueExams(IntegerSolution solution) {
+        int numSlots = numSubjects;
+        int emptyExamIndex = numSubjects;
 
-            if (blocks.isEmpty())
+        // Encontrar qué exámenes están asignados y dónde
+        Map<Integer, Integer> examToSlot = new HashMap<>();
+        Set<Integer> duplicateSlots = new HashSet<>();
+
+        for (int slot = 0; slot < numSlots; slot++) {
+            int examIdx = getExamIndex(solution, slot);
+
+            if (examIdx >= 0 && examIdx < numSubjects) {
+                if (examToSlot.containsKey(examIdx)) {
+                    // Duplicado: marcar este slot para limpiar
+                    duplicateSlots.add(slot);
+                } else {
+                    examToSlot.put(examIdx, slot);
+                }
+            }
+        }
+
+        // Limpiar slots con duplicados (poner vacío)
+        for (int slot : duplicateSlots) {
+            setExamIndex(solution, slot, emptyExamIndex);
+        }
+
+        // Encontrar exámenes faltantes
+        List<Integer> missingExams = new ArrayList<>();
+        for (int i = 0; i < numSubjects; i++) {
+            if (!examToSlot.containsKey(i)) {
+                missingExams.add(i);
+            }
+        }
+
+        // Asignar exámenes faltantes a slots vacíos
+        List<Integer> emptySlots = new ArrayList<>();
+        for (int slot = 0; slot < numSlots; slot++) {
+            int examIdx = getExamIndex(solution, slot);
+            if (examIdx == emptyExamIndex || examIdx < 0 || examIdx >= numSubjects) {
+                emptySlots.add(slot);
+            }
+        }
+
+        for (int i = 0; i < missingExams.size() && i < emptySlots.size(); i++) {
+            int examIdx = missingExams.get(i);
+            int slot = emptySlots.get(i);
+            setExamIndex(solution, slot, examIdx);
+
+            // Asignar salones apropiados para el examen
+            assignClassroomsForExam(solution, slot, examIdx);
+        }
+    }
+
+    /**
+     * Repara los salones dentro de cada slot:
+     * - Elimina salones duplicados
+     * - Valida que los índices estén en rango
+     */
+    private void repairClassroomsInSlots(IntegerSolution solution) {
+        int numSlots = numSubjects;
+        int noClassroomIndex = numClassrooms;
+
+        for (int slot = 0; slot < numSlots; slot++) {
+            int examIdx = getExamIndex(solution, slot);
+
+            // Si es un slot vacío, limpiar los salones
+            if (examIdx == numSubjects || examIdx < 0 || examIdx >= numSubjects) {
+                for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                    setClassroomIndex(solution, slot, i, noClassroomIndex);
+                }
+                continue;
+            }
+
+            // Recolectar salones válidos y eliminar duplicados
+            Set<Integer> usedClassrooms = new LinkedHashSet<>();
+            List<Integer> validClassrooms = new ArrayList<>();
+
+            for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                int classroomIdx = getClassroomIndex(solution, slot, i);
+
+                // Validar rango y no duplicado
+                if (classroomIdx >= 0 && classroomIdx < numClassrooms &&
+                        !usedClassrooms.contains(classroomIdx)) {
+                    usedClassrooms.add(classroomIdx);
+                    validClassrooms.add(classroomIdx);
+                }
+            }
+
+            // Reescribir los salones en el slot
+            for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                if (i < validClassrooms.size()) {
+                    setClassroomIndex(solution, slot, i, validClassrooms.get(i));
+                } else {
+                    setClassroomIndex(solution, slot, i, noClassroomIndex);
+                }
+            }
+        }
+    }
+
+    /**
+     * Asegura que cada examen tenga salones con capacidad suficiente.
+     */
+    private void ensureSufficientCapacity(IntegerSolution solution) {
+        int numSlots = numSubjects;
+
+        for (int slot = 0; slot < numSlots; slot++) {
+            int examIdx = getExamIndex(solution, slot);
+
+            if (examIdx < 0 || examIdx >= numSubjects)
                 continue;
 
-            // Agrupar por día y salón
-            Map<String, List<Integer>> groupedBlocks = new HashMap<>();
-            for (int[] block : blocks) {
-                String key = block[0] + "_" + block[1]; // día_salón
-                groupedBlocks.computeIfAbsent(key, k -> new ArrayList<>()).add(block[2]);
+            Subject subject = instance.getSubjectByIndex(examIdx);
+            int enrolled = subject.getEnrolledStudents();
+
+            // Calcular capacidad actual
+            List<Integer> currentClassrooms = new ArrayList<>();
+            int currentCapacity = 0;
+
+            for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                int classroomIdx = getClassroomIndex(solution, slot, i);
+                if (classroomIdx >= 0 && classroomIdx < numClassrooms) {
+                    currentClassrooms.add(classroomIdx);
+                    currentCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
+                }
             }
 
-            // Para cada grupo, mantener solo bloques contiguos
-            int durationBlocks = blocksPerSubject[subjectIdx];
+            // Si no hay capacidad suficiente, agregar más salones
+            if (currentCapacity < enrolled) {
+                Set<Integer> usedClassrooms = new HashSet<>(currentClassrooms);
 
-            for (Map.Entry<String, List<Integer>> entry : groupedBlocks.entrySet()) {
-                List<Integer> blockList = entry.getValue();
-                Collections.sort(blockList);
+                // Buscar salones adicionales
+                for (int classroomIdx : sortedClassroomsByCapacityDesc) {
+                    if (currentCapacity >= enrolled)
+                        break;
+                    if (usedClassrooms.contains(classroomIdx))
+                        continue;
+                    if (currentClassrooms.size() >= ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT)
+                        break;
 
-                // Si hay más bloques de los necesarios o no son contiguos, limpiar
-                if (blockList.size() > durationBlocks || !areContiguous(blockList)) {
-                    String[] parts = entry.getKey().split("_");
-                    int day = Integer.parseInt(parts[0]);
-                    int classroom = Integer.parseInt(parts[1]);
+                    currentClassrooms.add(classroomIdx);
+                    usedClassrooms.add(classroomIdx);
+                    currentCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
+                }
 
-                    // Limpiar todos estos bloques
-                    for (int block : blockList) {
-                        int pos = encodePosition(day, classroom, block);
-                        solution.variables().set(pos, emptySubjectIndex);
+                // Actualizar el slot con los nuevos salones
+                for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                    if (i < currentClassrooms.size()) {
+                        setClassroomIndex(solution, slot, i, currentClassrooms.get(i));
+                    } else {
+                        setClassroomIndex(solution, slot, i, numClassrooms);
                     }
                 }
             }
         }
-    }
-
-    private boolean areContiguous(List<Integer> blocks) {
-        if (blocks.size() <= 1)
-            return true;
-        for (int i = 1; i < blocks.size(); i++) {
-            if (blocks.get(i) - blocks.get(i - 1) != 1)
-                return false;
-        }
-        return true;
     }
 
     /**
-     * Asegura que todas las materias estén asignadas con la capacidad correcta.
+     * Asigna salones apropiados para un examen en un slot.
      */
-    private void ensureAllSubjectsAssigned(IntegerSolution solution) {
-        // Calcular disponibilidad actual
-        int[][] nextFreeBlock = new int[numClassrooms][ProblemInstance.MAX_DAYS];
-
-        // Marcar bloques ocupados
-        for (int pos = 0; pos < vectorSize; pos++) {
-            int subjectIdx = solution.variables().get(pos);
-            if (subjectIdx >= 0 && subjectIdx < numSubjects) {
-                int[] decoded = decodePosition(pos);
-                int day = decoded[0];
-                int classroom = decoded[1];
-                int block = decoded[2];
-                nextFreeBlock[classroom][day] = Math.max(nextFreeBlock[classroom][day], block + 1);
-            }
-        }
-
-        // Verificar cada materia
-        for (int subjectIdx = 0; subjectIdx < numSubjects; subjectIdx++) {
-            if (!isSubjectProperlyAssigned(solution, subjectIdx)) {
-                // Eliminar asignación existente
-                removeSubject(solution, subjectIdx);
-
-                // Reasignar
-                assignSubject(solution, subjectIdx, nextFreeBlock);
-            }
-        }
-    }
-
-    private boolean isSubjectProperlyAssigned(IntegerSolution solution, int subjectIdx) {
-        Subject subject = instance.getSubjectByIndex(subjectIdx);
-        int durationBlocks = blocksPerSubject[subjectIdx];
+    private void assignClassroomsForExam(IntegerSolution solution, int slot, int examIdx) {
+        Subject subject = instance.getSubjectByIndex(examIdx);
         int enrolled = subject.getEnrolledStudents();
 
-        // Encontrar todos los bloques asignados a esta materia
-        Map<String, List<Integer>> assignmentsByDayClassroom = new HashMap<>();
+        List<Integer> classroomsToUse = findClassroomsForCapacity(enrolled);
 
-        for (int pos = 0; pos < vectorSize; pos++) {
-            if (solution.variables().get(pos) == subjectIdx) {
-                int[] decoded = decodePosition(pos);
-                String key = decoded[0] + "_" + decoded[1]; // día_salón
-                assignmentsByDayClassroom.computeIfAbsent(key, k -> new ArrayList<>()).add(decoded[2]);
-            }
-        }
-
-        if (assignmentsByDayClassroom.isEmpty())
-            return false;
-
-        // Verificar que hay asignaciones válidas
-        int totalCapacity = 0;
-        Set<Integer> classroomsUsed = new HashSet<>();
-
-        for (Map.Entry<String, List<Integer>> entry : assignmentsByDayClassroom.entrySet()) {
-            List<Integer> blocks = entry.getValue();
-            Collections.sort(blocks);
-
-            // Verificar bloques contiguos y cantidad correcta
-            if (blocks.size() >= durationBlocks && areContiguous(blocks.subList(0, durationBlocks))) {
-                String[] parts = entry.getKey().split("_");
-                int classroom = Integer.parseInt(parts[1]);
-                classroomsUsed.add(classroom);
-                totalCapacity += instance.getClassroomByIndex(classroom).getCapacity();
-            }
-        }
-
-        return totalCapacity >= enrolled;
-    }
-
-    private void removeSubject(IntegerSolution solution, int subjectIdx) {
-        for (int pos = 0; pos < vectorSize; pos++) {
-            if (solution.variables().get(pos) == subjectIdx) {
-                solution.variables().set(pos, emptySubjectIndex);
+        for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+            if (i < classroomsToUse.size()) {
+                setClassroomIndex(solution, slot, i, classroomsToUse.get(i));
+            } else {
+                setClassroomIndex(solution, slot, i, numClassrooms);
             }
         }
     }
 
-    private void assignSubject(IntegerSolution solution, int subjectIdx, int[][] nextFreeBlock) {
-        Subject subject = instance.getSubjectByIndex(subjectIdx);
-        int durationSlots = blocksPerSubject[subjectIdx];
-        int enrolled = subject.getEnrolledStudents();
-
-        List<Integer> classroomsNeeded = findClassroomsForCapacity(enrolled);
-
-        // Estrategia 1: Buscar un día donde todos los salones tengan espacio
-        for (int day = 0; day < ProblemInstance.MAX_DAYS; day++) {
-            int maxStartBlock = 0;
-            boolean allFit = true;
-
-            for (int classroomIdx : classroomsNeeded) {
-                int startBlock = findNextFreeBlock(solution, classroomIdx, day);
-                if (startBlock + durationSlots > ClassroomAssignmentProblem.BLOCKS_PER_DAY) {
-                    allFit = false;
-                    break;
-                }
-                maxStartBlock = Math.max(maxStartBlock, startBlock);
-            }
-
-            if (allFit && maxStartBlock + durationSlots <= ClassroomAssignmentProblem.BLOCKS_PER_DAY) {
-                // Asignar
-                for (int classroomIdx : classroomsNeeded) {
-                    for (int b = 0; b < durationSlots; b++) {
-                        int pos = encodePosition(day, classroomIdx, maxStartBlock + b);
-                        solution.variables().set(pos, subjectIdx);
-                    }
-                }
-                return;
-            }
-        }
-
-        // Estrategia 2: Asignar salones en días diferentes si es necesario
-        int capacityAssigned = 0;
-
-        // Primero intentar con los salones preferidos
-        for (int classroomIdx : classroomsNeeded) {
-            if (capacityAssigned >= enrolled)
-                break;
-
-            for (int day = 0; day < ProblemInstance.MAX_DAYS; day++) {
-                int startBlock = findNextFreeBlock(solution, classroomIdx, day);
-                if (startBlock + durationSlots <= ClassroomAssignmentProblem.BLOCKS_PER_DAY) {
-                    for (int b = 0; b < durationSlots; b++) {
-                        int pos = encodePosition(day, classroomIdx, startBlock + b);
-                        solution.variables().set(pos, subjectIdx);
-                    }
-                    capacityAssigned += instance.getClassroomByIndex(classroomIdx).getCapacity();
-                    break;
-                }
-            }
-        }
-
-        // Si aún no hay suficiente capacidad, buscar en TODOS los salones
-        if (capacityAssigned < enrolled) {
-            for (int classroomIdx : sortedClassroomsByCapacityDesc) {
-                if (capacityAssigned >= enrolled)
-                    break;
-                if (classroomsNeeded.contains(classroomIdx))
-                    continue;
-
-                for (int day = 0; day < ProblemInstance.MAX_DAYS; day++) {
-                    int startBlock = findNextFreeBlock(solution, classroomIdx, day);
-                    if (startBlock + durationSlots <= ClassroomAssignmentProblem.BLOCKS_PER_DAY) {
-                        for (int b = 0; b < durationSlots; b++) {
-                            int pos = encodePosition(day, classroomIdx, startBlock + b);
-                            solution.variables().set(pos, subjectIdx);
-                        }
-                        capacityAssigned += instance.getClassroomByIndex(classroomIdx).getCapacity();
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private int findNextFreeBlock(IntegerSolution solution, int classroom, int day) {
-        for (int block = 0; block < ClassroomAssignmentProblem.BLOCKS_PER_DAY; block++) {
-            int pos = encodePosition(day, classroom, block);
-            int subjectIdx = solution.variables().get(pos);
-            if (subjectIdx == emptySubjectIndex || subjectIdx < 0 || subjectIdx >= numSubjects) {
-                return block;
-            }
-        }
-        return ClassroomAssignmentProblem.BLOCKS_PER_DAY;
-    }
-
+    /**
+     * Encuentra los salones necesarios para cubrir la capacidad requerida.
+     */
     private List<Integer> findClassroomsForCapacity(int enrolled) {
         List<Integer> result = new ArrayList<>();
         int capacityAccumulated = 0;
 
         // Primero intentar con un solo salón (best-fit)
-        // Mezclar aleatoriamente salones con la misma capacidad para distribuir mejor
-        List<Integer> candidates = new ArrayList<>();
         for (int classroomIdx : sortedClassroomsByCapacityAsc) {
             int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
             if (cap >= enrolled) {
-                candidates.add(classroomIdx);
-            }
-        }
-
-        // Si hay candidatos, elegir uno aleatoriamente entre los que tienen capacidad
-        // suficiente
-        if (!candidates.isEmpty()) {
-            // Agrupar por capacidad y elegir aleatoriamente dentro del grupo
-            Map<Integer, List<Integer>> byCapacity = new HashMap<>();
-            for (int idx : candidates) {
-                int cap = instance.getClassroomByIndex(idx).getCapacity();
-                byCapacity.computeIfAbsent(cap, k -> new ArrayList<>()).add(idx);
-            }
-
-            // Elegir el grupo con la menor capacidad suficiente
-            int minCapacity = byCapacity.keySet().stream()
-                    .filter(cap -> cap >= enrolled)
-                    .min(Integer::compare)
-                    .orElse(Integer.MAX_VALUE);
-
-            if (minCapacity != Integer.MAX_VALUE) {
-                List<Integer> bestFitGroup = byCapacity.get(minCapacity);
-                result.add(bestFitGroup.get(random.nextInt(bestFitGroup.size())));
+                result.add(classroomIdx);
                 return result;
             }
         }
 
         // Si no cabe en uno solo, usar los más grandes
-        // Agrupar por capacidad y mezclar aleatoriamente dentro de cada grupo
-        Map<Integer, List<Integer>> byCapacity = new HashMap<>();
         for (int classroomIdx : sortedClassroomsByCapacityDesc) {
-            int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
-            byCapacity.computeIfAbsent(cap, k -> new ArrayList<>()).add(classroomIdx);
-        }
-
-        // Ordenar grupos por capacidad (descendente) y mezclar dentro de cada grupo
-        List<Integer> sortedCapacities = new ArrayList<>(byCapacity.keySet());
-        sortedCapacities.sort(Collections.reverseOrder());
-
-        for (int capacity : sortedCapacities) {
-            List<Integer> group = new ArrayList<>(byCapacity.get(capacity));
-            Collections.shuffle(group, random); // Mezclar aleatoriamente dentro del grupo
-
-            for (int classroomIdx : group) {
-                if (capacityAccumulated >= enrolled)
-                    break;
-                result.add(classroomIdx);
-                capacityAccumulated += instance.getClassroomByIndex(classroomIdx).getCapacity();
-            }
-
             if (capacityAccumulated >= enrolled)
                 break;
+            result.add(classroomIdx);
+            capacityAccumulated += instance.getClassroomByIndex(classroomIdx).getCapacity();
         }
 
         return result;
     }
 
-    private List<int[]> findSubjectBlocks(IntegerSolution solution, int subjectIdx) {
-        List<int[]> blocks = new ArrayList<>();
-        for (int pos = 0; pos < vectorSize; pos++) {
-            if (solution.variables().get(pos) == subjectIdx) {
-                blocks.add(decodePosition(pos));
+    /**
+     * Intenta asegurar que todos los exámenes puedan ser programados.
+     * Reordena los slots para priorizar exámenes más difíciles de programar
+     * (más salones, más duración, más estudiantes).
+     */
+    private void ensureAllExamsCanBeScheduled(IntegerSolution solution) {
+        if (problem == null) {
+            return; // No podemos hacer esto sin el problema
+        }
+
+        int numSlots = numSubjects;
+        int emptyExamIndex = numSubjects;
+
+        // Crear lista de slots con información de dificultad
+        List<SlotInfo> slotInfos = new ArrayList<>();
+        for (int slot = 0; slot < numSlots; slot++) {
+            int examIdx = getExamIndex(solution, slot);
+            if (examIdx < 0 || examIdx >= numSubjects) {
+                continue;
+            }
+
+            List<Integer> classrooms = new ArrayList<>();
+            for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                int classroomIdx = getClassroomIndex(solution, slot, i);
+                if (classroomIdx >= 0 && classroomIdx < numClassrooms) {
+                    classrooms.add(classroomIdx);
+                }
+            }
+
+            if (!classrooms.isEmpty()) {
+                Subject subject = instance.getSubjectByIndex(examIdx);
+                int duration = subject.getDurationSlots();
+                int enrolled = subject.getEnrolledStudents();
+
+                // Calcular "dificultad": más salones, más duración, más estudiantes = más
+                // difícil
+                double difficulty = classrooms.size() * 100.0 + duration * 10.0 + enrolled;
+                slotInfos.add(new SlotInfo(slot, examIdx, classrooms, difficulty));
             }
         }
-        return blocks;
+
+        // Ordenar por dificultad (más difícil primero) para que se programen antes
+        slotInfos.sort((a, b) -> Double.compare(b.difficulty, a.difficulty));
+
+        // Reordenar los slots en la solución
+        // Crear un mapeo de nuevo orden
+        int[] newSlotOrder = new int[numSlots];
+        for (int i = 0; i < numSlots; i++) {
+            newSlotOrder[i] = -1;
+        }
+
+        // Asignar slots ordenados a las primeras posiciones
+        for (int i = 0; i < slotInfos.size(); i++) {
+            newSlotOrder[i] = slotInfos.get(i).slot;
+        }
+
+        // Llenar slots restantes con exámenes que no están en slotInfos
+        int nextPos = slotInfos.size();
+        for (int slot = 0; slot < numSlots; slot++) {
+            boolean alreadyAssigned = false;
+            for (SlotInfo info : slotInfos) {
+                if (info.slot == slot) {
+                    alreadyAssigned = true;
+                    break;
+                }
+            }
+            if (!alreadyAssigned && nextPos < numSlots) {
+                newSlotOrder[nextPos++] = slot;
+            }
+        }
+
+        // Crear nueva solución con slots reordenados
+        // Guardar el estado actual
+        List<Integer> currentState = new ArrayList<>(solution.variables());
+
+        // Reordenar
+        for (int newSlot = 0; newSlot < numSlots; newSlot++) {
+            int oldSlot = newSlotOrder[newSlot];
+            if (oldSlot >= 0 && oldSlot < numSlots) {
+                for (int i = 0; i < ClassroomAssignmentProblem.SLOT_SIZE; i++) {
+                    int oldPos = oldSlot * ClassroomAssignmentProblem.SLOT_SIZE + i;
+                    int newPos = newSlot * ClassroomAssignmentProblem.SLOT_SIZE + i;
+                    if (oldPos < currentState.size() && newPos < solution.variables().size()) {
+                        solution.variables().set(newPos, currentState.get(oldPos));
+                    }
+                }
+            } else {
+                // Slot vacío
+                setExamIndex(solution, newSlot, emptyExamIndex);
+                for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
+                    setClassroomIndex(solution, newSlot, i, numClassrooms);
+                }
+            }
+        }
     }
 
-    private int[] decodePosition(int position) {
-        int blocksPerDay = numClassrooms * ClassroomAssignmentProblem.BLOCKS_PER_DAY;
-        int day = position / blocksPerDay;
-        int remainder = position % blocksPerDay;
-        int classroom = remainder / ClassroomAssignmentProblem.BLOCKS_PER_DAY;
-        int block = remainder % ClassroomAssignmentProblem.BLOCKS_PER_DAY;
-        return new int[] { day, classroom, block };
+    /**
+     * Información de un slot para reordenamiento.
+     */
+    private static class SlotInfo {
+        int slot;
+        int examIdx;
+        List<Integer> classrooms;
+        double difficulty;
+
+        SlotInfo(int slot, int examIdx, List<Integer> classrooms, double difficulty) {
+            this.slot = slot;
+            this.examIdx = examIdx;
+            this.classrooms = classrooms;
+            this.difficulty = difficulty;
+        }
     }
 
-    private int encodePosition(int day, int classroom, int block) {
-        return day * numClassrooms * ClassroomAssignmentProblem.BLOCKS_PER_DAY
-                + classroom * ClassroomAssignmentProblem.BLOCKS_PER_DAY + block;
+    // ==================== MÉTODOS AUXILIARES ====================
+
+    private int getExamIndex(IntegerSolution solution, int slot) {
+        return solution.variables().get(slot * ClassroomAssignmentProblem.SLOT_SIZE);
+    }
+
+    private void setExamIndex(IntegerSolution solution, int slot, int examIndex) {
+        solution.variables().set(slot * ClassroomAssignmentProblem.SLOT_SIZE, examIndex);
+    }
+
+    private int getDayIndex(IntegerSolution solution, int slot) {
+        return solution.variables().get(slot * ClassroomAssignmentProblem.SLOT_SIZE + 1);
+    }
+
+    private void setDayIndex(IntegerSolution solution, int slot, int dayIndex) {
+        solution.variables().set(slot * ClassroomAssignmentProblem.SLOT_SIZE + 1, dayIndex);
+    }
+
+    private int getClassroomIndex(IntegerSolution solution, int slot, int classroomPos) {
+        return solution.variables().get(slot * ClassroomAssignmentProblem.SLOT_SIZE + 2 + classroomPos);
+    }
+
+    private void setClassroomIndex(IntegerSolution solution, int slot, int classroomPos, int classroomIndex) {
+        solution.variables().set(slot * ClassroomAssignmentProblem.SLOT_SIZE + 2 + classroomPos, classroomIndex);
     }
 }

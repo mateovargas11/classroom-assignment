@@ -5,6 +5,7 @@ import com.university.decoder.SolutionDecoder;
 import com.university.domain.ProblemInstance;
 import com.university.io.InstanceLoader;
 import com.university.problem.ClassroomAssignmentProblem;
+import com.university.problem.ClassroomAssignmentProblem.DecodedAssignment;
 import com.university.problem.SolutionRepairOperator;
 import com.university.solver.GreedySolver;
 import com.university.telemetry.EvolutionTracker;
@@ -31,7 +32,7 @@ public class Main {
 
         System.out.println("╔════════════════════════════════════════════════════════════╗");
         System.out.println("║     COMPARACIÓN: GREEDY vs NSGA-II                        ║");
-        System.out.println("║     (Modelo de Matriz Directa - Días decididos por NSGA-II)║");
+        System.out.println("║     (Representación: Slots con decodificación automática)  ║");
         System.out.println("╚════════════════════════════════════════════════════════════╝");
         System.out.println();
         System.out.println("Instancia: " + instanceName);
@@ -43,10 +44,12 @@ public class Main {
         ClassroomAssignmentProblem problem = new ClassroomAssignmentProblem(instance);
         SolutionDecoder decoder = new SolutionDecoder(instance, problem);
 
-        System.out.println("Tamaño del vector de decisión: " + problem.getVectorSize());
-        System.out.println("  = " + problem.getNumClassrooms() + " salones × "
-                + ClassroomAssignmentProblem.BLOCKS_PER_DAY + " bloques/día × "
-                + ProblemInstance.MAX_DAYS + " días");
+        System.out.println("REPRESENTACIÓN DEL VECTOR:");
+        System.out.println("  - Cada slot: [examen, salón1, salón2, salón3, salón4]");
+        System.out.println("  - Total slots: " + problem.getNumSlots());
+        System.out.println("  - Tamaño del vector: " + problem.getVectorSize());
+        System.out.println("  - Decodificación: asigna horario más temprano disponible");
+        System.out.println("  - Sincronización: GARANTIZADA (todos los salones mismo horario)");
         System.out.println("Mínimo teórico de asignaciones: " + problem.getTotalMinClassrooms());
 
         // ═══════════════════════════════════════════════════════════════
@@ -82,33 +85,30 @@ public class Main {
         System.out.println("  - Objetivo 2: Maximizar separación entre materias conflictivas");
         System.out.println("  - Restricción 1: Capacidad suficiente para todos los estudiantes");
         System.out.println("  - Restricción 2: Todas las materias deben estar asignadas");
-        System.out.println("  - Restricción 3: Materias con múltiples salones deben estar sincronizadas");
-        System.out.println("  - Modelo: Matriz directa (NSGA-II decide días y salones)");
+        System.out.println("  - Modelo: Slots con decodificación automática de horarios");
         System.out.println("  - Inicialización: Híbrida (50% greedy, 30% greedy+ruido, 20% aleatoria)");
-        System.out.println("  - Sincronización: NSGA-II decide si sincronizar múltiples salones");
+        System.out.println("  - Sincronización: GARANTIZADA por diseño de la representación");
         System.out.println();
 
         // Configuración NSGA-II
         int populationSize = 100;
-        int maxEvaluations = 10000;
+        int maxEvaluations = 1000000;
         int recordEveryNGenerations = 10;
 
-        double crossoverProbability = 0.9;
+        double crossoverProbability = 0.6;
         double crossoverDistributionIndex = 20.0;
         var crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
 
-        // Mutación más baja para vector grande
-        double mutationProbability = 1.0 / problem.getVectorSize();
+        // Mutación más alta para el vector más pequeño
+        double mutationProbability = 0.001;
         double mutationDistributionIndex = 20.0;
         var mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());
 
-        // Operador de reparación (usa SolutionRepairOperator para reasignar materias
-        // faltantes)
-        SolutionRepairOperator repairOperator = new SolutionRepairOperator(instance,
-                problem.getMaxClassroomsPerSubject());
+        // Operador de reparación
+        SolutionRepairOperator repairOperator = new SolutionRepairOperator(instance, problem);
 
         // Tracker de evolución para telemetría
         EvolutionTracker tracker = new EvolutionTracker(problem);
@@ -314,7 +314,6 @@ public class Main {
         System.out.println("  - Separación promedio: " + String.format("%.2f días", -solution.objectives()[1]));
         System.out.println("  - Déficit capacidad: " + (int) (-solution.constraints()[0]));
         System.out.println("  - Materias sin asignar: " + (int) (-solution.constraints()[1]));
-        System.out.println("  - Materias no sincronizadas: " + (int) (-solution.constraints()[2]));
         System.out.println("  - Factible: " + (isFeasible(solution) ? "Sí" : "No"));
     }
 
@@ -360,8 +359,9 @@ public class Main {
      * Es decir, el número total de pares materia-salón asignados.
      */
     private static int countRealAssignments(IntegerSolution solution, ClassroomAssignmentProblem problem) {
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
         return assignments.values().stream()
+                .filter(a -> a.assigned)
                 .mapToInt(a -> a.classrooms.size())
                 .sum();
     }
@@ -370,17 +370,19 @@ public class Main {
      * Cuenta el exceso de salones asignados por encima del mínimo necesario.
      */
     private static int countExcessClassrooms(IntegerSolution solution, ClassroomAssignmentProblem problem) {
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
         int excess = 0;
         int[] minClassrooms = problem.getMinClassroomsPerSubject();
 
         for (var entry : assignments.entrySet()) {
             int subjectIdx = entry.getKey();
-            int assigned = entry.getValue().classrooms.size();
+            DecodedAssignment assignment = entry.getValue();
+            if (!assignment.assigned)
+                continue;
+
+            int assigned = assignment.classrooms.size();
             int min = minClassrooms[subjectIdx];
-            if (assigned > min) {
-                excess += (assigned - min);
-            }
+            excess += (assigned - min);
         }
         return excess;
     }

@@ -1,8 +1,8 @@
 package com.university.solver;
 
 import com.university.domain.ProblemInstance;
-import com.university.domain.Subject;
 import com.university.problem.ClassroomAssignmentProblem;
+import com.university.problem.ClassroomAssignmentProblem.DecodedAssignment;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 
 import java.util.*;
@@ -11,54 +11,26 @@ import java.util.*;
  * Algoritmo Greedy puro para asignación de salones.
  * Usa una estrategia best-fit para asignar materias a salones.
  * 
- * Este solver genera soluciones usando el modelo de matriz directa,
- * donde NSGA-II decide tanto los salones como los días.
+ * Este solver genera soluciones usando la representación basada en slots,
+ * donde el orden de los slots determina la prioridad de asignación de horarios.
  */
 public class GreedySolver {
 
     private final ProblemInstance instance;
     private final ClassroomAssignmentProblem problem;
-    private final int numClassrooms;
-    private final int numSubjects;
-    private final int emptySubjectIndex;
-
-    private final List<Integer> sortedClassroomsByCapacityAsc;
-    private final List<Integer> sortedClassroomsByCapacityDesc;
-    private final int[] blocksPerSubject;
 
     public GreedySolver(ProblemInstance instance, ClassroomAssignmentProblem problem) {
         this.instance = instance;
         this.problem = problem;
-        this.numClassrooms = instance.getClassrooms().size();
-        this.numSubjects = instance.getSubjects().size();
-        this.emptySubjectIndex = instance.getEmptySubjectIndex();
-
-        // Ordenar salones por capacidad ascendente (para best-fit)
-        this.sortedClassroomsByCapacityAsc = new ArrayList<>();
-        for (int i = 0; i < numClassrooms; i++) {
-            sortedClassroomsByCapacityAsc.add(i);
-        }
-        sortedClassroomsByCapacityAsc.sort((a, b) -> Integer.compare(
-                instance.getClassroomByIndex(a).getCapacity(),
-                instance.getClassroomByIndex(b).getCapacity()));
-
-        this.sortedClassroomsByCapacityDesc = new ArrayList<>(sortedClassroomsByCapacityAsc);
-        Collections.reverse(sortedClassroomsByCapacityDesc);
-
-        // Calcular slots por materia (1 hora = 1 slot)
-        this.blocksPerSubject = new int[numSubjects];
-        for (int i = 0; i < numSubjects; i++) {
-            blocksPerSubject[i] = instance.getSubjects().get(i).getDurationSlots();
-        }
     }
 
     /**
      * Resuelve el problema de forma puramente greedy.
      * Para cada materia, asigna el salón más pequeño que pueda contener a todos los
      * inscriptos.
-     * Si no cabe en un solo salón, usa múltiples salones grandes.
-     * Los días se asignan secuencialmente (primer día disponible donde quepan todos
-     * los salones).
+     * Si no cabe en un solo salón, usa múltiples salones.
+     * Los horarios se asignan automáticamente durante la decodificación (el más
+     * temprano disponible).
      */
     public IntegerSolution solve() {
         // Usar la solución greedy del problema
@@ -94,16 +66,20 @@ public class GreedySolver {
     public GreedyMetrics calculateMetrics(IntegerSolution solution) {
         GreedyMetrics metrics = new GreedyMetrics();
 
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
 
-        for (Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment> entry : assignments.entrySet()) {
-            Set<Integer> classrooms = entry.getValue().classrooms;
-            if (classrooms.size() == 1) {
+        for (var entry : assignments.entrySet()) {
+            DecodedAssignment assignment = entry.getValue();
+            if (!assignment.assigned)
+                continue;
+
+            int numClassrooms = assignment.classrooms.size();
+            if (numClassrooms == 1) {
                 metrics.subjectsWithSingleClassroom++;
-            } else if (classrooms.size() > 1) {
+            } else if (numClassrooms > 1) {
                 metrics.subjectsWithMultipleClassrooms++;
             }
-            metrics.totalAssignments += classrooms.size();
+            metrics.totalAssignments += numClassrooms;
         }
 
         metrics.separationScore = -solution.objectives()[1];

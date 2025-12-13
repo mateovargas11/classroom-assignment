@@ -4,6 +4,7 @@ import com.university.domain.Classroom;
 import com.university.domain.ProblemInstance;
 import com.university.domain.Subject;
 import com.university.problem.ClassroomAssignmentProblem;
+import com.university.problem.ClassroomAssignmentProblem.DecodedAssignment;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 
 import java.io.FileWriter;
@@ -12,8 +13,8 @@ import java.io.PrintWriter;
 import java.util.*;
 
 /**
- * Decodificador de soluciones para el modelo de matriz directa.
- * El vector de solución ya representa directamente la matriz de horarios.
+ * Decodificador de soluciones para la representación basada en slots.
+ * La decodificación asigna automáticamente el horario más temprano disponible.
  */
 public class SolutionDecoder {
 
@@ -43,23 +44,28 @@ public class SolutionDecoder {
             }
         }
 
-        // Llenar desde el vector de solución
-        int vectorSize = problem.getVectorSize();
-        for (int pos = 0; pos < vectorSize; pos++) {
-            int subjectIdx = solution.variables().get(pos);
+        // Decodificar usando el problema
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
 
-            int[] decoded = problem.decodePosition(pos);
-            int day = decoded[0];
-            int classroom = decoded[1];
-            int block = decoded[2];
+        // Llenar la matriz con las asignaciones decodificadas
+        for (var entry : assignments.entrySet()) {
+            int examIdx = entry.getKey();
+            DecodedAssignment assignment = entry.getValue();
 
-            int globalBlock = day * BLOCKS_PER_DAY + block;
+            if (!assignment.assigned)
+                continue;
 
-            if (globalBlock < TOTAL_BLOCKS && classroom < numClassrooms) {
-                if (subjectIdx >= 0 && subjectIdx < instance.getSubjects().size()) {
-                    matrix[globalBlock][classroom] = instance.getSubjectByIndex(subjectIdx).getId();
-                } else {
-                    matrix[globalBlock][classroom] = ProblemInstance.EMPTY_SUBJECT_ID;
+            String subjectId = instance.getSubjectByIndex(examIdx).getId();
+            int durationBlocks = problem.getBlocksPerSubject()[examIdx];
+            int day = assignment.day;
+            int startBlock = assignment.startBlock;
+
+            for (int classroomIdx : assignment.classrooms) {
+                for (int b = 0; b < durationBlocks; b++) {
+                    int globalBlock = day * BLOCKS_PER_DAY + startBlock + b;
+                    if (globalBlock < TOTAL_BLOCKS && classroomIdx < numClassrooms) {
+                        matrix[globalBlock][classroomIdx] = subjectId;
+                    }
                 }
             }
         }
@@ -116,27 +122,22 @@ public class SolutionDecoder {
      * Imprime un resumen de horarios por día.
      */
     public void printScheduleSummary(IntegerSolution solution) {
-        String[][] matrix = decodeToMatrix(solution);
-        int numClassrooms = instance.getClassrooms().size();
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
 
         System.out.println("\n=== Resumen de Horarios por Día ===");
 
-        for (int day = 0; day < ProblemInstance.MAX_DAYS; day++) {
-            Set<String> subjectsInDay = new HashSet<>();
-            int startBlock = day * BLOCKS_PER_DAY;
-
-            for (int b = 0; b < BLOCKS_PER_DAY; b++) {
-                for (int c = 0; c < numClassrooms; c++) {
-                    String subjectId = matrix[startBlock + b][c];
-                    if (!subjectId.equals(ProblemInstance.EMPTY_SUBJECT_ID)) {
-                        subjectsInDay.add(subjectId);
-                    }
-                }
+        // Agrupar exámenes por día
+        Map<Integer, List<Integer>> examsByDay = new TreeMap<>();
+        for (var entry : assignments.entrySet()) {
+            DecodedAssignment assignment = entry.getValue();
+            if (assignment.assigned) {
+                examsByDay.computeIfAbsent(assignment.day, k -> new ArrayList<>())
+                        .add(entry.getKey());
             }
+        }
 
-            if (!subjectsInDay.isEmpty()) {
-                System.out.printf("Día %2d: %d exámenes\n", day + 1, subjectsInDay.size());
-            }
+        for (var entry : examsByDay.entrySet()) {
+            System.out.printf("Día %2d: %d exámenes\n", entry.getKey() + 1, entry.getValue().size());
         }
     }
 
@@ -144,12 +145,14 @@ public class SolutionDecoder {
      * Imprime un resumen detallado de las asignaciones.
      */
     public void printSummary(IntegerSolution solution) {
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
         int[] minClassroomsPerSubject = problem.getMinClassroomsPerSubject();
 
         Set<Integer> allUsedClassrooms = new HashSet<>();
-        for (ClassroomAssignmentProblem.SubjectAssignment assignment : assignments.values()) {
-            allUsedClassrooms.addAll(assignment.classrooms);
+        for (DecodedAssignment assignment : assignments.values()) {
+            if (assignment.assigned) {
+                allUsedClassrooms.addAll(assignment.classrooms);
+            }
         }
 
         System.out.println("\n=== Resumen de Asignación ===");
@@ -157,8 +160,8 @@ public class SolutionDecoder {
                 "Salones únicos utilizados: " + allUsedClassrooms.size() + " de " + instance.getClassrooms().size());
 
         int assignedCount = 0;
-        for (ClassroomAssignmentProblem.SubjectAssignment a : assignments.values()) {
-            if (!a.classrooms.isEmpty())
+        for (DecodedAssignment a : assignments.values()) {
+            if (a.assigned)
                 assignedCount++;
         }
         System.out.println("Materias asignadas: " + assignedCount + " de " + instance.getSubjects().size());
@@ -168,14 +171,14 @@ public class SolutionDecoder {
         int maxClassroomsPerSubject = 0;
         int totalExcess = 0;
 
-        for (Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment> entry : assignments.entrySet()) {
+        for (var entry : assignments.entrySet()) {
             int subjectIdx = entry.getKey();
-            ClassroomAssignmentProblem.SubjectAssignment assignment = entry.getValue();
-            int numClassrooms = assignment.classrooms.size();
+            DecodedAssignment assignment = entry.getValue();
 
-            if (numClassrooms == 0)
+            if (!assignment.assigned)
                 continue;
 
+            int numClassrooms = assignment.classrooms.size();
             int minNeeded = minClassroomsPerSubject[subjectIdx];
 
             totalAssignments += numClassrooms;
@@ -198,50 +201,41 @@ public class SolutionDecoder {
 
         System.out.println("\n--- Detalle por materia (ordenado por inscriptos) ---");
 
-        List<Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment>> sortedEntries = new ArrayList<>(
-                assignments.entrySet());
+        List<Map.Entry<Integer, DecodedAssignment>> sortedEntries = new ArrayList<>(assignments.entrySet());
         sortedEntries.sort((a, b) -> Integer.compare(
                 instance.getSubjectByIndex(b.getKey()).getEnrolledStudents(),
                 instance.getSubjectByIndex(a.getKey()).getEnrolledStudents()));
 
         int shown = 0;
-        for (Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment> entry : sortedEntries) {
+        for (var entry : sortedEntries) {
             if (shown >= 25) {
                 System.out.println("... y " + (sortedEntries.size() - 25) + " materias más");
                 break;
             }
 
             int subjectIdx = entry.getKey();
-            ClassroomAssignmentProblem.SubjectAssignment assignment = entry.getValue();
+            DecodedAssignment assignment = entry.getValue();
 
-            if (assignment.classrooms.isEmpty())
+            if (!assignment.assigned)
                 continue;
 
             Subject s = instance.getSubjectByIndex(subjectIdx);
             int minNeeded = minClassroomsPerSubject[subjectIdx];
 
-            int totalCapacity = 0;
-            for (int classroomIdx : assignment.classrooms) {
-                totalCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
-            }
-
-            String capStatus = s.getEnrolledStudents() <= totalCapacity ? "OK" : "INSUF";
+            String capStatus = s.getEnrolledStudents() <= assignment.totalCapacity ? "OK" : "INSUF";
             String countStatus = assignment.classrooms.size() <= minNeeded ? ""
                     : " EXCESO+" + (assignment.classrooms.size() - minNeeded);
 
-            String daysStr = assignment.days.stream()
-                    .sorted()
-                    .map(d -> String.valueOf(d + 1))
-                    .reduce((a, b) -> a + "," + b)
-                    .orElse("-");
+            double startHour = 8.0 + (assignment.startBlock * 0.5);
 
-            System.out.printf("  %s (%d inscr): %d/%d salón(es), día(s)=%s, cap=%d [%s%s]\n",
+            System.out.printf("  %s (%d inscr): %d/%d salón(es), día=%d hora=%.1f, cap=%d [%s%s]\n",
                     s.getName().length() > 30 ? s.getName().substring(0, 30) + "..." : s.getName(),
                     s.getEnrolledStudents(),
                     assignment.classrooms.size(),
                     minNeeded,
-                    daysStr,
-                    totalCapacity,
+                    assignment.day + 1,
+                    startHour,
+                    assignment.totalCapacity,
                     capStatus,
                     countStatus);
 
@@ -261,8 +255,8 @@ public class SolutionDecoder {
         // Materias no asignadas
         List<Integer> unassigned = new ArrayList<>();
         for (int i = 0; i < instance.getSubjects().size(); i++) {
-            ClassroomAssignmentProblem.SubjectAssignment a = assignments.get(i);
-            if (a == null || a.classrooms.isEmpty()) {
+            DecodedAssignment a = assignments.get(i);
+            if (a == null || !a.assigned) {
                 unassigned.add(i);
             }
         }
@@ -299,52 +293,46 @@ public class SolutionDecoder {
     }
 
     private void exportAssignmentsCSV(IntegerSolution solution, String filePath) throws IOException {
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            writer.println("materia_id,materia_nombre,inscriptos,duracion_horas,dias,salones,capacidad_total,estado");
+            writer.println(
+                    "materia_id,materia_nombre,inscriptos,duracion_horas,dia,hora_inicio,salones,capacidad_total,estado");
 
-            List<Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment>> sortedEntries = new ArrayList<>(
-                    assignments.entrySet());
+            List<Map.Entry<Integer, DecodedAssignment>> sortedEntries = new ArrayList<>(assignments.entrySet());
             sortedEntries.sort((a, b) -> Integer.compare(
                     instance.getSubjectByIndex(b.getKey()).getEnrolledStudents(),
                     instance.getSubjectByIndex(a.getKey()).getEnrolledStudents()));
 
-            for (Map.Entry<Integer, ClassroomAssignmentProblem.SubjectAssignment> entry : sortedEntries) {
+            for (var entry : sortedEntries) {
                 int subjectIdx = entry.getKey();
-                ClassroomAssignmentProblem.SubjectAssignment assignment = entry.getValue();
+                DecodedAssignment assignment = entry.getValue();
 
-                if (assignment.classrooms.isEmpty())
+                if (!assignment.assigned)
                     continue;
 
                 Subject s = instance.getSubjectByIndex(subjectIdx);
 
-                int totalCapacity = 0;
                 StringBuilder salonesStr = new StringBuilder();
                 for (int classroomIdx : assignment.classrooms) {
                     Classroom c = instance.getClassroomByIndex(classroomIdx);
-                    totalCapacity += c.getCapacity();
                     if (salonesStr.length() > 0)
                         salonesStr.append(";");
                     salonesStr.append(c.getId());
                 }
 
-                String diasStr = assignment.days.stream()
-                        .sorted()
-                        .map(d -> String.valueOf(d + 1))
-                        .reduce((a, b) -> a + ";" + b)
-                        .orElse("");
+                String status = s.getEnrolledStudents() <= assignment.totalCapacity ? "OK" : "INSUFICIENTE";
+                double startHour = 8.0 + (assignment.startBlock * 0.5);
 
-                String status = s.getEnrolledStudents() <= totalCapacity ? "OK" : "INSUFICIENTE";
-
-                writer.printf("%s,\"%s\",%d,%.1f,\"%s\",\"%s\",%d,%s\n",
+                writer.printf("%s,\"%s\",%d,%.1f,%d,%.1f,\"%s\",%d,%s\n",
                         s.getId(),
                         s.getName().replace("\"", "'"),
                         s.getEnrolledStudents(),
                         s.getDurationHours(),
-                        diasStr,
+                        assignment.day + 1,
+                        startHour,
                         salonesStr.toString(),
-                        totalCapacity,
+                        assignment.totalCapacity,
                         status);
             }
         }
@@ -380,56 +368,35 @@ public class SolutionDecoder {
     }
 
     private void exportScheduleCSV(IntegerSolution solution, String filePath) throws IOException {
-        String[][] matrix = decodeToMatrix(solution);
-        int numClassrooms = instance.getClassrooms().size();
+        Map<Integer, DecodedAssignment> assignments = problem.decode(solution);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
             writer.println("dia,materia_id,materia_nombre,hora_inicio,hora_fin,salon,capacidad");
 
-            for (int day = 0; day < ProblemInstance.MAX_DAYS; day++) {
-                Map<String, ScheduleEntry> daySchedule = new LinkedHashMap<>();
-                int startBlock = day * BLOCKS_PER_DAY;
+            for (var entry : assignments.entrySet()) {
+                int subjectIdx = entry.getKey();
+                DecodedAssignment assignment = entry.getValue();
 
-                for (int c = 0; c < numClassrooms; c++) {
-                    String currentSubject = null;
-                    int startBlockInDay = -1;
+                if (!assignment.assigned)
+                    continue;
 
-                    for (int b = 0; b <= BLOCKS_PER_DAY; b++) {
-                        String subjectId = (b < BLOCKS_PER_DAY) ? matrix[startBlock + b][c]
-                                : ProblemInstance.EMPTY_SUBJECT_ID;
+                Subject s = instance.getSubjectByIndex(subjectIdx);
+                int durationBlocks = problem.getBlocksPerSubject()[subjectIdx];
+                double startHour = 8.0 + (assignment.startBlock * 0.5);
+                double endHour = startHour + (durationBlocks * 0.5);
 
-                        if (!subjectId.equals(currentSubject)) {
-                            if (currentSubject != null && !currentSubject.equals(ProblemInstance.EMPTY_SUBJECT_ID)) {
-                                String key = currentSubject + "_" + c + "_" + startBlockInDay;
-                                double startHour = 8.0 + (startBlockInDay * 0.5);
-                                double endHour = 8.0 + (b * 0.5);
-                                Classroom classroom = instance.getClassroomByIndex(c);
-
-                                int subjectIdx = instance.getSubjectIndex(currentSubject);
-                                String subjectName = subjectIdx < instance.getSubjects().size()
-                                        ? instance.getSubjectByIndex(subjectIdx).getName()
-                                        : currentSubject;
-
-                                daySchedule.put(key, new ScheduleEntry(
-                                        day + 1, currentSubject, subjectName, startHour, endHour,
-                                        classroom.getId(), classroom.getCapacity()));
-                            }
-                            currentSubject = subjectId;
-                            startBlockInDay = b;
-                        }
-                    }
-                }
-
-                for (ScheduleEntry entry : daySchedule.values()) {
+                for (int classroomIdx : assignment.classrooms) {
+                    Classroom c = instance.getClassroomByIndex(classroomIdx);
                     writer.printf("%d,%s,\"%s\",%.1f,%.1f,%s,%d\n",
-                            entry.day, entry.subjectId, entry.subjectName.replace("\"", "'"),
-                            entry.startHour, entry.endHour, entry.classroomId, entry.capacity);
+                            assignment.day + 1,
+                            s.getId(),
+                            s.getName().replace("\"", "'"),
+                            startHour,
+                            endHour,
+                            c.getId(),
+                            c.getCapacity());
                 }
             }
         }
-    }
-
-    private record ScheduleEntry(int day, String subjectId, String subjectName,
-            double startHour, double endHour, String classroomId, int capacity) {
     }
 }

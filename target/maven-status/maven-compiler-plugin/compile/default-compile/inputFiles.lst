@@ -1,7 +1,6 @@
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/domain/Subject.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/problem/ClassroomAssignmentProblem.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/io/InstanceLoader.java
-/Users/martinochoa/classroom-assignment/src/main/java/com/university/problem/SoftRepairOperator.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/solver/GreedySolver.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/algorithm/NSGAII_WithTelemetry.java
 /Users/martinochoa/classroom-assignment/src/main/java/com/university/telemetry/EvolutionTracker.java

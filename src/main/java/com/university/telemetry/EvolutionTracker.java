@@ -45,6 +45,13 @@ public class EvolutionTracker {
         int bestRealAssignments = Integer.MAX_VALUE;
         double sumRealAssignments = 0;
 
+        // También trackear mejor de todas las soluciones (incluso infactibles)
+        double bestObj1All = Double.MAX_VALUE;
+        double bestObj2All = Double.MAX_VALUE;
+        int bestRealAssignmentsAll = Integer.MAX_VALUE;
+        double sumObj2All = 0;
+        double sumRealAssignmentsAll = 0;
+
         for (IntegerSolution sol : population) {
             double obj1 = sol.objectives()[0];
             double obj2 = sol.objectives()[1];
@@ -58,13 +65,24 @@ public class EvolutionTracker {
                 }
             }
 
-            // Solo considerar factibles para mejor y promedio
+            // Calcular asignaciones reales para todas las soluciones
+            int realAssignments = countRealAssignments(sol);
+            sumObj2All += obj2;
+            sumRealAssignmentsAll += realAssignments;
+
+            // Trackear mejor de todas las soluciones
+            if (obj1 < bestObj1All) {
+                bestObj1All = obj1;
+                bestRealAssignmentsAll = realAssignments;
+            }
+            if (obj2 < bestObj2All) {
+                bestObj2All = obj2;
+            }
+
+            // Solo considerar factibles para mejor y promedio factible
             if (feasible) {
                 sumObj2Feasible += obj2;
                 feasibleCount++;
-
-                // Calcular asignaciones reales (sin penalización)
-                int realAssignments = countRealAssignments(sol);
                 sumRealAssignments += realAssignments;
 
                 // Mejor solo de soluciones factibles (según objetivo 1)
@@ -82,12 +100,23 @@ public class EvolutionTracker {
         double avgObj2 = feasibleCount > 0 ? sumObj2Feasible / feasibleCount : 0;
         double avgRealAssignments = feasibleCount > 0 ? sumRealAssignments / feasibleCount : 0;
 
-        // Si no hay factibles, usar 0 para el mejor
+        // Promedio de todas las soluciones
+        double avgObj2All = population.size() > 0 ? sumObj2All / population.size() : 0;
+        double avgRealAssignmentsAll = population.size() > 0 ? sumRealAssignmentsAll / population.size() : 0;
+
+        // Si no hay factibles, usar el mejor de todas las soluciones
         if (bestObj1 == Double.MAX_VALUE) {
-            bestRealAssignments = 0;
+            bestRealAssignments = bestRealAssignmentsAll != Integer.MAX_VALUE ? bestRealAssignmentsAll : 0;
+            bestObj1 = bestObj1All != Double.MAX_VALUE ? bestObj1All : 0;
         }
         if (bestObj2 == Double.MAX_VALUE) {
-            bestObj2 = 0;
+            bestObj2 = bestObj2All != Double.MAX_VALUE ? bestObj2All : 0;
+        }
+
+        // Si no hay factibles, usar promedios de todas las soluciones
+        if (feasibleCount == 0) {
+            avgObj2 = avgObj2All;
+            avgRealAssignments = avgRealAssignmentsAll;
         }
 
         long elapsedTime = System.currentTimeMillis() - startTime;
@@ -107,9 +136,10 @@ public class EvolutionTracker {
         history.add(data);
 
         // Imprimir información de la generación (usando asignaciones reales)
-        System.out.printf("Generation %d: Best = ( %d asignaciones reales, %.2f días separación ), "
+        String feasibleMarker = feasibleCount == 0 ? " [INFEASIBLE]" : "";
+        System.out.printf("Generation %d: Best = ( %d asignaciones reales, %.2f días separación )%s, "
                 + "Avg = ( %.2f, %.2f ), Factibles = %d/%d\n",
-                generation, bestRealAssignments, bestSeparation, avgRealAssignments, avgSeparation,
+                generation, bestRealAssignments, bestSeparation, feasibleMarker, avgRealAssignments, avgSeparation,
                 feasibleCount, population.size());
     }
 
@@ -117,10 +147,12 @@ public class EvolutionTracker {
      * Cuenta las asignaciones reales (sin penalización) de una solución.
      */
     private int countRealAssignments(IntegerSolution solution) {
-        Map<Integer, ClassroomAssignmentProblem.SubjectAssignment> assignments = problem.decodeAssignments(solution);
+        Map<Integer, ClassroomAssignmentProblem.DecodedAssignment> assignments = problem.decode(solution);
         return assignments.values().stream()
+                .filter(a -> a.assigned)
                 .mapToInt(a -> a.classrooms.size())
                 .sum();
+
     }
 
     /**
