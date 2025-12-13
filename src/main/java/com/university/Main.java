@@ -28,7 +28,15 @@ public class Main {
     public static void main(String[] args) throws IOException {
         ProblemInstance instance;
 
+        // Parse command-line arguments
+        // args[0]: instance name
+        // args[1]: population size
+        // args[2]: crossover probability
+        // args[3]: mutation probability
         String instanceName = args.length > 0 ? args[0] : "promedio_2024";
+        int populationSize = args.length > 1 ? Integer.parseInt(args[1]) : 200;
+        double crossoverProbability = args.length > 2 ? Double.parseDouble(args[2]) : 0.8;
+        double mutationProbability = args.length > 3 ? Double.parseDouble(args[3]) : 0.001;
 
         instance = InstanceLoader.loadFromResources(instanceName);
 
@@ -90,15 +98,17 @@ public class Main {
         System.out.println("  - Modelo: Slots con decodificación automática de horarios");
         System.out.println("  - Inicialización: Híbrida (50% greedy, 30% greedy+ruido, 20% aleatoria)");
         System.out.println("  - Sincronización: GARANTIZADA por diseño de la representación");
+        System.out.println("  - Tamaño de población: " + populationSize);
+        System.out.println("  - Probabilidad de cruzamiento: " + crossoverProbability);
+        System.out.println("  - Probabilidad de mutación: " + mutationProbability);
         System.out.println();
 
         // Configuración NSGA-II
-        int populationSize = 200;
         int maxEvaluations = 25000;
         int recordEveryNGenerations = 10;
 
-        CrossoverOperator<IntegerSolution> crossover = new TwoPointCrossover(0.8);
-        MutationOperator<IntegerSolution> mutation = new IntegerPolynomialMutation(0.001, 5);
+        CrossoverOperator<IntegerSolution> crossover = new TwoPointCrossover(crossoverProbability);
+        MutationOperator<IntegerSolution> mutation = new IntegerPolynomialMutation(mutationProbability, 5);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());

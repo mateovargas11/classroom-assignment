@@ -210,9 +210,25 @@ public class EvolutionTracker {
             writer.write("\"\"\"\n\n");
             writer.write("import pandas as pd\n");
             writer.write("import matplotlib.pyplot as plt\n");
-            writer.write("import numpy as np\n\n");
+            writer.write("import numpy as np\n");
+            writer.write("import sys\n");
+            writer.write("import os\n\n");
+            writer.write("# Obtener archivo CSV desde argumentos de línea de comandos o usar el predeterminado\n");
+            writer.write("if len(sys.argv) > 1:\n");
+            writer.write("    csv_file = sys.argv[1]\n");
+            writer.write("else:\n");
+            writer.write("    # Buscar el archivo más reciente de evolución\n");
+            writer.write("    import glob\n");
+            writer.write("    evolucion_files = glob.glob('output/*_evolucion_*.csv')\n");
+            writer.write("    if evolucion_files:\n");
+            writer.write("        csv_file = max(evolucion_files, key=os.path.getmtime)\n");
+            writer.write("    else:\n");
+            writer.write("        csv_file = '" + csvPath + "'\n\n");
             writer.write("# Cargar datos\n");
-            writer.write("df = pd.read_csv('" + csvPath + "')\n");
+            writer.write("if not os.path.exists(csv_file):\n");
+            writer.write("    print(f\"Error: El archivo {csv_file} no existe\")\n");
+            writer.write("    sys.exit(1)\n\n");
+            writer.write("df = pd.read_csv(csv_file)\n");
             writer.write("df = df.sort_values('generacion').reset_index(drop=True)\n\n");
             writer.write("print(f'Datos cargados: {len(df)} registros')\n");
             writer.write(
@@ -264,9 +280,16 @@ public class EvolutionTracker {
             writer.write("cbar.set_label('Generación', fontsize=10)\n");
             writer.write("ax4.grid(True, alpha=0.3, linestyle=':')\n\n");
             writer.write("plt.tight_layout()\n");
-            writer.write("plt.savefig('output/evolucion_nsga2.png', dpi=150, bbox_inches='tight')\n");
-            writer.write("print('\\n✓ Gráfica guardada en: output/evolucion_nsga2.png')\n");
-            writer.write("plt.show()\n");
+            writer.write("# Obtener nombre de archivo de salida (opcional, segundo argumento)\n");
+            writer.write("if len(sys.argv) > 2:\n");
+            writer.write("    output_file = sys.argv[2]\n");
+            writer.write("else:\n");
+            writer.write("    output_file = 'output/evolucion_nsga2.png'\n");
+            writer.write("plt.savefig(output_file, dpi=150, bbox_inches='tight')\n");
+            writer.write("print(f'\\n✓ Gráfica guardada en: {output_file}')\n");
+            writer.write(
+                    "# plt.show()  # Comentado para ejecución batch (descomentar para visualización interactiva)\n");
+            writer.write("plt.close()  # Cerrar la figura para liberar memoria\n");
         }
 
         System.out.println("  ✓ Script de Python generado: " + scriptPath);

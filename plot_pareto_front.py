@@ -131,7 +131,8 @@ def plot_pareto_front(solutions, non_dominated, dominated, output_file='output/p
     
     plt.savefig(output_file, dpi=200, bbox_inches='tight')
     print(f'\n✓ Gráfica guardada en: {output_file}')
-    plt.show()
+    # plt.show()  # Comentado para ejecución batch (descomentar para visualización interactiva)
+    plt.close()  # Cerrar la figura para liberar memoria
 
 
 def main():
@@ -207,9 +208,15 @@ def main():
         dominated_df.to_csv(dominated_csv, index=False)
         print(f"✓ Soluciones dominadas guardadas en: {dominated_csv}")
     
+    # Obtener nombre de archivo de salida (opcional, segundo argumento)
+    if len(sys.argv) > 2:
+        output_file = sys.argv[2]
+    else:
+        output_file = 'output/pareto_front.png'
+    
     # Graficar
     print("\nGenerando gráfica...")
-    plot_pareto_front(combined_pareto, non_dominated, dominated)
+    plot_pareto_front(combined_pareto, non_dominated, dominated, output_file)
 
 
 if __name__ == '__main__':
