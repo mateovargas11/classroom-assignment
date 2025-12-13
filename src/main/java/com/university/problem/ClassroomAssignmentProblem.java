@@ -62,9 +62,14 @@ public class ClassroomAssignmentProblem extends AbstractIntegerProblem {
     // Pre-calculado: mínimo de salones necesarios por materia
     private final int[] minClassroomsPerSubject;
 
-    private final Random random = new Random();
+    private final Random random;
 
     public ClassroomAssignmentProblem(ProblemInstance instance) {
+        this(instance, null);
+    }
+
+    public ClassroomAssignmentProblem(ProblemInstance instance, Long seed) {
+        this.random = seed != null ? new Random(seed) : new Random();
         this.instance = instance;
         this.numClassrooms = instance.getClassrooms().size();
         this.numSubjects = instance.getSubjects().size();

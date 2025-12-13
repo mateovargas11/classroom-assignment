@@ -24,9 +24,14 @@ public class SolutionRepairOperator {
     private final List<Integer> sortedClassroomsByCapacityDesc;
     private final List<Integer> sortedClassroomsByCapacityAsc;
 
-    private final Random random = new Random();
+    private final Random random;
 
     public SolutionRepairOperator(ProblemInstance instance, int maxClassroomsPerSubject) {
+        this(instance, maxClassroomsPerSubject, null);
+    }
+
+    public SolutionRepairOperator(ProblemInstance instance, int maxClassroomsPerSubject, Long seed) {
+        this.random = seed != null ? new Random(seed) : new Random();
         this.instance = instance;
         this.problem = null; // Se establecerá después si es necesario
         this.numClassrooms = instance.getClassrooms().size();
@@ -46,6 +51,11 @@ public class SolutionRepairOperator {
     }
 
     public SolutionRepairOperator(ProblemInstance instance, ClassroomAssignmentProblem problem) {
+        this(instance, problem, null);
+    }
+
+    public SolutionRepairOperator(ProblemInstance instance, ClassroomAssignmentProblem problem, Long seed) {
+        this.random = seed != null ? new Random(seed) : new Random();
         this.instance = instance;
         this.problem = problem;
         this.numClassrooms = instance.getClassrooms().size();
