@@ -23,9 +23,9 @@ import os
 OUTPUT_DIR = Path("output")
 NUM_REPLICATES = 30
 INSTANCE_NAME = "promedio_2024"
-POPULATION_SIZE = 50
-CROSSOVER_PROB = 0.7
-MUTATION_PROB = 0.01
+POPULATION_SIZE = 100
+CROSSOVER_PROB = 0.8
+MUTATION_PROB = 0.001
 
 
 def run_java_experiment(seed: int, replicate_num: int, total_replicates: int) -> Optional[float]:
