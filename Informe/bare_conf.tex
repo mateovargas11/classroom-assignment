@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{longtable}
+\usepackage{url}
 
 % Configuración de espaciado entre párrafos
 \setlength{\parskip}{0.5em}
@@ -382,6 +383,122 @@ Solución factible & Sí & Sí \\
 Del análisis se desprende que el algoritmo NSGA-II logra una mejora sustancial en la separación temporal entre exámenes (incremento del 66.9\%), a costa de un aumento moderado en el número de asignaciones (2.7\%) y un costo computacional significativamente mayor. Esto refleja claramente la diferencia entre un enfoque determinista orientado a eficiencia y un enfoque evolutivo multiobjetivo orientado a la calidad global de la solución.
 
 En síntesis, mientras que el algoritmo Greedy resulta adecuado cuando se prioriza la rapidez de ejecución y el uso mínimo de recursos, el algoritmo NSGA-II permite explorar compromisos más equilibrados entre objetivos en conflicto, generando cronogramas de mayor calidad académica, especialmente en contextos donde la separación entre evaluaciones es un factor relevante.
+
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Promedio (30 ejecuciones)}
+\label{tab:resultados-promedio}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 294.20 & -14.78 & 0.4396 \\
+Desviación estándar & 0.61 & 0.41 & 0.0156 \\
+Mejor valor & 294.00 & -15.27 & 0.4556 \\
+Peor valor & 297.00 & -13.23 & 0.3963 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Resultados para la instancia Febrero}
+
+Para la instancia correspondiente al período de febrero, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución muy reducido (52 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 8.21 días. Este resultado sirve como línea base eficiente, aunque limitada en términos de calidad multiobjetivo.
+
+Al aplicar NSGA-II, partiendo de una población inicial parcialmente factible, el algoritmo logra alcanzar un frente de Pareto completamente factible al final de la evolución. Si bien el objetivo asociado a las asignaciones no presenta mejora —convergendo siempre al mismo valor mínimo de 282—, se observa una mejora sustancial en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 52.8\% respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado por NSGA-II logra una separación promedio de 14.03 días, superando ampliamente al Greedy, a costa de un leve incremento en el uso de salones (284 asignaciones frente a 282). La estabilidad del primer objetivo, reflejada en una desviación estándar nula, indica que este criterio está fuertemente restringido y presenta un óptimo global estable, mientras que la variabilidad del desempeño se concentra en el segundo objetivo.
+
+El análisis de hipervolumen confirma un desempeño consistente del algoritmo, con una mediana de 0.3908 y una desviación estándar reducida, lo que evidencia una buena robustez inter-ejecución.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Febrero (30 ejecuciones)}
+\label{tab:resultados-febrero-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 282.00 & -12.75 & 0.3871 \\
+Desviación estándar & 0.00 & 0.78 & 0.0240 \\
+Mejor valor & 282.00 & -13.86 & 0.4227 \\
+Peor valor & 282.00 & -11.27 & 0.3414 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Resultados para la instancia Julio}
+
+Para la instancia correspondiente al período de julio, el algoritmo Greedy (Best-Fit) obtiene nuevamente una solución factible en un tiempo de ejecución muy reducido (22 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 7.63 días. Al igual que en la instancia de febrero, el enfoque Greedy actúa como una línea base eficiente pero limitada en términos de optimización multiobjetivo.
+
+La aplicación de NSGA-II muestra una mejora significativa en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 62.8\% respecto al valor inicial. Sin embargo, a diferencia de la instancia de febrero, el algoritmo no logra preservar la factibilidad al final del proceso evolutivo: ninguna de las soluciones del frente de Pareto final cumple con las restricciones de capacidad, registrándose un déficit acumulado de 423 unidades en la mejor solución no factible.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor constante de 288 en todas las ejecuciones, lo que se refleja en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora en la separación se obtiene a costa de violaciones de factibilidad, evidenciando un conflicto más severo entre ambos objetivos en esta instancia particular.
+
+El análisis de hipervolumen indica un desempeño consistente del algoritmo en términos de diversidad y convergencia, con una mediana de 0.4018 y una baja desviación estándar. No obstante, este resultado debe interpretarse con cautela, dado que el hipervolumen se calcula sobre soluciones no factibles, lo que refuerza la necesidad de mecanismos más estrictos de manejo de restricciones para esta instancia.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Julio (30 ejecuciones)}
+\label{tab:resultados-julio-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 288.00 & -13.26 & 0.4001 \\
+Desviación estándar & 0.00 & 0.38 & 0.0107 \\
+Mejor valor & 288.00 & -13.93 & 0.4182 \\
+Peor valor & 288.00 & -12.40 & 0.3752 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Resultados para la instancia Diciembre}
+
+Para la instancia correspondiente al período de diciembre, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución reducido (31 ms), asignando la totalidad de las materias sin déficit de capacidad y alcanzando una separación promedio de 8.48 días. Este resultado constituye nuevamente una línea base eficiente, aunque limitada en términos de optimización del segundo objetivo.
+
+La aplicación de NSGA-II muestra un comportamiento particularmente favorable en esta instancia. Al finalizar la evolución, el algoritmo alcanza un frente de Pareto completamente factible, compuesto por diez soluciones no dominadas que reflejan un trade-off progresivo entre número de asignaciones y separación temporal. A diferencia de la instancia de julio, la factibilidad se mantiene en toda la población final.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor mínimo constante de 277 en todas las ejecuciones, lo que se traduce en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora se concentra en el segundo objetivo, donde se observa un incremento del 56.9\% en la separación promedio respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado presenta una separación promedio de 13.46 días, superando ampliamente al Greedy, a costa de un incremento marginal en el número de asignaciones (278 frente a 277). El análisis de hipervolumen respalda estos resultados, con una mediana de 0.4135 y una desviación estándar reducida, evidenciando un desempeño robusto y consistente del algoritmo en esta instancia.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Diciembre (30 ejecuciones)}
+\label{tab:resultados-diciembre-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 277.00 & -13.64 & 0.4140 \\
+Desviación estándar & 0.00 & 0.25 & 0.0095 \\
+Mejor valor & 277.00 & -14.18 & 0.4364 \\
+Peor valor & 277.00 & -13.21 & 0.3933 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{thebibliography}{99}
+
+\bibitem{jmetal}
+JMetal Framework Documentation. \textit{Operators}. 
+\url{https://jmetal.readthedocs.io/en/latest/operators.html}.
+
+\bibitem{bassimir2024}
+B. Bassimir y R. Wanka. ``On the computation of robust examination timetables: methods and experimental results''. 
+\textit{Journal of Scheduling}, vol. 28. 
+DOI: \url{https://doi.org/10.1007/s10951-024-00815-y}.
+
+\bibitem{teorico2025}
+Material teórico del curso de Algoritmos Evolutivos. 
+Facultad de Ingeniería, Universidad de la República, 2025.
+
+\end{thebibliography}
 
 \section{Anexo}
 
