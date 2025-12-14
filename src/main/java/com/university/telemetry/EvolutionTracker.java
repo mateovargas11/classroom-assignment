@@ -39,6 +39,7 @@ public class EvolutionTracker {
 
         double bestObj1 = Double.MAX_VALUE;
         double bestObj2 = Double.MAX_VALUE;
+        double sumObj1Feasible = 0;
         double sumObj2Feasible = 0;
         int feasibleCount = 0;
 
@@ -49,6 +50,7 @@ public class EvolutionTracker {
         double bestObj1All = Double.MAX_VALUE;
         double bestObj2All = Double.MAX_VALUE;
         int bestRealAssignmentsAll = Integer.MAX_VALUE;
+        double sumObj1All = 0;
         double sumObj2All = 0;
         double sumRealAssignmentsAll = 0;
 
@@ -67,6 +69,7 @@ public class EvolutionTracker {
 
             // Calcular asignaciones reales para todas las soluciones
             int realAssignments = countRealAssignments(sol);
+            sumObj1All += obj1;
             sumObj2All += obj2;
             sumRealAssignmentsAll += realAssignments;
 
@@ -81,6 +84,7 @@ public class EvolutionTracker {
 
             // Solo considerar factibles para mejor y promedio factible
             if (feasible) {
+                sumObj1Feasible += obj1;
                 sumObj2Feasible += obj2;
                 feasibleCount++;
                 sumRealAssignments += realAssignments;
@@ -97,10 +101,12 @@ public class EvolutionTracker {
         }
 
         // Promedio solo de soluciones factibles
+        double avgObj1 = feasibleCount > 0 ? sumObj1Feasible / feasibleCount : 0;
         double avgObj2 = feasibleCount > 0 ? sumObj2Feasible / feasibleCount : 0;
         double avgRealAssignments = feasibleCount > 0 ? sumRealAssignments / feasibleCount : 0;
 
         // Promedio de todas las soluciones
+        double avgObj1All = population.size() > 0 ? sumObj1All / population.size() : 0;
         double avgObj2All = population.size() > 0 ? sumObj2All / population.size() : 0;
         double avgRealAssignmentsAll = population.size() > 0 ? sumRealAssignmentsAll / population.size() : 0;
 
@@ -115,9 +121,51 @@ public class EvolutionTracker {
 
         // Si no hay factibles, usar promedios de todas las soluciones
         if (feasibleCount == 0) {
+            avgObj1 = avgObj1All;
             avgObj2 = avgObj2All;
             avgRealAssignments = avgRealAssignmentsAll;
         }
+
+        // Calcular desviación estándar (segunda pasada)
+        double sumSquaredDiffObj1 = 0;
+        double sumSquaredDiffObj2 = 0;
+        double sumSquaredDiffRealAssignments = 0;
+        int countForStdDev = feasibleCount > 0 ? feasibleCount : population.size();
+        double meanObj1ForStdDev = feasibleCount > 0 ? avgObj1 : avgObj1All;
+        double meanObj2ForStdDev = feasibleCount > 0 ? avgObj2 : avgObj2All;
+        double meanRealAssignmentsForStdDev = feasibleCount > 0 ? avgRealAssignments : avgRealAssignmentsAll;
+
+        for (IntegerSolution sol : population) {
+            boolean feasible = true;
+            for (double c : sol.constraints()) {
+                if (c < 0) {
+                    feasible = false;
+                    break;
+                }
+            }
+
+            // Solo considerar factibles si hay factibles, sino considerar todas
+            if ((feasibleCount > 0 && feasible) || (feasibleCount == 0)) {
+                double obj1 = sol.objectives()[0];
+                double obj2 = sol.objectives()[1];
+                int realAssignments = countRealAssignments(sol);
+
+                sumSquaredDiffObj1 += Math.pow(obj1 - meanObj1ForStdDev, 2);
+                sumSquaredDiffObj2 += Math.pow(obj2 - meanObj2ForStdDev, 2);
+                sumSquaredDiffRealAssignments += Math.pow(realAssignments - meanRealAssignmentsForStdDev, 2);
+            }
+        }
+
+        // Calcular desviación estándar
+        double stdDevObj1 = countForStdDev > 1
+                ? Math.sqrt(sumSquaredDiffObj1 / countForStdDev)
+                : 0.0;
+        double stdDevObj2 = countForStdDev > 1
+                ? Math.sqrt(sumSquaredDiffObj2 / countForStdDev)
+                : 0.0;
+        double stdDevRealAssignments = countForStdDev > 1
+                ? Math.sqrt(sumSquaredDiffRealAssignments / countForStdDev)
+                : 0.0;
 
         long elapsedTime = System.currentTimeMillis() - startTime;
         double bestSeparation = -bestObj2; // Convertir a positivo (mayor es mejor)
@@ -129,6 +177,13 @@ public class EvolutionTracker {
                 avgRealAssignments,
                 bestSeparation,
                 avgSeparation,
+                bestObj1, // Fitness objetivo 1 (mejor)
+                avgObj1, // Fitness objetivo 1 (promedio)
+                bestObj2, // Fitness objetivo 2 (mejor)
+                avgObj2, // Fitness objetivo 2 (promedio)
+                stdDevObj1, // Desviación estándar objetivo 1
+                stdDevObj2, // Desviación estándar objetivo 2
+                stdDevRealAssignments, // Desviación estándar asignaciones reales
                 feasibleCount,
                 population.size(),
                 elapsedTime);
@@ -173,15 +228,22 @@ public class EvolutionTracker {
 
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(
-                    "generacion,mejor_asignaciones,promedio_asignaciones,mejor_separacion,promedio_separacion,soluciones_factibles,poblacion_total,tiempo_ms\n");
+                    "generacion,mejor_asignaciones,promedio_asignaciones,desv_std_asignaciones,mejor_separacion,promedio_separacion,mejor_fitness_obj1,promedio_fitness_obj1,desv_std_fitness_obj1,mejor_fitness_obj2,promedio_fitness_obj2,desv_std_fitness_obj2,soluciones_factibles,poblacion_total,tiempo_ms\n");
 
             for (GenerationData data : history) {
-                writer.write(String.format("%d,%.2f,%.2f,%.4f,%.4f,%d,%d,%d\n",
+                writer.write(String.format("%d,%.2f,%.2f,%.6f,%.4f,%.4f,%.6f,%.6f,%.6f,%.6f,%.6f,%.6f,%d,%d,%d\n",
                         data.generation,
                         data.bestObj1,
                         data.avgObj1,
+                        data.stdDevRealAssignments,
                         data.bestSeparation,
                         data.avgSeparation,
+                        data.bestFitnessObj1,
+                        data.avgFitnessObj1,
+                        data.stdDevObj1,
+                        data.bestFitnessObj2,
+                        data.avgFitnessObj2,
+                        data.stdDevObj2,
                         data.feasibleCount,
                         data.populationSize,
                         data.elapsedTimeMs));
@@ -343,22 +405,39 @@ public class EvolutionTracker {
      */
     public static class GenerationData {
         public final int generation;
-        public final double bestObj1;
-        public final double avgObj1;
+        public final double bestObj1; // Asignaciones reales (mejor)
+        public final double avgObj1; // Asignaciones reales (promedio)
         public final double bestSeparation;
         public final double avgSeparation;
+        public final double bestFitnessObj1; // Fitness objetivo 1 (mejor) - objectives[0]
+        public final double avgFitnessObj1; // Fitness objetivo 1 (promedio) - objectives[0]
+        public final double bestFitnessObj2; // Fitness objetivo 2 (mejor) - objectives[1]
+        public final double avgFitnessObj2; // Fitness objetivo 2 (promedio) - objectives[1]
+        public final double stdDevObj1; // Desviación estándar objetivo 1
+        public final double stdDevObj2; // Desviación estándar objetivo 2
+        public final double stdDevRealAssignments; // Desviación estándar asignaciones reales
         public final int feasibleCount;
         public final int populationSize;
         public final long elapsedTimeMs;
 
         public GenerationData(int generation, double bestObj1, double avgObj1,
                 double bestSeparation, double avgSeparation,
+                double bestFitnessObj1, double avgFitnessObj1,
+                double bestFitnessObj2, double avgFitnessObj2,
+                double stdDevObj1, double stdDevObj2, double stdDevRealAssignments,
                 int feasibleCount, int populationSize, long elapsedTimeMs) {
             this.generation = generation;
             this.bestObj1 = bestObj1;
             this.avgObj1 = avgObj1;
             this.bestSeparation = bestSeparation;
             this.avgSeparation = avgSeparation;
+            this.bestFitnessObj1 = bestFitnessObj1;
+            this.avgFitnessObj1 = avgFitnessObj1;
+            this.bestFitnessObj2 = bestFitnessObj2;
+            this.avgFitnessObj2 = avgFitnessObj2;
+            this.stdDevObj1 = stdDevObj1;
+            this.stdDevObj2 = stdDevObj2;
+            this.stdDevRealAssignments = stdDevRealAssignments;
             this.feasibleCount = feasibleCount;
             this.populationSize = populationSize;
             this.elapsedTimeMs = elapsedTimeMs;

@@ -1,0 +1,4 @@
+Factor,Estadistico_H,p_valor,Significativo,Num_Grupos,Alpha,Nota
+crossover,41.5933799860373,9.292066177986461e-10,True,3,0.05,
+mutation,,,False,1,0.05,Se requieren al menos 2 grupos para realizar el test
+population,3.8750362541441565,0.14406104767278963,False,3,0.05,

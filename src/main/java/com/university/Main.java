@@ -36,7 +36,7 @@ public class Main {
         // args[3]: mutation probability
         // args[4]: random seed (optional)
         String instanceName = args.length > 0 ? args[0] : "promedio_2024";
-        int populationSize = args.length > 1 ? Integer.parseInt(args[1]) : 50;
+        int populationSize = args.length > 1 ? Integer.parseInt(args[1]) : 100;
         double crossoverProbability = args.length > 2 ? Double.parseDouble(args[2]) : 0.8;
         double mutationProbability = args.length > 3 ? Double.parseDouble(args[3]) : 0.001;
         Long randomSeed = args.length > 4 ? Long.parseLong(args[4]) : null;
@@ -180,7 +180,7 @@ public class Main {
                     .sorted(Comparator.comparingDouble(s -> s.objectives()[0]))
                     .toList();
 
-            for (int i = 0; i < Math.min(10, sortedPareto.size()); i++) {
+            for (int i = 0; i < sortedPareto.size(); i++) {
                 IntegerSolution sol = sortedPareto.get(i);
                 System.out.printf("  %12d | %.2f\n",
                         (int) sol.objectives()[0],
@@ -302,8 +302,12 @@ public class Main {
         }
 
         // Exportar frente de Pareto completo con hipervolumen
+        // Usar solo soluciones factibles si existen, sino usar toda la población
+        List<IntegerSolution> solutionsToExport = !feasibleSolutions.isEmpty()
+                ? feasibleSolutions
+                : population;
         int instanceSize = instance.getSubjects().size();
-        double hypervolume = exportParetoFront(population, "output/" + instanceName + "_pareto_front.csv",
+        double hypervolume = exportParetoFront(solutionsToExport, "output/" + instanceName + "_pareto_front.csv",
                 instanceName, instanceSize, populationSize,
                 crossoverProbability, mutationProbability);
         System.out.println("  ✓ Frente de Pareto exportado a: output/" + instanceName + "_pareto_front.csv");
@@ -420,9 +424,16 @@ public class Main {
         // Necesitamos transformar los objetivos para que ambos se minimicen
         List<IntegerSolution> solutionsForHV = new ArrayList<>();
 
-        try (java.io.PrintWriter writer = new java.io.PrintWriter(new java.io.FileWriter(filePath))) {
-            // Encabezado
-            writer.println("f1,f2");
+        // Verificar si el archivo existe para decidir si escribir encabezado
+        java.io.File file = new java.io.File(filePath);
+        boolean fileExists = file.exists();
+
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(
+                new java.io.FileWriter(filePath, true))) { // append mode
+            // Escribir encabezado solo si el archivo es nuevo
+            if (!fileExists) {
+                writer.println("f1,f2");
+            }
 
             // Escribir cada solución y preparar para HV
             for (IntegerSolution solution : population) {
@@ -580,7 +591,7 @@ public class Main {
             double f1 = sol.f1_norm;
             double f2 = sol.f2_norm;
 
-            double width  = prevF1 - f1;
+            double width = prevF1 - f1;
             double height = prevF2 - f2;
 
             if (width > 0 && height > 0) {

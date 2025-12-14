@@ -1,0 +1,4 @@
+Factor,Grupo1,Grupo2,Estadistico_U,p_valor,p_valor_corregido,Significativo,Correccion,Error
+crossover,0.6,0.7,23956.5,0.00356843354600987,0.01070530063802961,True,bonferroni,
+crossover,0.6,0.8,21061.0,3.91168633395814e-09,1.1735059001874419e-08,True,bonferroni,
+crossover,0.7,0.8,30733.5,1.0885175953762399e-05,3.26555278612872e-05,True,bonferroni,
