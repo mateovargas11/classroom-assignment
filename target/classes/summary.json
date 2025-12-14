@@ -1,0 +1,38 @@
+{
+  "febrero_2024": {
+    "num_examenes": 274,
+    "num_salones": 39,
+    "total_inscritos": 4812,
+    "total_aforo": 2706,
+    "num_conflict_pairs": 325,
+    "max_inscritos": 452,
+    "min_inscritos": 1
+  },
+  "julio_2024": {
+    "num_examenes": 277,
+    "num_salones": 39,
+    "total_inscritos": 5941,
+    "total_aforo": 2706,
+    "num_conflict_pairs": 329,
+    "max_inscritos": 611,
+    "min_inscritos": 1
+  },
+  "diciembre_2024": {
+    "num_examenes": 266,
+    "num_salones": 39,
+    "total_inscritos": 5941,
+    "total_aforo": 2706,
+    "num_conflict_pairs": 346,
+    "max_inscritos": 517,
+    "min_inscritos": 1
+  },
+  "promedio_2024": {
+    "num_examenes": 286,
+    "num_salones": 39,
+    "total_inscritos": 5694,
+    "total_aforo": 2706,
+    "num_conflict_pairs": 351,
+    "max_inscritos": 527,
+    "min_inscritos": 1
+  }
+}

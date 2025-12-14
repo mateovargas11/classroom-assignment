@@ -1,84 +1,93 @@
 package com.university;
 
+import com.university.algorithm.NSGAII_WithTelemetry;
 import com.university.decoder.SolutionDecoder;
 import com.university.domain.ProblemInstance;
 import com.university.io.InstanceLoader;
 import com.university.problem.ClassroomAssignmentProblem;
 import com.university.problem.SolutionRepairOperator;
-import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
-import org.uma.jmetal.operator.crossover.impl.IntegerSBXCrossover;
+import com.university.solver.GreedySolver;
+import com.university.telemetry.EvolutionTracker;
+import org.uma.jmetal.operator.crossover.CrossoverOperator;
+import org.uma.jmetal.operator.crossover.impl.TwoPointCrossover;
+import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.IntegerPolynomialMutation;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.integersolution.IntegerSolution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
         ProblemInstance instance;
-
-        String instanceName = args.length > 0 ? args[0] : "promedio_2024";
+        String instanceName = args.length > 0 ? args[0] : "febrero_2024";
+        int populationSize = args.length > 1 ? Integer.parseInt(args[1]) : 100;
+        double crossoverProbability = args.length > 2 ? Double.parseDouble(args[2]) : 0.8;
+        double mutationProbability = args.length > 3 ? Double.parseDouble(args[3]) : 0.001;
+        Long randomSeed = args.length > 4 ? Long.parseLong(args[4]) : null;
 
         instance = InstanceLoader.loadFromResources(instanceName);
 
-        System.out.println("Instancia: " + instanceName);
-        System.out.println("Materias: " + instance.getSubjects().size());
-        System.out.println("Salones: " + instance.getClassrooms().size());
-        System.out.println("Pares de conflicto (mismo semestre/carrera): " + instance.getConflictPairs().size());
-
-        ClassroomAssignmentProblem problem = new ClassroomAssignmentProblem(instance);
-        SolutionRepairOperator repairOperator = new SolutionRepairOperator(
-                instance, problem.getMaxClassroomsPerSubject());
-
-        System.out.println("Minimo teorico de asignaciones: " + problem.getTotalMinClassrooms());
-
-        IntegerSolution greedySolution = problem.createSolution();
-        repairOperator.repair(greedySolution);
-        problem.evaluate(greedySolution);
-
-        System.out.println("\n=== Solucion Greedy Inicial ===");
-        System.out.println("Objetivo 1 (asignaciones): " + (int) greedySolution.objectives()[0]);
-        System.out.println(
-                "Objetivo 2 (separacion, mayor=mejor): " + String.format("%.2f", -greedySolution.objectives()[1]));
-        System.out.println("Deficit capacidad: " + (int) (-greedySolution.constraints()[0]));
-        System.out.println("Materias no asignadas: " + (int) (-greedySolution.constraints()[1]));
-
+        ClassroomAssignmentProblem problem = new ClassroomAssignmentProblem(instance, randomSeed);
         SolutionDecoder decoder = new SolutionDecoder(instance, problem);
-        decoder.printSummary(greedySolution);
 
-        System.out.println("\n" + "=".repeat(60));
-        System.out.println("Iniciando optimizacion con NSGA-II (2 objetivos)...");
-        System.out.println("  Objetivo 1: Minimizar asignaciones materia-salon");
-        System.out.println("  Objetivo 2: Maximizar separacion entre materias conflictivas");
-        System.out.println("=".repeat(60));
+        System.out.println();
+        System.out.println("##################################### FASE 1: ALGORITMO GREEDY #####################################");
 
-        int populationSize = 100;
+        long greedyStartTime = System.currentTimeMillis();
+
+        GreedySolver greedySolver = new GreedySolver(instance, problem);
+        IntegerSolution greedySolution = greedySolver.solve();
+
+        long greedyEndTime = System.currentTimeMillis();
+        long greedyTime = greedyEndTime - greedyStartTime;
+
+        System.out.println("Tiempo de ejecución: " + greedyTime + " ms");
+        System.out.println();
+        printSolutionMetrics("GREEDY", greedySolution);
+
+        System.out.println();
+        System.out.println("##################################### FASE 2: ALGORITMO NSGA-II #####################################");
+        System.out.println();
+        System.out.println("  - Tamaño de población: " + populationSize);
+        System.out.println("  - Probabilidad de cruzamiento: " + crossoverProbability);
+        System.out.println("  - Probabilidad de mutación: " + mutationProbability);
+        System.out.println();
+
         int maxEvaluations = 25000;
+        int recordEveryNGenerations = 10;
 
-        double crossoverProbability = 0.9;
-        double crossoverDistributionIndex = 20.0;
-        var crossover = new IntegerSBXCrossover(crossoverProbability, crossoverDistributionIndex);
-
-        double mutationProbability = 1.0 / problem.numberOfVariables();
-        double mutationDistributionIndex = 20.0;
-        var mutation = new IntegerPolynomialMutation(mutationProbability, mutationDistributionIndex);
+        CrossoverOperator<IntegerSolution> crossover = new TwoPointCrossover(crossoverProbability);
+        MutationOperator<IntegerSolution> mutation = new IntegerPolynomialMutation(mutationProbability, 5);
 
         var selection = new BinaryTournamentSelection<IntegerSolution>(
                 new RankingAndCrowdingDistanceComparator<>());
 
-        Algorithm<List<IntegerSolution>> algorithm = new NSGAIIBuilder<>(
+        SolutionRepairOperator repairOperator = new SolutionRepairOperator(instance, problem, randomSeed);
+
+        EvolutionTracker tracker = new EvolutionTracker(problem);
+
+        long nsgaStartTime = System.currentTimeMillis();
+
+        NSGAII_WithTelemetry algorithm = new NSGAII_WithTelemetry(
                 problem,
+                maxEvaluations,
+                populationSize,
+                populationSize,
+                populationSize,
                 crossover,
                 mutation,
-                populationSize)
-                .setSelectionOperator(selection)
-                .setMaxEvaluations(maxEvaluations)
-                .build();
+                selection,
+                new SequentialSolutionListEvaluator<>(),
+                tracker,
+                repairOperator,
+                recordEveryNGenerations);
 
         algorithm.run();
 
@@ -89,57 +98,59 @@ public class Main {
             problem.evaluate(sol);
         }
 
-        System.out.println("\nOptimizacion completada.");
-        System.out.println("Soluciones en el frente de Pareto: " + population.size());
+        long nsgaEndTime = System.currentTimeMillis();
+        long nsgaTime = nsgaEndTime - nsgaStartTime;
 
+        System.out.println("Tiempo de ejecución: " + nsgaTime + " ms");
+        System.out.println("Evaluaciones: " + maxEvaluations);
+        System.out.println();
+
+        // Filtrar soluciones factibles
         List<IntegerSolution> feasibleSolutions = population.stream()
                 .filter(Main::isFeasible)
                 .toList();
 
-        System.out.println("Soluciones factibles: " + feasibleSolutions.size());
-
+        IntegerSolution bestNSGAII = null;
         if (!feasibleSolutions.isEmpty()) {
-            System.out.println("\n=== Frente de Pareto (soluciones factibles) ===");
-            System.out.println("Asignaciones | Separacion Promedio");
-            System.out.println("-".repeat(40));
-
-            List<IntegerSolution> sortedPareto = feasibleSolutions.stream()
-                    .sorted(Comparator.comparingDouble(s -> s.objectives()[0]))
-                    .toList();
-
-            for (int i = 0; i < Math.min(10, sortedPareto.size()); i++) {
-                IntegerSolution sol = sortedPareto.get(i);
-                System.out.printf("%12d | %.2f dias\n",
-                        (int) sol.objectives()[0],
-                        -sol.objectives()[1]);
-            }
-            if (sortedPareto.size() > 10) {
-                System.out.println("... y " + (sortedPareto.size() - 10) + " soluciones mas");
-            }
-
-            IntegerSolution bestSolution = selectBestCompromiseSolution(feasibleSolutions);
-
-            System.out.println("\n=== Mejor Solucion de Compromiso ===");
-            System.out.println("Objetivo 1 (asignaciones): " + (int) bestSolution.objectives()[0]);
-            System.out.println(
-                    "Objetivo 2 (separacion promedio): " + String.format("%.2f dias", -bestSolution.objectives()[1]));
-            System.out.println("Deficit capacidad: " + (int) (-bestSolution.constraints()[0]));
-            System.out.println("Materias no asignadas: " + (int) (-bestSolution.constraints()[1]));
-
-            decoder.printSummary(bestSolution);
-            decoder.printScheduleSummary(bestSolution);
-            decoder.printMatrix(bestSolution, 3);
-
-            decoder.exportToCSV(bestSolution, "output/" + instanceName);
+            bestNSGAII = selectBestCompromiseSolution(feasibleSolutions);
+            System.out.println();
+            printSolutionMetrics("NSGA-II (mejor compromiso)", bestNSGAII);
         } else {
-            System.out.println("\nNo se encontraron soluciones factibles.");
-            System.out.println("Usando solucion greedy.");
-            decoder.printSummary(greedySolution);
-            decoder.printScheduleSummary(greedySolution);
-            decoder.printMatrix(greedySolution, 3);
-
-            decoder.exportToCSV(greedySolution, "output/" + instanceName);
+            System.out.println("\nNo se encontraron soluciones factibles con NSGA-II.");
+            bestNSGAII = population.stream()
+                    .min(Comparator.comparingDouble(s -> s.objectives()[0]))
+                    .orElse(null);
+            if (bestNSGAII != null) {
+                printSolutionMetrics("NSGA-II (mejor no factible)", bestNSGAII);
+            }
         }
+
+        decoder.exportToCSV(greedySolution, "output/" + instanceName + "_greedy");
+
+        if (bestNSGAII != null) {
+            decoder.exportToCSV(bestNSGAII, "output/" + instanceName + "_nsga2");
+        }
+
+        String telemetryBasePath = "output/" + instanceName + "_evolucion";
+        tracker.saveToCsv(telemetryBasePath);
+
+        List<IntegerSolution> solutionsToExport = !feasibleSolutions.isEmpty()
+                ? feasibleSolutions
+                : population;
+        int instanceSize = instance.getSubjects().size();
+        exportParetoFront(solutionsToExport, "output/" + instanceName + "_pareto_front.csv",
+                instanceName, instanceSize, populationSize,
+                crossoverProbability, mutationProbability);
+
+    }
+
+    private static void printSolutionMetrics(String name, IntegerSolution solution) {
+        System.out.println("Resultados " + name + ":");
+        System.out.println("  - Asignaciones totales: " + (int) solution.objectives()[0]);
+        System.out.println("  - Separación promedio: " + String.format("%.2f días", -solution.objectives()[1]));
+        System.out.println("  - Déficit capacidad: " + (int) (-solution.constraints()[0]));
+        System.out.println("  - Materias sin asignar: " + (int) (-solution.constraints()[1]));
+        System.out.println("  - Factible: " + (isFeasible(solution) ? "Sí" : "No"));
     }
 
     private static IntegerSolution selectBestCompromiseSolution(List<IntegerSolution> population) {
@@ -177,5 +188,178 @@ public class Main {
             }
         }
         return true;
+    }
+
+    private static void exportParetoFront(List<IntegerSolution> population, String filePath,
+                                          String instanceName, int instanceSize, int populationSize,
+                                          double crossoverProb, double mutationProb) throws IOException {
+        new java.io.File("output").mkdirs();
+
+        List<IntegerSolution> solutionsForHV = new ArrayList<>();
+
+        java.io.File file = new java.io.File(filePath);
+        boolean fileExists = file.exists();
+
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(
+                new java.io.FileWriter(filePath, true))) { // append mode
+            if (!fileExists) {
+                writer.println("f1,f2");
+            }
+
+            for (IntegerSolution solution : population) {
+                double obj1 = solution.objectives()[0];
+                double obj2 = -solution.objectives()[1];
+                writer.printf("%.6f,%.6f\n", obj1, obj2);
+
+                solutionsForHV.add(solution);
+            }
+        }
+
+        double hypervolume = 0.0;
+        if (!solutionsForHV.isEmpty()) {
+            try {
+                List<Double> referencePoint = new ArrayList<>();
+                referencePoint.add(1.0);
+                referencePoint.add(1.0);
+
+                hypervolume = calculateHypervolume2DNormalized(solutionsForHV, referencePoint);
+
+            } catch (Exception e) {
+                System.err.println("Error calculando hipervolumen: " + e.getMessage());
+                e.printStackTrace();
+                hypervolume = 0.0;
+            }
+        }
+
+        saveHypervolumeStatistics(instanceName, instanceSize, populationSize, crossoverProb, mutationProb,
+                hypervolume, filePath);
+
+    }
+
+    private static double calculateHypervolume2DNormalized(List<IntegerSolution> solutions,
+            List<Double> referencePoint) {
+        if (solutions.isEmpty()) {
+            return 0.0;
+        }
+
+        final double MAX_SEPARATION = 25.0;
+        final double MAX_ASSIGNMENTS = 1200.0;
+
+        double refF1 = referencePoint.get(0);
+        double refF2 = referencePoint.get(1);
+
+        List<SolutionNormalized> normalizedSolutions = new ArrayList<>();
+
+        for (IntegerSolution sol : solutions) {
+            double assignments = sol.objectives()[0];
+            double separationNeg = sol.objectives()[1];
+            double separation = -separationNeg;
+
+            double f1_norm = 1.0 - (separation / MAX_SEPARATION);
+
+            double f2_norm = assignments / MAX_ASSIGNMENTS;
+
+            if (f1_norm <= refF1 && f2_norm <= refF2) {
+                normalizedSolutions.add(new SolutionNormalized(sol, f1_norm, f2_norm));
+            }
+        }
+
+        if (normalizedSolutions.isEmpty()) {
+            return 0.0;
+        }
+
+        List<SolutionNormalized> nonDominated = new ArrayList<>();
+        for (int i = 0; i < normalizedSolutions.size(); i++) {
+            SolutionNormalized sol1 = normalizedSolutions.get(i);
+            boolean isDominated = false;
+
+            for (int j = 0; j < normalizedSolutions.size(); j++) {
+                if (i == j)
+                    continue;
+                SolutionNormalized sol2 = normalizedSolutions.get(j);
+
+                if (sol2.f1_norm <= sol1.f1_norm &&
+                        sol2.f2_norm <= sol1.f2_norm &&
+                        (sol2.f1_norm < sol1.f1_norm ||
+                                sol2.f2_norm < sol1.f2_norm)) {
+                    isDominated = true;
+                    break;
+                }
+            }
+
+            if (!isDominated) {
+                nonDominated.add(sol1);
+            }
+        }
+
+        if (nonDominated.isEmpty()) {
+            return 0.0;
+        }
+
+        nonDominated.sort(Comparator.comparingDouble(s -> s.f1_norm));
+
+        double hv = 0.0;
+        double prevF1 = refF1;
+        double prevF2 = refF2;
+
+        for (SolutionNormalized sol : nonDominated) {
+            double f1 = sol.f1_norm;
+            double f2 = sol.f2_norm;
+
+            double width = prevF1 - f1;
+            double height = prevF2 - f2;
+
+            if (width > 0 && height > 0) {
+                hv += width * height;
+                prevF1 = f1;
+                prevF2 = f2;
+            }
+        }
+
+        return Math.max(0.0, hv);
+    }
+
+    /**
+     * Clase auxiliar para almacenar soluciones con valores normalizados.
+     */
+    private static class SolutionNormalized {
+        final IntegerSolution solution;
+        final double f1_norm;
+        final double f2_norm;
+
+        SolutionNormalized(IntegerSolution solution, double f1_norm, double f2_norm) {
+            this.solution = solution;
+            this.f1_norm = f1_norm;
+            this.f2_norm = f2_norm;
+        }
+    }
+
+    /**
+     * Guarda las estadísticas de hipervolumen en un archivo CSV.
+     */
+    private static void saveHypervolumeStatistics(String instanceName, int instanceSize, int populationSize,
+            double crossoverProb, double mutationProb,
+            double hypervolume, String paretoFilePath) throws IOException {
+        String statsFilePath = "output/" + instanceName + "_hypervolume_stats.csv";
+        java.io.File statsFile = new java.io.File(statsFilePath);
+
+        boolean fileExists = statsFile.exists();
+
+        try (java.io.PrintWriter writer = new java.io.PrintWriter(
+                new java.io.FileWriter(statsFilePath, true))) { // append mode
+
+            if (!fileExists) {
+                writer.println("INSTANCIA,TAM,POB,CRU,MUT,HV,PARETO_FILE");
+            }
+
+            writer.printf("%s,%d,%d,%.2f,%.3f,%.6f,%s%n",
+                    instanceName,
+                    instanceSize,
+                    populationSize,
+                    crossoverProb,
+                    mutationProb,
+                    hypervolume,
+                    paretoFilePath);
+        }
     }
 }

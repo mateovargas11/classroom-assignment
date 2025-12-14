@@ -1,0 +1,25 @@
+\subsection{Resultados para la instancia Diciembre}
+
+Para la instancia correspondiente al período de diciembre, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución reducido (31 ms), asignando la totalidad de las materias sin déficit de capacidad y alcanzando una separación promedio de 8.48 días. Este resultado constituye nuevamente una línea base eficiente, aunque limitada en términos de optimización del segundo objetivo.
+
+La aplicación de NSGA-II muestra un comportamiento particularmente favorable en esta instancia. Al finalizar la evolución, el algoritmo alcanza un frente de Pareto completamente factible, compuesto por diez soluciones no dominadas que reflejan un trade-off progresivo entre número de asignaciones y separación temporal. A diferencia de la instancia de julio, la factibilidad se mantiene en toda la población final.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor mínimo constante de 277 en todas las ejecuciones, lo que se traduce en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora se concentra en el segundo objetivo, donde se observa un incremento del 56.9\% en la separación promedio respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado presenta una separación promedio de 13.46 días, superando ampliamente al Greedy, a costa de un incremento marginal en el número de asignaciones (278 frente a 277). El análisis de hipervolumen respalda estos resultados, con una mediana de 0.4135 y una desviación estándar reducida, evidenciando un desempeño robusto y consistente del algoritmo en esta instancia.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Diciembre (30 ejecuciones)}
+\label{tab:resultados-diciembre-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 277.00 & -13.64 & 0.4140 \\
+Desviación estándar & 0.00 & 0.25 & 0.0095 \\
+Mejor valor & 277.00 & -14.18 & 0.4364 \\
+Peor valor & 277.00 & -13.21 & 0.3933 \\
+\hline
+\end{tabular}
+\end{table}

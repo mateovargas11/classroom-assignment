@@ -1,0 +1,25 @@
+\subsection{Resultados para la instancia Julio}
+
+Para la instancia correspondiente al período de julio, el algoritmo Greedy (Best-Fit) obtiene nuevamente una solución factible en un tiempo de ejecución muy reducido (22 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 7.63 días. Al igual que en la instancia de febrero, el enfoque Greedy actúa como una línea base eficiente pero limitada en términos de optimización multiobjetivo.
+
+La aplicación de NSGA-II muestra una mejora significativa en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 62.8\% respecto al valor inicial. Sin embargo, a diferencia de la instancia de febrero, el algoritmo no logra preservar la factibilidad al final del proceso evolutivo: ninguna de las soluciones del frente de Pareto final cumple con las restricciones de capacidad, registrándose un déficit acumulado de 423 unidades en la mejor solución no factible.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor constante de 288 en todas las ejecuciones, lo que se refleja en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora en la separación se obtiene a costa de violaciones de factibilidad, evidenciando un conflicto más severo entre ambos objetivos en esta instancia particular.
+
+El análisis de hipervolumen indica un desempeño consistente del algoritmo en términos de diversidad y convergencia, con una mediana de 0.4018 y una baja desviación estándar. No obstante, este resultado debe interpretarse con cautela, dado que el hipervolumen se calcula sobre soluciones no factibles, lo que refuerza la necesidad de mecanismos más estrictos de manejo de restricciones para esta instancia.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Julio (30 ejecuciones)}
+\label{tab:resultados-julio-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 288.00 & -13.26 & 0.4001 \\
+Desviación estándar & 0.00 & 0.38 & 0.0107 \\
+Mejor valor & 288.00 & -13.93 & 0.4182 \\
+Peor valor & 288.00 & -12.40 & 0.3752 \\
+\hline
+\end{tabular}
+\end{table}

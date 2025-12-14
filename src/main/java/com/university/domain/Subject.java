@@ -6,7 +6,8 @@ public class Subject {
     private int enrolledStudents;
     private double durationHours;
 
-    public Subject() {}
+    public Subject() {
+    }
 
     public Subject(String id, String name, int enrolledStudents, double durationHours) {
         this.id = id;
@@ -35,16 +36,8 @@ public class Subject {
         return enrolledStudents;
     }
 
-    public void setEnrolledStudents(int enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
-
     public double getDurationHours() {
         return durationHours;
-    }
-
-    public void setDurationHours(double durationHours) {
-        this.durationHours = durationHours;
     }
 
     public int getDurationBlocks() {
@@ -53,7 +46,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return String.format("Subject[id=%s, name=%s, enrolled=%d, duration=%.1fh]", 
-            id, name, enrolledStudents, durationHours);
+        return String.format("Subject[id=%s, name=%s, enrolled=%d, duration=%.1fh]",
+                id, name, enrolledStudents, durationHours);
     }
 }

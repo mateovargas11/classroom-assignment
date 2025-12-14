@@ -1,0 +1,452 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025/Homebrew) (preloaded format=pdflatex 2025.11.7)  14 DEC 2025 10:23
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**bare_conf.tex
+(./bare_conf.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(./IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+\@IEEEtrantmpdimenA=\dimen141
+\@IEEEtrantmpdimenB=\dimen142
+\@IEEEtrantmpdimenC=\dimen143
+\@IEEEtrantmpcountA=\count196
+\@IEEEtrantmpcountB=\count197
+\@IEEEtrantmpcountC=\count198
+\@IEEEtrantmptoksA=\toks17
+LaTeX Font Info:    Trying to load font information for OT1+ptm on input line 5
+03.
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1ptm.
+fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+\@IEEEnormalsizeunitybaselineskip=\dimen144
+-- This is a 10 point document.
+\CLASSINFOnormalsizebaselineskip=\dimen145
+\CLASSINFOnormalsizeunitybaselineskip=\dimen146
+\IEEEnormaljot=\dimen147
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <5> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <7> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <9> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <11> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <17> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <20> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1090.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <24> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 1090.
+
+\IEEEquantizedlength=\dimen148
+\IEEEquantizedlengthdiff=\dimen149
+\IEEEquantizedtextheightdiff=\dimen150
+\IEEEilabelindentA=\dimen151
+\IEEEilabelindentB=\dimen152
+\IEEEilabelindent=\dimen153
+\IEEEelabelindent=\dimen154
+\IEEEdlabelindent=\dimen155
+\IEEElabelindent=\dimen156
+\IEEEiednormlabelsep=\dimen157
+\IEEEiedmathlabelsep=\dimen158
+\IEEEiedtopsep=\skip49
+\c@section=\count199
+\c@subsection=\count266
+\c@subsubsection=\count267
+\c@paragraph=\count268
+\c@IEEEsubequation=\count269
+\abovecaptionskip=\skip50
+\belowcaptionskip=\skip51
+\c@figure=\count270
+\c@table=\count271
+\@IEEEeqnnumcols=\count272
+\@IEEEeqncolcnt=\count273
+\@IEEEsubeqnnumrollback=\count274
+\@IEEEquantizeheightA=\dimen159
+\@IEEEquantizeheightB=\dimen160
+\@IEEEquantizeheightC=\dimen161
+\@IEEEquantizeprevdepth=\dimen162
+\@IEEEquantizemultiple=\count275
+\@IEEEquantizeboxA=\box52
+\@IEEEtmpitemindent=\dimen163
+\IEEEPARstartletwidth=\dimen164
+\c@IEEEbiography=\count276
+\@IEEEtranrubishbin=\box53
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/graph
+icx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/keyva
+l.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks18
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/graph
+ics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics/trig.
+sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-cfg/g
+raphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/graphics-def/p
+dftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen165
+\Gin@req@width=\dimen166
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/float/float.st
+y
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count277
+\float@exts=\toks19
+\float@box=\box54
+\@float@everytoks=\toks20
+\@floatcapt=\box55
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/tools/longtabl
+e.sty
+Package: longtable 2024-10-27 v4.22 Multi-page Table package (DPC)
+\LTleft=\skip52
+\LTright=\skip53
+\LTpre=\skip54
+\LTpost=\skip55
+\LTchunksize=\count278
+\LTcapwidth=\dimen167
+\LT@head=\box56
+\LT@firsthead=\box57
+\LT@foot=\box58
+\LT@lastfoot=\box59
+\LT@gbox=\box60
+\LT@cols=\count279
+\LT@rows=\count280
+\c@LT@tables=\count281
+\c@LT@chunks=\count282
+\LT@p@ftn=\toks21
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/l3backend/l3ba
+ckend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count283
+\l__pdf_internal_box=\box61
+) (./bare_conf.aux)
+\openout1 = `bare_conf.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+
+-- Lines per column: 56 (exact).
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/context/base/mkii/su
+pp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count284
+\scratchdimen=\dimen168
+\scratchbox=\box62
+\nofMPsegments=\count285
+\nofMParguments=\count286
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count287
+\MPscratchDim=\dimen169
+\MPnumerator=\count288
+\makeMPintoPDFobject=\count289
+\everyMPtoPDFconversion=\toks23
+)
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/epstopdf-pkg/e
+pstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/latexconfig/ep
+stopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 72.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 72.
+
+
+
+
+[1{/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/map/pdftex/updma
+p/pdftex.map}{/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/enc/d
+vips/base/8r.enc}
+
+
+]
+LaTeX Font Info:    Trying to load font information for OT1+pcr on input line 1
+27.
+
+(/usr/local/Cellar/texlive/20250308_2/share/texmf-dist/tex/latex/psnfss/ot1pcr.
+fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+Underfull \hbox (badness 1881) in paragraph at lines 135--136
+[]\OT1/ptm/b/n/10 Disponibilidad: \OT1/ptm/m/n/10 un sal[]on no puede us-arse e
+n dos
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 143--144
+[]\OT1/ptm/b/n/10 Decodificaci[]on in-teligente \OT1/ptm/m/n/10 que busca ho-ra
+r-ios
+ []
+
+
+
+
+Underfull \hbox (badness 2269) in paragraph at lines 169--170
+[]\OT1/ptm/m/n/10 Se con-sid-erar[]an las in-stan-cias cor-re-spon-di-entes a l
+os
+ []
+
+
+Underfull \hbox (badness 2875) in paragraph at lines 185--186
+[]\OT1/ptm/b/n/10 Ventana tem-po-ral: \OT1/ptm/m/n/10 du-raci[]on to-tal del pe
+r[]^^Podo de
+ []
+
+
+
+[2]
+Underfull \hbox (badness 1888) in paragraph at lines 210--211
+\OT1/ptm/m/n/10 se model[]o como un \OT1/pcr/m/n/10 IntegerProblem\OT1/ptm/m/n/
+10 , con op-er-ador
+ []
+
+
+Underfull \hbox (badness 1675) in paragraph at lines 210--211
+\OT1/ptm/m/n/10 poli-no-mial de grado 5) y como op-er-ador de se-lecci[]on
+ []
+
+
+Underfull \hbox (badness 2096) in paragraph at lines 212--213
+[]\OT1/ptm/m/n/10 Para el al-go-ritmo se cre[]o una clase propia lla-mada
+ []
+
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
+[]\OT1/ptm/m/n/10 Dado que se uti-liza un eval-u-ador se-cuen-cial
+ []
+
+
+Underfull \hbox (badness 1688) in paragraph at lines 218--219
+\OT1/ptm/m/n/10 que la funci[]on de de-cod-i-fi-caci[]on y eval-u-aci[]on re-qu
+iere
+ []
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 229.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 229.
+<img/histograma-hv.png, id=21, 609.27625pt x 466.74374pt>
+File: img/histograma-hv.png Graphic file (type png)
+<use img/histograma-hv.png>
+Package pdftex.def Info: img/histograma-hv.png  used on input line 258.
+(pdftex.def)             Requested size: 239.39923pt x 183.39673pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<img/hv-qq.png, id=23, 609.27625pt x 466.74374pt>
+File: img/hv-qq.png Graphic file (type png)
+<use img/hv-qq.png>
+Package pdftex.def Info: img/hv-qq.png  used on input line 265.
+(pdftex.def)             Requested size: 239.39923pt x 183.39673pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+
+[3]
+Underfull \vbox (badness 2088) has occurred while \output is active []
+
+
+
+<img/evolucion_nsga2_promedio.png, id=27, 1004.553pt x 711.6186pt>
+File: img/evolucion_nsga2_promedio.png Graphic file (type png)
+<use img/evolucion_nsga2_promedio.png>
+Package pdftex.def Info: img/evolucion_nsga2_promedio.png  used on input line 3
+34.
+(pdftex.def)             Requested size: 239.39923pt x 169.58667pt.
+
+
+[4 <./img/histograma-hv.png> <./img/hv-qq.png>]
+<img/pareto_front.png, id=33, 1606.0pt x 1143.27126pt>
+File: img/pareto_front.png Graphic file (type png)
+<use img/pareto_front.png>
+Package pdftex.def Info: img/pareto_front.png  used on input line 345.
+(pdftex.def)             Requested size: 246.95892pt x 175.79218pt.
+
+
+
+
+[5 <./img/evolucion_nsga2_promedio.png> <./img/pareto_front.png>]
+<img/evolucion_nsga2_febrero.png, id=38, 1005.0348pt x 711.6186pt>
+File: img/evolucion_nsga2_febrero.png Graphic file (type png)
+<use img/evolucion_nsga2_febrero.png>
+Package pdftex.def Info: img/evolucion_nsga2_febrero.png  used on input line 41
+5.
+(pdftex.def)             Requested size: 239.39923pt x 169.4998pt.
+
+
+<img/evolucion_nsga2_julio.png, id=39, 1004.553pt x 711.6186pt>
+File: img/evolucion_nsga2_julio.png Graphic file (type png)
+<use img/evolucion_nsga2_julio.png>
+Package pdftex.def Info: img/evolucion_nsga2_julio.png  used on input line 450.
+
+(pdftex.def)             Requested size: 239.39923pt x 169.58667pt.
+
+
+[6 <./img/evolucion_nsga2_febrero.png> <./img/evolucion_nsga2_julio.png>]
+<img/evolucion_nsga2_diciembre.png, id=45, 1004.553pt x 711.6186pt>
+File: img/evolucion_nsga2_diciembre.png Graphic file (type png)
+<use img/evolucion_nsga2_diciembre.png>
+Package pdftex.def Info: img/evolucion_nsga2_diciembre.png  used on input line 
+486.
+(pdftex.def)             Requested size: 239.39923pt x 169.58667pt.
+
+Underfull \vbox (badness 5374) has occurred while \output is active []
+
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 524--526
+[]\OT1/ptm/m/n/8 JMetal Frame-work Doc-u-men-ta-tion. \OT1/ptm/m/it/8 Op-er-a-t
+ors\OT1/ptm/m/n/8 . $https : / / jmetal .
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[7 <./img/evolucion_nsga2_diciembre.png>]
+
+
+
+[8
+
+] (./anexo_table.tex [9
+
+] [10] [11] [12] [13])
+
+[14]
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+(./bare_conf.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 2527 strings out of 473190
+ 45841 string characters out of 5705898
+ 607213 words of memory out of 5000000
+ 25782 multiletter control sequences out of 15000+600000
+ 595616 words of font info for 97 fonts, out of 8000000 for 9000
+ 1144 hyphenation exceptions out of 8191
+ 57i,9n,65p,892b,292s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmex10.pfb></usr/local/Cellar/texlive/20250308_2/share/texmf-dist/font
+s/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/Cellar/texlive/20250308_2/sha
+re/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/l
+ocal/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr7.pfb></usr/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb></usr/local/Cellar/texlive/20250308_2/share/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/Cellar/texlive/20250308
+_2/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/Cellar/texli
+ve/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/Cel
+lar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr
+/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/times/utmr8a.
+pfb></usr/local/Cellar/texlive/20250308_2/share/texmf-dist/fonts/type1/urw/time
+s/utmri8a.pfb>
+Output written on bare_conf.pdf (14 pages, 1355919 bytes).
+PDF statistics:
+ 125 PDF objects out of 1000 (max. 8388607)
+ 71 compressed objects within 1 object stream
+ 0 named destinations out of 1000 (max. 500000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+

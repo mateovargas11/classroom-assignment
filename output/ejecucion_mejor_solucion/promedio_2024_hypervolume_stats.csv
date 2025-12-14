@@ -1,0 +1,2 @@
+INSTANCIA,TAM,POB,CRU,MUT,HV,PARETO_FILE
+promedio_2024,286,100,0.80,0.001,0.424210,output/promedio_2024_pareto_front.csv

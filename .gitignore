@@ -1,0 +1,12 @@
+# Ignorar clases compiladas y artefactos de build
+*.class
+/target/
+
+# Archivos de sistema/IDE
+.DS_Store
+.idea/
+
+# Node/npm, Python, etc. (si se agregan más en el futuro)
+node_modules/
+__pycache__/
+*.pyc

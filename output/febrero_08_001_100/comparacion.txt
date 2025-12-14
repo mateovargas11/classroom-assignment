@@ -1,0 +1,59 @@
+╔════════════════════════════════════════════════════════════╗
+║  FASE 1: ALGORITMO GREEDY (Best-Fit)                       ║
+╚════════════════════════════════════════════════════════════╝
+Tiempo de ejecución: 52 ms
+
+Resultados GREEDY:
+  - Asignaciones totales: 282
+  - Separación promedio: 8.21 días
+  - Déficit capacidad: 0
+  - Materias sin asignar: 0
+  - Factible: Sí
+
+
+
+╔════════════════════════════════════════════════════════════╗
+║  FASE 2: ALGORITMO NSGA-II (Multi-objetivo)                ║
+╚════════════════════════════════════════════════════════════╝
+
+=== RESUMEN DE EVOLUCIÓN ===
+Generaciones registradas: 26
+Última generación: 26
+Tiempo total: 27863 ms
+
+Mejora en Objetivo 1 (Asignaciones):
+  Inicial: 282.00 → Final: 282.00 (0.0% mejora)
+
+Mejora en Objetivo 2 (Separación):
+  Inicial: 9.19 días → Final: 14.04 días (52.8% mejora)
+
+Soluciones factibles:
+  Inicial: 83/100 → Final: 100/100
+Tiempo de ejecución: 28881 ms
+Evaluaciones: 25000
+Tamaño de población: 100
+
+Soluciones en el frente de Pareto: 5
+Soluciones factibles: 5
+
+
+Resultados NSGA-II (mejor compromiso):
+  - Asignaciones totales: 284
+  - Separación promedio: 14.03 días
+  - Déficit capacidad: 0
+  - Materias sin asignar: 0
+  - Factible: Sí
+
+╔════════════════════════════════════════════════════════════╗
+║  COMPARACIÓN DE RESULTADOS                                 ║
+╚════════════════════════════════════════════════════════════╝
+
+┌────────────────────────┬────────────────┬────────────────┐
+│ Métrica                │ GREEDY         │ NSGA-II        │
+├────────────────────────┼────────────────┼────────────────┤
+│ Asignaciones reales    │          282 ✓ │          284 │
+│ Exceso de salones      │              0 │              2 │
+│ Separación (días)      │         8.21 │        14.03 ✓ │
+│ Tiempo (ms)            │             52 │          28881 │
+│ Factible               │             Sí │             Sí │
+└────────────────────────┴────────────────┴────────────────┘

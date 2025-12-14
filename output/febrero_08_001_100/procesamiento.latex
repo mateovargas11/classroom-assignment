@@ -1,0 +1,25 @@
+\subsection{Resultados para la instancia Febrero}
+
+Para la instancia correspondiente al período de febrero, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución muy reducido (52 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 8.21 días. Este resultado sirve como línea base eficiente, aunque limitada en términos de calidad multiobjetivo.
+
+Al aplicar NSGA-II, partiendo de una población inicial parcialmente factible, el algoritmo logra alcanzar un frente de Pareto completamente factible al final de la evolución. Si bien el objetivo asociado a las asignaciones no presenta mejora —convergendo siempre al mismo valor mínimo de 282—, se observa una mejora sustancial en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 52.8\% respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado por NSGA-II logra una separación promedio de 14.03 días, superando ampliamente al Greedy, a costa de un leve incremento en el uso de salones (284 asignaciones frente a 282). La estabilidad del primer objetivo, reflejada en una desviación estándar nula, indica que este criterio está fuertemente restringido y presenta un óptimo global estable, mientras que la variabilidad del desempeño se concentra en el segundo objetivo.
+
+El análisis de hipervolumen confirma un desempeño consistente del algoritmo, con una mediana de 0.3908 y una desviación estándar reducida, lo que evidencia una buena robustez inter-ejecución.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Febrero (30 ejecuciones)}
+\label{tab:resultados-febrero-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 282.00 & -12.75 & 0.3871 \\
+Desviación estándar & 0.00 & 0.78 & 0.0240 \\
+Mejor valor & 282.00 & -13.86 & 0.4227 \\
+Peor valor & 282.00 & -11.27 & 0.3414 \\
+\hline
+\end{tabular}
+\end{table}

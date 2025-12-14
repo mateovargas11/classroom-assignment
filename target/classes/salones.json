@@ -1,0 +1,275 @@
+[
+  {
+    "id": "B01",
+    "nombre": "B01 FCEA Massera Planta Baja 377 223 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "Planta",
+    "aforo": 223
+  },
+  {
+    "id": "C01",
+    "nombre": "C01 FADU-FCEA-FING Massera Planta Baja 328 -- anfiteatro",
+    "edificio": "Massera",
+    "ubicacion": "Planta",
+    "aforo": 194
+  },
+  {
+    "id": "307",
+    "nombre": "307 Grado Central 3er. Piso 330 180 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 180
+  },
+  {
+    "id": "A01",
+    "nombre": "A01 FADU Massera Planta Baja 242 145 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "Planta",
+    "aforo": 145
+  },
+  {
+    "id": "B12",
+    "nombre": "B12 FADU Massera 1er. Piso 247 141 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 141
+  },
+  {
+    "id": "C12",
+    "nombre": "C12 FCEA Massera 1er. Piso 215 131 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 131
+  },
+  {
+    "id": "Actos",
+    "nombre": "Actos FING Central 1er. Piso 248 128 anfiteatro",
+    "edificio": "Central",
+    "ubicacion": "1er.",
+    "aforo": 128
+  },
+  {
+    "id": "A22",
+    "nombre": "A22 FCEA Massera 2do. Piso 207 124 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 124
+  },
+  {
+    "id": "A12",
+    "nombre": "A12 FING Massera 1er. Piso 196 119 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 119
+  },
+  {
+    "id": "C22",
+    "nombre": "C22 FING Massera 2do. Piso 175 102 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 102
+  },
+  {
+    "id": "B23",
+    "nombre": "B23 FING Massera 2do. Piso 177 101 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 101
+  },
+  {
+    "id": "Hall",
+    "nombre": "Hall 1º piso FING Central 1er. Piso 0 100 --",
+    "edificio": "Central",
+    "ubicacion": "1er.",
+    "aforo": 100
+  },
+  {
+    "id": "312",
+    "nombre": "312 Grado Central 3er. Piso 156 94 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 94
+  },
+  {
+    "id": "301",
+    "nombre": "301 Grado Central 3er. Piso 127 76 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 76
+  },
+  {
+    "id": "303",
+    "nombre": "303 Grado Central 3er. Piso 127 76 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 76
+  },
+  {
+    "id": "A21",
+    "nombre": "A21 FING Massera 2do. Piso 112 72 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 72
+  },
+  {
+    "id": "Piso",
+    "nombre": "Piso Verde FING Central 3er. Subsuelo - Nivel 1 0 70 --",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 70
+  },
+  {
+    "id": "501",
+    "nombre": "501 Grado Central 5to. Piso 130 62 anfiteatro",
+    "edificio": "Central",
+    "ubicacion": "5to.",
+    "aforo": 62
+  },
+  {
+    "id": "601",
+    "nombre": "601 Grado Central 6to. Piso 120 60 anfiteatro",
+    "edificio": "Central",
+    "ubicacion": "6to.",
+    "aforo": 60
+  },
+  {
+    "id": "B11",
+    "nombre": "B11 FING Massera 1er. Piso 88 50 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 50
+  },
+  {
+    "id": "115",
+    "nombre": "115 Grado Central 1er. Piso (Bandejas Metálicas - Nivel 4) 80 40 sillas SIN pupitres",
+    "edificio": "Central",
+    "ubicacion": "1er.",
+    "aforo": 40
+  },
+  {
+    "id": "B21",
+    "nombre": "B21 FING Massera 2do. Piso 65 39 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 39
+  },
+  {
+    "id": "31",
+    "nombre": "031 Grado Central 3er. Subsuelo (Bandejas Metálicas - Nivel 1) 58 35 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 35
+  },
+  {
+    "id": "305",
+    "nombre": "305 Grado Central 3er. Piso 59 35 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 35
+  },
+  {
+    "id": "B22",
+    "nombre": "B22 FING Massera 2do. Piso 54 32 sillas con pupitres",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 32
+  },
+  {
+    "id": "311",
+    "nombre": "311 Grado Central 3er. Piso 49 29 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 29
+  },
+  {
+    "id": "102",
+    "nombre": "102 Grado Central 1er. Piso 55 25 anfiteatro",
+    "edificio": "Central",
+    "ubicacion": "1er.",
+    "aforo": 25
+  },
+  {
+    "id": "A11",
+    "nombre": "A11 FADU Massera 1er. Piso 100-50 25 25 mesas",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 25
+  },
+  {
+    "id": "C11",
+    "nombre": "C11 FADU Massera 1er. Piso 100-50 25 25 mesas",
+    "edificio": "Massera",
+    "ubicacion": "1er.",
+    "aforo": 25
+  },
+  {
+    "id": "C21",
+    "nombre": "C21 FADU Massera 2do. Piso 100-50 25 25 mesas",
+    "edificio": "Massera",
+    "ubicacion": "2do.",
+    "aforo": 25
+  },
+  {
+    "id": "502",
+    "nombre": "502 - Azul Posgrado Central 5to. Piso 50 20 Híbrido",
+    "edificio": "Central",
+    "ubicacion": "5to.",
+    "aforo": 20
+  },
+  {
+    "id": "703",
+    "nombre": "703 - Rojo Posgrado Central 7mo. Piso 40 20 Híbrido",
+    "edificio": "Rojo",
+    "ubicacion": "7mo.",
+    "aforo": 20
+  },
+  {
+    "id": "705",
+    "nombre": "705 - Marrón Posgrado Central 7mo. Piso 40 20 Híbrido",
+    "edificio": "Marrón",
+    "ubicacion": "7mo.",
+    "aforo": 20
+  },
+  {
+    "id": "725",
+    "nombre": "725 - Beige Posgrado Central 7mo. Piso 40 20 sillas con pupitres",
+    "edificio": "Beige",
+    "ubicacion": "7mo.",
+    "aforo": 20
+  },
+  {
+    "id": "727",
+    "nombre": "727 - Gris Posgrado Central 7mo. Piso 50 20 sillas con pupitres",
+    "edificio": "Gris",
+    "ubicacion": "7mo.",
+    "aforo": 20
+  },
+  {
+    "id": "309",
+    "nombre": "309 Grado Central 3er. Piso 32 16 16 mesas",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 16
+  },
+  {
+    "id": "310",
+    "nombre": "310 Grado Central 3er. Piso 32 16 16 mesas",
+    "edificio": "Central",
+    "ubicacion": "3er.",
+    "aforo": 16
+  },
+  {
+    "id": "722",
+    "nombre": "722 - Naranja Grado Central 7mo. Piso 20 10 sillas con pupitres",
+    "edificio": "Naranja",
+    "ubicacion": "7mo.",
+    "aforo": 10
+  },
+  {
+    "id": "116",
+    "nombre": "116 Grado Central 1er. Piso (Bandejas Metálicas - Nivel 5) 15 6 sillas con pupitres",
+    "edificio": "Central",
+    "ubicacion": "1er.",
+    "aforo": 6
+  }
+]

@@ -1,0 +1,549 @@
+
+\documentclass[conference]{IEEEtran}
+
+\ifCLASSINFOpdf
+
+\else
+
+\fi
+
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+% Paquetes necesarios
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{url}
+
+% Configuración de espaciado entre párrafos
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{1em}
+
+\begin{document}
+
+\title{Algoritmos Evolutivos - 2025 \\ Asignación de Salones para Exámenes}
+
+
+% author names and affiliations
+% use a multiple column layout for up to three different
+% affiliations
+\author{\IEEEauthorblockN{Martín Ochoa}
+\IEEEauthorblockA{Facultad de Ingeniería, UDELAR\\
+Montevideo, Uruguay\\
+Email: martin.ochoa@fing.edu.uy}
+\and
+\IEEEauthorblockN{Mateo Vargas}
+\IEEEauthorblockA{Facultad de Ingeniería, UDELAR\\
+Montevideo, Uruguay\\
+Email: mateo.vargas@fing.edu.uy}}
+
+% make the title area
+\maketitle
+
+% As a general rule, do not put math, special symbols or citations
+% in the abstract
+\renewcommand{\abstractname}{Resumen}
+
+\begin{abstract}
+En este informe se presenta una implementación
+de un algoritmo evolutivo que busca optimizar la asignación de salones a exámenes, considerando la separación temporal entre materias del mismo semestre, minimizando los recursos humanos necesarios para cada examen.\end{abstract}
+
+\IEEEpeerreviewmaketitle
+
+
+
+\section{Descripción del problema}
+El presente trabajo aborda el problema de la \textbf{asignación de salones para exámenes} dentro de un periodo máximo de 25 días. El objetivo es generar un cronograma que respete las restricciones de aforo y horarios disponibles, maximice la distancia temporal entre materias de un mismo semestre (basándonos en la curricula sugerida de cada carrera), buscando además un uso eficiente de los recursos humanos.
+
+\section{Justificación de usar AE}
+
+Este tipo de problema pertenece a la categoría de \textit{problemas de optimización combinatoria con restricciones}, caracterizado por un espacio de búsqueda de gran tamaño y múltiples objetivos en conflicto.
+
+Tomando en consideración lo anterior, el uso de un algoritmo evolutivo se presenta como una alternativa apropiada para abordar este problema.
+Estos algoritmos destacan por su capacidad de explorar de manera eficiente amplios espacios de búsqueda, identificando soluciones de buena calidad en tiempos de ejecución razonables.
+Además, permiten tratar problemas con múltiples objetivos de forma natural, mediante enfoques como el frente de Pareto, que posibilitan obtener soluciones de compromiso entre diferentes criterios sin requerir la formulación de una única función objetivo.
+
+\section{Estrategia de resolución}
+
+\subsection{Representación}
+Dado un conjunto de exámenes \(E = \{e_1, e_2, \dots, e_n\}\) y un conjunto de salones \(S = \{s_1, s_2, \dots, s_m\}\), se busca asignar a cada examen:
+\begin{itemize}
+    \item Un día \(d_i \in [0, 24]\) (máximo 25 días),
+    \item Una franja horaria 
+    \item Una asignación de salones \(C_i \subseteq S\) tal que el aforo total de \(C_i\) cubra la cantidad de inscriptos en \(e_i\).
+\end{itemize}
+
+
+
+
+El espacio de búsqueda se representa mediante un vector basado en \textit{slots}. Cada slot corresponde a una posible asignación de examen y contiene la siguiente información:
+
+\[
+\mathrm{slot} = [\mathrm{examen\_index}, \mathrm{dia}, \mathrm{salon}_1, \mathrm{salon}_2, \mathrm{salon}_3, \mathrm{salon}_4]
+\]
+
+Donde:
+\begin{itemize}
+    \item \textbf{examen\_index}: Índice del examen (0 a \(n-1\), donde \(n\) es el número de materias). El valor \(n\) representa un slot vacío.
+    \item \textbf{dia}: Índice del día preferido (0 a 24, correspondiente al período máximo de 25 días).
+    \item \textbf{salon\(_i\)}: Índice del salón \(i\) (0 a \(m-1\), donde \(m\) es el número de salones). El valor \(m\) representa "sin salón adicional".
+\end{itemize}
+
+El vector completo tiene tamaño \(n \times 6\), donde \(n\) es el número de exámenes (un slot por cada examen posible) y 6 corresponde al tamaño de cada slot (1 examen + 1 día + 4 salones).
+
+La \textbf{decodificación} se realiza procesando cada slot en orden:
+\begin{enumerate}
+    \item Si el examen es vacío, se ignora el slot.
+    \item Se obtienen los salones válidos (excluyendo el valor "sin salón").
+    \item Se busca el horario más temprano en el día preferido donde \textbf{todos} los salones estén libres simultáneamente.
+    \item Si no hay disponibilidad en el día preferido, se intenta en días cercanos.
+    \item Se asigna el examen a ese horario en todos los salones especificados.
+\end{enumerate}
+
+Esta estrategia garantiza que todos los salones de un mismo examen compartan el mismo día y horario, cumpliendo la restricción de simultaneidad.
+
+
+\subsection{Funciones objetivo}
+
+Se definen dos funciones objetivo principales:
+
+\subsection*{1) Minimizar cantidad de salones utilizados}
+
+\[
+f_1 = \sum_{k=1}^{n} C_k
+\]
+
+donde \(C_k\) es la cantidad de salones asignados al examen \(e_k\). Este objetivo busca minimizar el número total de asignaciones materia-salón, promoviendo un uso eficiente de los recursos.
+
+\subsection*{2) Maximizar separación entre exámenes del mismo semestre}
+
+\[
+f_2 = -\frac{1}{|S|} \sum_{(i,j)\in S} |d_i - d_j|
+\]
+
+donde \(S\) es el conjunto de pares de exámenes pertenecientes al mismo semestre y \(d_i\), \(d_j\) son los días asignados a cada examen. El signo negativo se debe a que \texttt{jMetal} minimiza, por lo que se minimiza \(-f_2\) para maximizar la separación promedio.
+
+\subsection{Restricciones}
+
+Las restricciones que definen la validez de una solución son:
+
+\begin{itemize}
+    \item \textbf{Aforo:} el conjunto de salones asignado debe cubrir los inscriptos. Se penaliza el déficit de capacidad.
+    \item \textbf{Disponibilidad:} un salón no puede usarse en dos exámenes a la vez. Esto se garantiza durante la decodificación.
+    \item \textbf{Límite temporal:} el período total no puede superar los 25 días.
+    \item \textbf{Asignación simultánea:} Si un examen requiere más de un salón, todos deben compartir el mismo día y horario. Esto se garantiza por la estrategia de decodificación.
+    \item \textbf{Asignación completa:} todas las materias deben estar asignadas. Se penaliza la cantidad de materias no asignadas.
+\end{itemize}
+
+Las restricciones se manejan mediante:
+\begin{itemize}
+    \item \textbf{Decodificación inteligente} que busca horarios disponibles automáticamente.
+    \item \textbf{Restricciones en jMetal} que penalizan soluciones infactibles (déficit de capacidad y materias no asignadas).
+    \item Un \textbf{operador de reparación} que reasigna exámenes conflictivos cuando es posible.
+\end{itemize}
+
+\subsection{Operadores evolutivos}
+
+Los operadores seleccionados son:
+
+\begin{itemize}
+    \item \textbf{Inicialización:} aleatoria con combinaciones válidas de salones.
+    \item \textbf{Selección:} Para la selección de los individuos de la población usaremos BinaryTournamentSelection, usado típicamente en metodologías como NSGA-II que ha demostrado dar buenos resultados para problemas multi-objetivo.
+    \item \textbf{Cruce:} Para la parte de cruzamiento usaremos el método de cruzamiento de dos puntos. individuos.
+    \item \textbf{Mutación:} \texttt{IntegerPolynomialMutation}, alternando salón y/o posición del examen en el salón.
+
+\end{itemize}
+
+\subsection{Técnicas avanzadas,}
+
+Dado que se trata de un problema multiobjetivo y se empleará un modelo basado en el frente de Pareto para su resolución, resulta indispensable incorporar un mecanismo que mantenga la diversidad en la población, permitiendo así un muestreo adecuado del frente de Pareto.
+En particular, dado que el algoritmo utilizado es \texttt{NSGA-II}, se empleará el mecanismo de crowding distance provisto por este, el cual asegura una distribución equilibrada de las soluciones a lo largo del frente.
+
+\section{Propuesta de evaluación experimental}
+
+\subsection{Generación de instancias}
+
+Se considerarán las instancias correspondientes a los períodos de exámenes de las carreras de Ingeniería, tomando en cuenta los tres períodos de exámenes del año 2024:
+
+\begin{itemize}
+    \item \textbf{Febrero (02)}
+    \item \textbf{Julio (07)}
+    \item \textbf{Diciembre (12)}
+\end{itemize}
+
+Además, se definirá una \textbf{cuarta instancia promedio}, obtenida a partir del promedio del número de inscriptos en cada uno de los tres períodos anteriores. Esta instancia servirá como un caso general representativo.
+
+Cada instancia incluirá la siguiente información:
+
+\begin{itemize}
+    \item \textbf{Conjunto de exámenes:} materia, cantidad de inscriptos y duración del examen.
+    \item \textbf{Relaciones entre materias:} vínculos entre asignaturas del mismo semestre, según la currícula sugerida.
+    \item \textbf{Salones disponibles:} listado de aulas y sus respectivas capacidades.
+    \item \textbf{Ventana temporal:} duración total del período de exámenes (máximo 25 días).
+\end{itemize}
+
+\subsection{Comparación con otras técnicas}
+Para evaluar la calidad de las soluciones obtenidas mediante el algoritmo evolutivo, se implementará un algoritmo \textit{greedy} que asignará exámenes secuencialmente en función de su tamaño y restricciones, siguiendo una heurística simple.
+
+El \textit{greedy} servirá como \textit{baseline} o referencia comparativa frente a las soluciones multiobjetivo obtenidas con el AE.
+
+\subsection{Calidad de soluciones}
+
+Se evaluará la calidad y eficiencia de las soluciones mediante las siguientes métricas:
+
+\begin{itemize}
+    \item Separación promedio entre exámenes relacionados (calidad académica).
+    \item Número total de salones utilizados (eficiencia de recursos).
+    \item Tiempo de cómputo requerido por cada método y cantidad de generaciones necesarias.
+    \item Valor de \textit{fitness} (promedio, media, mejor y desviación) y cantidad de veces que se obtuvo.
+\end{itemize}
+
+\subsection{Eficiencia computacional}
+
+La eficiencia computacional se evaluará mediante el tiempo de ejecución promedio (en segundos) obtenido a partir de múltiples ejecuciones independientes, complementado con su correspondiente desviación estándar para medir la variabilidad del desempeño.
+
+\section{Decisiones de implementación}
+
+Para la implementación del algoritmo se usó Java 21 junto al framework de JMetal versión 6.6. El problema se modeló como un \texttt{IntegerProblem}, con operador de cruzamiento \texttt{TwoPointCrossover}, operador de mutación \texttt{IntegerPolynomialMutation} (con distribución polinomial de grado 5) y como operador de selección el \texttt{BinaryTournamentSelection} con el comparador \texttt{RankingAndCrowdingDistanceComparator}.
+
+Para el algoritmo se creó una clase propia llamada \texttt{NSGAII\_WithTelemetry}, basada en la clase de JMetal \texttt{NSGA-II}. Se introdujeron modificaciones como la integración de un fitness tracker, una clase que se creó llamada \texttt{EvolutionTracker} que se encarga de llevar y al finalizar guardar en un CSV la evolución del fitness del algoritmo, incluyendo métricas como el número de asignaciones, la separación entre exámenes relacionados y la cantidad de soluciones factibles por generación. Adicionalmente, se integró un operador de reparación \texttt{SolutionRepairOperator} que se ejecuta después de los operadores genéticos para mantener la factibilidad de las soluciones.
+
+Para el modelado del problema se definió una clase llamada \texttt{ClassroomAssignmentProblem} extendiendo la clase \texttt{AbstractIntegerProblem}. El constructor recibe un objeto \texttt{ProblemInstance} como parámetro que representa la instancia del problema, es decir los exámenes con sus inscriptos y duraciones, los salones con sus capacidades, y las relaciones de conflicto entre materias. En base a esto define la cantidad de variables que serán evaluadas (número de exámenes multiplicado por el tamaño de cada slot, que es 6), define qué posición de los genes van a representar a qué examen, día y salones, y establece los rangos válidos para cada variable: el índice de examen puede ser de 0 a \(n\) (donde \(n\) representa vacío), el día de 0 a 24, y cada salón de 0 a \(m\) (donde \(m\) representa sin salón adicional).
+
+Con el fin de optimizar lo más posible la función de fitness se establecieron una serie de estructuras para bajar el tiempo computacional de acceso a ciertos datos. Por ejemplo, se crearon listas pre-ordenadas de salones por capacidad (tanto ascendente como descendente), de forma que no hay que ordenarlos en cada iteración. A su vez se tiene un array que contiene el mínimo de salones necesarios por materia, calculado mediante una estrategia greedy, y otro array con los bloques necesarios por materia. Estas estructuras permiten accesos rápidos durante la decodificación y evaluación de soluciones.
+
+Dado que se utiliza un evaluador secuencial \texttt{SequentialSolutionListEvaluator} y considerando que la función de decodificación y evaluación requiere acceso a estructuras de datos compartidas (como la matriz de ocupación durante la decodificación), se decidió ejecutar el algoritmo en un solo núcleo, evitando el overhead de sincronización entre hilos y garantizando la consistencia de los datos.
+
+
+\section{Configuración de parámetros}
+
+En esta sección se detallan las pruebas realizadas para buscar la mejor configuración de parámetros del algoritmo evolutivo. Los parámetros que se van a probar junto con sus valores posibles son los siguientes:
+
+\begin{table}[h]
+\centering
+\caption{Configuración de parámetros del algoritmo evolutivo}
+\label{tab:parametros}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Parámetro} & \textbf{Valores} & \textbf{Total} \\
+\hline
+Tamaño de población & 50, 100, 200 & 3 \\
+\hline
+Probabilidad de cruzamiento & 0.6, 0.7, 0.8 & 3 \\
+\hline
+Probabilidad de mutación & 0.1, 0.01, 0.001 & 3 \\
+\hline
+\textbf{Combinaciones totales} & & \textbf{27} \\
+\hline
+\end{tabular}
+\end{table}
+
+En base a estas configuraciones, se generan 27 combinaciones para realizar con cada instancia del problema.
+
+\subsection{Metodología estadística}
+
+Para evaluar estadísticamente los resultados obtenidos, se siguió el siguiente procedimiento:
+
+\subsubsection{Test de normalidad}
+
+Primero se realizó un test de normalidad de Shapiro-Wilk sobre los valores de hipervolumen obtenidos para cada configuración paramétrica. Este test evalúa si los datos siguen una distribución normal, lo cual es un requisito para aplicar tests paramétricos como el ANOVA.
+
+Los resultados del test de Shapiro-Wilk mostraron que algunos casos no siguen una distribución normal (p-valor \(< 0.05\)), por lo que se procedió a utilizar tests no paramétricos para el análisis estadístico.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/histograma-hv.png}
+    \caption{Histograma de distribución de valores de hipervolumen.}
+    \label{fig:histograma_hv}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/hv-qq.png}
+    \caption{Gráfico Q-Q para verificar normalidad de los valores de hipervolumen.}
+    \label{fig:qq_hv}
+\end{figure}
+
+
+\subsubsection{Test de Kruskal-Wallis}
+
+Dado que algunos grupos no cumplen con el supuesto de normalidad, se aplicó el test no paramétrico de Kruskal-Wallis para comparar las diferencias entre grupos. Este test es el equivalente no paramétrico del ANOVA de una vía y permite comparar si hay diferencias significativas entre tres o más grupos independientes sin requerir normalidad ni homocedasticidad.
+
+El test de Kruskal-Wallis evalúa las siguientes hipótesis:
+\begin{itemize}
+    \item \(H_0\): Las medianas de todos los grupos son iguales.
+    \item \(H_1\): Al menos un grupo tiene una mediana diferente.
+\end{itemize}
+
+Los resultados del test de Kruskal-Wallis mostraron un estadístico \(H = 772.89\) con un p-valor de \(3.52 \times 10^{-146}\), indicando que existen diferencias estadísticamente significativas entre las diferentes configuraciones de parámetros evaluadas (p-valor \(< 0.05\)).
+
+Para determinar la configuración paramétrica que mejor se comporta, pero sin ser demasiado optimista tomando únicamente la mejor solución individual, se calculó la media del hipervolumen de las 27 combinaciones y se seleccionó la configuración con la mejor media. Esto resultó en la siguiente configuración:
+\begin{itemize}
+    \item Tamaño de población: 100
+    \item Probabilidad de cruzamiento: 0.8
+    \item Probabilidad de mutación: 0.001
+\end{itemize}
+
+Esta configuración será utilizada de aquí en adelante para todas las evaluaciones posteriores.
+
+
+\section{Comparación entre el algoritmo Greedy y NSGA-II}
+
+En esta sección se comparan los resultados obtenidos mediante un algoritmo Greedy determinista (Best-Fit) y el algoritmo evolutivo multiobjetivo NSGA-II, aplicados al problema de asignación de salones para exámenes. La comparación se realiza considerando tanto la calidad de las soluciones obtenidas como el costo computacional asociado a cada enfoque.
+
+\subsection{Instancia promedio}
+
+\subsubsection{Algoritmo Greedy}
+
+El algoritmo Greedy implementado sigue una estrategia determinista de asignación Best-Fit, priorizando la minimización del número total de asignaciones de salones y garantizando la factibilidad de la solución.
+
+Para la instancia analizada, el algoritmo Greedy obtuvo los siguientes resultados:
+
+\begin{itemize}
+    \item Asignaciones totales: 294
+    \item Separación promedio entre exámenes: 8.44 días
+    \item Déficit de capacidad: 0
+    \item Materias sin asignar: 0
+    \item Solución factible: Sí
+    \item Tiempo de ejecución: 23 ms
+\end{itemize}
+
+Estos resultados evidencian que el enfoque Greedy es altamente eficiente desde el punto de vista computacional y logra soluciones factibles con un uso mínimo de recursos. Sin embargo, al tratarse de un enfoque mono-objetivo implícito, no optimiza explícitamente la separación temporal entre exámenes, lo cual impacta negativamente en la calidad del cronograma resultante desde el punto de vista académico.
+
+\subsubsection{Algoritmo NSGA-II}
+
+Para el algoritmo NSGA-II se seleccionó la configuración paramétrica con mejor desempeño promedio en términos de hypervolumen, identificada como:
+
+\begin{itemize}
+    \item Tamaño de población: 100
+    \item Probabilidad de cruzamiento: 0.8
+    \item Probabilidad de mutación: 0.001
+\end{itemize}
+
+El algoritmo fue ejecutado durante 101 generaciones, con un total de 100\,000 evaluaciones. El tiempo total de ejecución fue de aproximadamente 215 segundos.
+
+Desde el punto de vista evolutivo, el algoritmo presenta un comportamiento estable y consistente. En la Figura~\ref{fig:evolucion_nsga2} se observa la evolución de ambos objetivos a lo largo de las generaciones. Mientras que el objetivo de minimizar asignaciones se mantiene estable en torno al valor inicial (294), el objetivo de maximizar la separación promedio muestra una mejora progresiva y sostenida, pasando de 8.96 días a 14.36 días, lo que representa una mejora del 60.3\%.
+
+Asimismo, el porcentaje de soluciones factibles alcanza el 100\% en las primeras generaciones y se mantiene constante hasta el final de la ejecución, lo que indica que el algoritmo logra respetar de forma efectiva las restricciones duras del problema.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_promedio.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia promedio: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2}
+\end{figure}
+
+\subsubsection{Análisis del Frente de Pareto}
+
+El algoritmo NSGA-II produce un conjunto de soluciones no dominadas que representan distintos compromisos entre los objetivos en conflicto. En la Figura~\ref{fig:pareto_front} se muestra el frente de Pareto aproximado obtenido para la última generación, compuesto por 10 soluciones factibles.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.98\columnwidth]{img/pareto_front.png}
+    \caption{Frente de Pareto aproximado obtenido por NSGA-II.}
+    \label{fig:pareto_front}
+\end{figure}
+
+El frente evidencia claramente el trade-off entre ambos objetivos: a medida que se incrementa la separación promedio entre exámenes, aumenta también el número de asignaciones de salones requeridas. Este comportamiento no puede ser capturado por el enfoque Greedy, el cual retorna una única solución puntual.
+
+Como solución representativa del frente se seleccionó un punto de compromiso con los siguientes valores:
+
+\begin{itemize}
+    \item Asignaciones totales: 302
+    \item Separación promedio: 14.09 días
+    \item Déficit de capacidad: 0
+    \item Materias sin asignar: 0
+    \item Solución factible: Sí
+\end{itemize}
+
+\subsubsection{Comparación Global}
+
+La Tabla~\ref{tab:greedy_vs_nsga2} resume la comparación directa entre el algoritmo Greedy y la solución de compromiso obtenida mediante NSGA-II.
+
+\begin{table}[H]
+\centering
+\caption{Comparación entre Greedy y NSGA-II}
+\label{tab:greedy_vs_nsga2}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Greedy} & \textbf{NSGA-II} \\
+\hline
+Asignaciones reales & 294 & 302 \\
+Exceso de salones & 0 & 8 \\
+Separación promedio (días) & 8.44 & 14.09 \\
+Tiempo de ejecución (ms) & 23 & 215898 \\
+Solución factible & Sí & Sí \\
+\hline
+\end{tabular}
+\end{table}
+
+Del análisis se desprende que el algoritmo NSGA-II logra una mejora sustancial en la separación temporal entre exámenes (incremento del 66.9\%), a costa de un aumento moderado en el número de asignaciones (2.7\%) y un costo computacional significativamente mayor. Esto refleja claramente la diferencia entre un enfoque determinista orientado a eficiencia y un enfoque evolutivo multiobjetivo orientado a la calidad global de la solución.
+
+En síntesis, mientras que el algoritmo Greedy resulta adecuado cuando se prioriza la rapidez de ejecución y el uso mínimo de recursos, el algoritmo NSGA-II permite explorar compromisos más equilibrados entre objetivos en conflicto, generando cronogramas de mayor calidad académica, especialmente en contextos donde la separación entre evaluaciones es un factor relevante.
+
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Promedio (30 ejecuciones)}
+\label{tab:resultados-promedio}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 294.20 & -14.78 & 0.4396 \\
+Desviación estándar & 0.61 & 0.41 & 0.0156 \\
+Mejor valor & 294.00 & -15.27 & 0.4556 \\
+Peor valor & 297.00 & -13.23 & 0.3963 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Resultados para la instancia Febrero}
+
+Para la instancia correspondiente al período de febrero, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución muy reducido (52 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 8.21 días. Este resultado sirve como línea base eficiente, aunque limitada en términos de calidad multiobjetivo.
+
+Al aplicar NSGA-II, partiendo de una población inicial parcialmente factible, el algoritmo logra alcanzar un frente de Pareto completamente factible al final de la evolución. Si bien el objetivo asociado a las asignaciones no presenta mejora —convergendo siempre al mismo valor mínimo de 282—, se observa una mejora sustancial en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 52.8\% respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado por NSGA-II logra una separación promedio de 14.03 días, superando ampliamente al Greedy, a costa de un leve incremento en el uso de salones (284 asignaciones frente a 282). La estabilidad del primer objetivo, reflejada en una desviación estándar nula, indica que este criterio está fuertemente restringido y presenta un óptimo global estable, mientras que la variabilidad del desempeño se concentra en el segundo objetivo.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_febrero.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia Febrero: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_febrero}
+\end{figure}
+
+El análisis de hipervolumen confirma un desempeño consistente del algoritmo, con una mediana de 0.3908 y una desviación estándar reducida, lo que evidencia una buena robustez inter-ejecución.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Febrero (30 ejecuciones)}
+\label{tab:resultados-febrero-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 282.00 & -12.75 & 0.3871 \\
+Desviación estándar & 0.00 & 0.78 & 0.0240 \\
+Mejor valor & 282.00 & -13.86 & 0.4227 \\
+Peor valor & 282.00 & -11.27 & 0.3414 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\subsection{Resultados para la instancia Julio}
+
+Para la instancia correspondiente al período de julio, el algoritmo Greedy (Best-Fit) obtiene nuevamente una solución factible en un tiempo de ejecución muy reducido (22 ms), logrando asignar la totalidad de las materias sin déficit de capacidad y con una separación promedio de 7.63 días. Al igual que en la instancia de febrero, el enfoque Greedy actúa como una línea base eficiente pero limitada en términos de optimización multiobjetivo.
+
+La aplicación de NSGA-II muestra una mejora significativa en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 62.8\% respecto al valor inicial. Sin embargo, a diferencia de la instancia de febrero, el algoritmo no logra preservar la factibilidad al final del proceso evolutivo: ninguna de las soluciones del frente de Pareto final cumple con las restricciones de capacidad, registrándose un déficit acumulado de 423 unidades en la mejor solución no factible.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor constante de 288 en todas las ejecuciones, lo que se refleja en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora en la separación se obtiene a costa de violaciones de factibilidad, evidenciando un conflicto más severo entre ambos objetivos en esta instancia particular.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_julio.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia julio: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_julio}
+\end{figure}
+
+El análisis de hipervolumen indica un desempeño consistente del algoritmo en términos de diversidad y convergencia, con una mediana de 0.4018 y una baja desviación estándar. No obstante, este resultado debe interpretarse con cautela, dado que el hipervolumen se calcula sobre soluciones no factibles, lo que refuerza la necesidad de mecanismos más estrictos de manejo de restricciones para esta instancia.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Julio (30 ejecuciones)}
+\label{tab:resultados-julio-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 288.00 & -13.26 & 0.4001 \\
+Desviación estándar & 0.00 & 0.38 & 0.0107 \\
+Mejor valor & 288.00 & -13.93 & 0.4182 \\
+Peor valor & 288.00 & -12.40 & 0.3752 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Resultados para la instancia Diciembre}
+
+Para la instancia correspondiente al período de diciembre, el algoritmo Greedy (Best-Fit) obtiene una solución factible en un tiempo de ejecución reducido (31 ms), asignando la totalidad de las materias sin déficit de capacidad y alcanzando una separación promedio de 8.48 días. Este resultado constituye nuevamente una línea base eficiente, aunque limitada en términos de optimización del segundo objetivo.
+
+La aplicación de NSGA-II muestra un comportamiento particularmente favorable en esta instancia. Al finalizar la evolución, el algoritmo alcanza un frente de Pareto completamente factible, compuesto por diez soluciones no dominadas que reflejan un trade-off progresivo entre número de asignaciones y separación temporal. A diferencia de la instancia de julio, la factibilidad se mantiene en toda la población final.
+
+El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor mínimo constante de 277 en todas las ejecuciones, lo que se traduce en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora se concentra en el segundo objetivo, donde se observa un incremento del 56.9\% en la separación promedio respecto al valor inicial.
+
+El mejor compromiso multiobjetivo identificado presenta una separación promedio de 13.46 días, superando ampliamente al Greedy, a costa de un incremento marginal en el número de asignaciones (278 frente a 277). El análisis de hipervolumen respalda estos resultados, con una mediana de 0.4135 y una desviación estándar reducida, evidenciando un desempeño robusto y consistente del algoritmo en esta instancia.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_diciembre.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia Diciembre: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_diciembre}
+\end{figure}
+
+El hipervolumen obtenido en esta instancia (0.4140) representa el valor más alto entre todas las instancias evaluadas, lo que indica una mejor cobertura del espacio objetivo y una mayor calidad del frente de Pareto aproximado.
+
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Diciembre (30 ejecuciones)}
+\label{tab:resultados-diciembre-completo}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 277.00 & -13.64 & 0.4140 \\
+Desviación estándar & 0.00 & 0.25 & 0.0095 \\
+Mejor valor & 277.00 & -14.18 & 0.4364 \\
+Peor valor & 277.00 & -13.21 & 0.3933 \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{Conclusiones}
+
+Este trabajo presenta una implementación del algoritmo NSGA-II para resolver el problema de asignación de salones para exámenes, modelado como un problema de optimización multiobjetivo con restricciones. Los resultados obtenidos demuestran la efectividad del enfoque evolutivo para explorar compromisos entre objetivos en conflicto, específicamente entre minimizar el número de asignaciones y maximizar la separación temporal entre exámenes.
+
+El análisis comparativo entre el algoritmo Greedy y NSGA-II revela claramente las fortalezas y limitaciones de cada enfoque. El algoritmo Greedy proporciona soluciones factibles en tiempos de ejecución extremadamente reducidos (22--52 ms), siendo adecuado para contextos donde la rapidez es prioritaria. Sin embargo, su naturaleza determinista limita su capacidad para explorar soluciones de mayor calidad académica. Por el contrario, NSGA-II, aunque requiere un costo computacional significativamente mayor, logra mejoras sustanciales en la separación temporal entre exámenes (incrementos del 52.8\% al 66.9\% según la instancia), con impactos moderados en el número de asignaciones.
+
+Los resultados experimentales sobre las cuatro instancias evaluadas (Promedio, Febrero, Julio y Diciembre) muestran un comportamiento consistente del algoritmo NSGA-II. En todas las instancias, el primer objetivo (número de asignaciones) converge a valores mínimos estables, reflejando la estructura restringida de este criterio. La variabilidad se concentra principalmente en el segundo objetivo, donde el algoritmo demuestra su capacidad para explorar diferentes compromisos en el frente de Pareto. La instancia de Diciembre destaca por alcanzar el mayor hipervolumen (0.4140) y mantener factibilidad completa, mientras que la instancia de Julio presenta desafíos particulares al generar soluciones no factibles en el frente final, sugiriendo la necesidad de mecanismos más estrictos de manejo de restricciones.
+
+La implementación realizada, basada en JMetal 6.6 y Java 21, demuestra la viabilidad de utilizar frameworks especializados para resolver problemas de optimización combinatoria complejos. La codificación basada en slots, junto con la decodificación inteligente y el operador de reparación, permite manejar eficientemente las restricciones del problema. El análisis estadístico mediante pruebas de normalidad (Shapiro-Wilk) y comparación no paramétrica (Kruskal-Wallis) proporciona una base sólida para la selección de parámetros y la evaluación de resultados.
+
+Como trabajo futuro, se propone explorar estrategias más avanzadas de manejo de restricciones para mejorar la factibilidad en instancias problemáticas como Julio, investigar la paralelización del algoritmo para reducir tiempos de ejecución, y extender el modelo para considerar restricciones adicionales del dominio real, como preferencias de horarios o restricciones de recursos humanos.
+
+\begin{thebibliography}{99}
+
+\bibitem{jmetal}
+JMetal Framework Documentation. \textit{Operators}. 
+\url{https://jmetal.readthedocs.io/en/latest/operators.html}.
+
+\bibitem{bassimir2024}
+B. Bassimir y R. Wanka. ``On the computation of robust examination timetables: methods and experimental results''. 
+\textit{Journal of Scheduling}, vol. 28. 
+DOI: \url{https://doi.org/10.1007/s10951-024-00815-y}.
+
+\bibitem{teorico2025}
+Material teórico del curso de Algoritmos Evolutivos. 
+Facultad de Ingeniería, Universidad de la República, 2025.
+
+\end{thebibliography}
+
+\section{Anexo}
+
+En esta sección se presenta una muestra de la asignación de salones y exámenes obtenida mediante el algoritmo NSGA-II para la instancia promedio, ordenada por día, salón y horario de inicio.
+
+\onecolumn
+\input{anexo_table.tex}
+\twocolumn
+
+% that's all folks
+\end{document}
+
+
