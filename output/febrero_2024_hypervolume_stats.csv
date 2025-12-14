@@ -1,0 +1,2 @@
+INSTANCIA,TAM,POB,CRU,MUT,HV,PARETO_FILE
+febrero_2024,274,100,0.80,0.001,0.428133,output/febrero_2024_pareto_front.csv

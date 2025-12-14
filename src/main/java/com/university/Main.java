@@ -35,7 +35,7 @@ public class Main {
         // args[2]: crossover probability
         // args[3]: mutation probability
         // args[4]: random seed (optional)
-        String instanceName = args.length > 0 ? args[0] : "promedio_2024";
+        String instanceName = args.length > 0 ? args[0] : "febrero_2024";
         int populationSize = args.length > 1 ? Integer.parseInt(args[1]) : 100;
         double crossoverProbability = args.length > 2 ? Double.parseDouble(args[2]) : 0.8;
         double mutationProbability = args.length > 3 ? Double.parseDouble(args[3]) : 0.001;

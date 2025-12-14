@@ -15,6 +15,7 @@
 % Paquetes necesarios
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{longtable}
 
 % Configuración de espaciado entre párrafos
 \setlength{\parskip}{0.5em}
@@ -251,6 +252,21 @@ Primero se realizó un test de normalidad de Shapiro-Wilk sobre los valores de h
 
 Los resultados del test de Shapiro-Wilk mostraron que algunos casos no siguen una distribución normal (p-valor \(< 0.05\)), por lo que se procedió a utilizar tests no paramétricos para el análisis estadístico.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/histograma-hv.png}
+    \caption{Histograma de distribución de valores de hipervolumen.}
+    \label{fig:histograma_hv}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/hv-qq.png}
+    \caption{Gráfico Q-Q para verificar normalidad de los valores de hipervolumen.}
+    \label{fig:qq_hv}
+\end{figure}
+
+
 \subsubsection{Test de Kruskal-Wallis}
 
 Dado que algunos grupos no cumplen con el supuesto de normalidad, se aplicó el test no paramétrico de Kruskal-Wallis para comparar las diferencias entre grupos. Este test es el equivalente no paramétrico del ANOVA de una vía y permite comparar si hay diferencias significativas entre tres o más grupos independientes sin requerir normalidad ni homocedasticidad.
@@ -367,6 +383,13 @@ Del análisis se desprende que el algoritmo NSGA-II logra una mejora sustancial 
 
 En síntesis, mientras que el algoritmo Greedy resulta adecuado cuando se prioriza la rapidez de ejecución y el uso mínimo de recursos, el algoritmo NSGA-II permite explorar compromisos más equilibrados entre objetivos en conflicto, generando cronogramas de mayor calidad académica, especialmente en contextos donde la separación entre evaluaciones es un factor relevante.
 
+\section{Anexo}
+
+En esta sección se presenta una muestra de la asignación de salones y exámenes obtenida mediante el algoritmo NSGA-II para la instancia promedio, ordenada por día, salón y horario de inicio.
+
+\onecolumn
+\input{anexo_table.tex}
+\twocolumn
 
 % that's all folks
 \end{document}
