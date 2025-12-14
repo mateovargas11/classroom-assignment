@@ -1,0 +1,15 @@
+\begin{table}[H]
+\centering
+\caption{Resultados agregados para la instancia Promedio (30 ejecuciones)}
+\label{tab:resultados-promedio}
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
+\hline
+Media & 294.20 & -14.78 & 0.4396 \\
+Desviación estándar & 0.61 & 0.41 & 0.0156 \\
+Mejor valor & 294.00 & -15.27 & 0.4556 \\
+Peor valor & 297.00 & -13.23 & 0.3963 \\
+\hline
+\end{tabular}
+\end{table}

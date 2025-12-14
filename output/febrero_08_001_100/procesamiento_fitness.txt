@@ -1,0 +1,13 @@
+Resultados agregados (30 ejecuciones)
+
+Objetivo 1
+  media: 282.000000
+  desviacion_std: 0.000000
+  mejor: 282.000000
+  peor: 282.000000
+
+Objetivo 2
+  media: -12.752984
+  desviacion_std: 0.783483
+  mejor: -13.858025
+  peor: -11.271605

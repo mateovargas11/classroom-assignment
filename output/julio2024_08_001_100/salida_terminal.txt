@@ -1,0 +1,21 @@
+Configuración:
+  - Instancia: julio_2024
+  - Tamaño de población: 100
+  - Probabilidad de cruzamiento: 0.8
+  - Probabilidad de mutación: 0.001
+  - Número de réplicas: 3
+================================================================================
+RESUMEN DE EJECUCIÓN
+================================================================================
+Tiempo total: 11.44 minutos
+Réplicas exitosas: 30/30
+
+💾 Resultados guardados en: output/julio_2024_hypervolumes_normality_test.csv
+
+📊 Estadísticas Descriptivas:
+   Número de réplicas exitosas: 30/30
+   Media: 0.400104
+   Mediana: 0.401833
+   Desviación estándar: 0.010665
+   Mínimo: 0.375234
+   Máximo: 0.418163

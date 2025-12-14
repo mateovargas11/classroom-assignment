@@ -21,7 +21,7 @@ else:
     if evolucion_files:
         csv_file = max(evolucion_files, key=os.path.getmtime)
     else:
-        csv_file = 'output/diciembre_2024_evolucion_2025-12-14_00-50-33.csv'
+        csv_file = 'output/promedio_2024_evolucion_2025-12-13_22-55-30.csv'
 
 # Cargar datos
 if not os.path.exists(csv_file):
