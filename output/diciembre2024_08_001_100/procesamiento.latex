@@ -11,15 +11,15 @@ El mejor compromiso multiobjetivo identificado presenta una separación promedio
 \begin{table}[H]
 \centering
 \caption{Resultados agregados para la instancia Diciembre (30 ejecuciones)}
-\label{tab:resultados-diciembre}
-\begin{tabular}{|l|c|c|}
+\label{tab:resultados-diciembre-completo}
+\begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} \\
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
 \hline
-Media & 277.00 & -13.64 \\
-Desviación estándar & 0.00 & 0.25 \\
-Mejor valor & 277.00 & -14.18 \\
-Peor valor & 277.00 & -13.21 \\
+Media & 277.00 & -13.64 & 0.4140 \\
+Desviación estándar & 0.00 & 0.25 & 0.0095 \\
+Mejor valor & 277.00 & -14.18 & 0.4364 \\
+Peor valor & 277.00 & -13.21 & 0.3933 \\
 \hline
 \end{tabular}
 \end{table}

@@ -11,15 +11,15 @@ El análisis de hipervolumen confirma un desempeño consistente del algoritmo, c
 \begin{table}[H]
 \centering
 \caption{Resultados agregados para la instancia Febrero (30 ejecuciones)}
-\label{tab:resultados-febrero}
-\begin{tabular}{|l|c|c|}
+\label{tab:resultados-febrero-completo}
+\begin{tabular}{|l|c|c|c|}
 \hline
-\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} \\
+\textbf{Métrica} & \textbf{Objetivo 1} & \textbf{Objetivo 2} & \textbf{Hipervolumen} \\
 \hline
-Media & 282.00 & -12.75 \\
-Desviación estándar & 0.00 & 0.78 \\
-Mejor valor & 282.00 & -13.86 \\
-Peor valor & 282.00 & -11.27 \\
+Media & 282.00 & -12.75 & 0.3871 \\
+Desviación estándar & 0.00 & 0.78 & 0.0240 \\
+Mejor valor & 282.00 & -13.86 & 0.4227 \\
+Peor valor & 282.00 & -11.27 & 0.3414 \\
 \hline
 \end{tabular}
 \end{table}
