@@ -33,11 +33,10 @@ public class SolutionRepairOperator {
     public SolutionRepairOperator(ProblemInstance instance, int maxClassroomsPerSubject, Long seed) {
         this.random = seed != null ? new Random(seed) : new Random();
         this.instance = instance;
-        this.problem = null; // Se establecerá después si es necesario
+        this.problem = null;
         this.numClassrooms = instance.getClassrooms().size();
         this.numSubjects = instance.getSubjects().size();
 
-        // Ordenar salones por capacidad
         this.sortedClassroomsByCapacityDesc = new ArrayList<>();
         for (int i = 0; i < numClassrooms; i++) {
             sortedClassroomsByCapacityDesc.add(i);
@@ -61,7 +60,6 @@ public class SolutionRepairOperator {
         this.numClassrooms = instance.getClassrooms().size();
         this.numSubjects = instance.getSubjects().size();
 
-        // Ordenar salones por capacidad
         this.sortedClassroomsByCapacityDesc = new ArrayList<>();
         for (int i = 0; i < numClassrooms; i++) {
             sortedClassroomsByCapacityDesc.add(i);
@@ -74,21 +72,10 @@ public class SolutionRepairOperator {
         Collections.reverse(sortedClassroomsByCapacityAsc);
     }
 
-    /**
-     * Repara una solución asegurando que sea válida.
-     */
     public void repair(IntegerSolution solution) {
-        // 1. Asegurar que cada examen aparezca exactamente una vez
         ensureUniqueExams(solution);
-
-        // 2. Asegurar que los salones dentro de cada slot sean válidos
         repairClassroomsInSlots(solution);
-
-        // 3. Asegurar capacidad suficiente para cada examen
         ensureSufficientCapacity(solution);
-
-        // 4. Intentar asegurar que todos los exámenes puedan ser programados
-        // Esto es crítico porque decode() puede fallar si no hay slots disponibles
         ensureAllExamsCanBeScheduled(solution);
     }
 
@@ -101,7 +88,6 @@ public class SolutionRepairOperator {
         int numSlots = numSubjects;
         int emptyExamIndex = numSubjects;
 
-        // Encontrar qué exámenes están asignados y dónde
         Map<Integer, Integer> examToSlot = new HashMap<>();
         Set<Integer> duplicateSlots = new HashSet<>();
 
@@ -110,7 +96,6 @@ public class SolutionRepairOperator {
 
             if (examIdx >= 0 && examIdx < numSubjects) {
                 if (examToSlot.containsKey(examIdx)) {
-                    // Duplicado: marcar este slot para limpiar
                     duplicateSlots.add(slot);
                 } else {
                     examToSlot.put(examIdx, slot);
@@ -118,12 +103,10 @@ public class SolutionRepairOperator {
             }
         }
 
-        // Limpiar slots con duplicados (poner vacío)
         for (int slot : duplicateSlots) {
             setExamIndex(solution, slot, emptyExamIndex);
         }
 
-        // Encontrar exámenes faltantes
         List<Integer> missingExams = new ArrayList<>();
         for (int i = 0; i < numSubjects; i++) {
             if (!examToSlot.containsKey(i)) {
@@ -131,7 +114,6 @@ public class SolutionRepairOperator {
             }
         }
 
-        // Asignar exámenes faltantes a slots vacíos
         List<Integer> emptySlots = new ArrayList<>();
         for (int slot = 0; slot < numSlots; slot++) {
             int examIdx = getExamIndex(solution, slot);
@@ -145,7 +127,6 @@ public class SolutionRepairOperator {
             int slot = emptySlots.get(i);
             setExamIndex(solution, slot, examIdx);
 
-            // Asignar salones apropiados para el examen
             assignClassroomsForExam(solution, slot, examIdx);
         }
     }
@@ -162,7 +143,6 @@ public class SolutionRepairOperator {
         for (int slot = 0; slot < numSlots; slot++) {
             int examIdx = getExamIndex(solution, slot);
 
-            // Si es un slot vacío, limpiar los salones
             if (examIdx == numSubjects || examIdx < 0 || examIdx >= numSubjects) {
                 for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
                     setClassroomIndex(solution, slot, i, noClassroomIndex);
@@ -170,14 +150,12 @@ public class SolutionRepairOperator {
                 continue;
             }
 
-            // Recolectar salones válidos y eliminar duplicados
             Set<Integer> usedClassrooms = new LinkedHashSet<>();
             List<Integer> validClassrooms = new ArrayList<>();
 
             for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
                 int classroomIdx = getClassroomIndex(solution, slot, i);
 
-                // Validar rango y no duplicado
                 if (classroomIdx >= 0 && classroomIdx < numClassrooms &&
                         !usedClassrooms.contains(classroomIdx)) {
                     usedClassrooms.add(classroomIdx);
@@ -185,7 +163,6 @@ public class SolutionRepairOperator {
                 }
             }
 
-            // Reescribir los salones en el slot
             for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
                 if (i < validClassrooms.size()) {
                     setClassroomIndex(solution, slot, i, validClassrooms.get(i));
@@ -196,9 +173,6 @@ public class SolutionRepairOperator {
         }
     }
 
-    /**
-     * Asegura que cada examen tenga salones con capacidad suficiente.
-     */
     private void ensureSufficientCapacity(IntegerSolution solution) {
         int numSlots = numSubjects;
 
@@ -211,7 +185,6 @@ public class SolutionRepairOperator {
             Subject subject = instance.getSubjectByIndex(examIdx);
             int enrolled = subject.getEnrolledStudents();
 
-            // Calcular capacidad actual
             List<Integer> currentClassrooms = new ArrayList<>();
             int currentCapacity = 0;
 
@@ -223,11 +196,9 @@ public class SolutionRepairOperator {
                 }
             }
 
-            // Si no hay capacidad suficiente, agregar más salones
             if (currentCapacity < enrolled) {
                 Set<Integer> usedClassrooms = new HashSet<>(currentClassrooms);
 
-                // Buscar salones adicionales
                 for (int classroomIdx : sortedClassroomsByCapacityDesc) {
                     if (currentCapacity >= enrolled)
                         break;
@@ -241,7 +212,6 @@ public class SolutionRepairOperator {
                     currentCapacity += instance.getClassroomByIndex(classroomIdx).getCapacity();
                 }
 
-                // Actualizar el slot con los nuevos salones
                 for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
                     if (i < currentClassrooms.size()) {
                         setClassroomIndex(solution, slot, i, currentClassrooms.get(i));
@@ -253,9 +223,6 @@ public class SolutionRepairOperator {
         }
     }
 
-    /**
-     * Asigna salones apropiados para un examen en un slot.
-     */
     private void assignClassroomsForExam(IntegerSolution solution, int slot, int examIdx) {
         Subject subject = instance.getSubjectByIndex(examIdx);
         int enrolled = subject.getEnrolledStudents();
@@ -271,14 +238,10 @@ public class SolutionRepairOperator {
         }
     }
 
-    /**
-     * Encuentra los salones necesarios para cubrir la capacidad requerida.
-     */
     private List<Integer> findClassroomsForCapacity(int enrolled) {
         List<Integer> result = new ArrayList<>();
         int capacityAccumulated = 0;
 
-        // Primero intentar con un solo salón (best-fit)
         for (int classroomIdx : sortedClassroomsByCapacityAsc) {
             int cap = instance.getClassroomByIndex(classroomIdx).getCapacity();
             if (cap >= enrolled) {
@@ -287,7 +250,6 @@ public class SolutionRepairOperator {
             }
         }
 
-        // Si no cabe en uno solo, usar los más grandes
         for (int classroomIdx : sortedClassroomsByCapacityDesc) {
             if (capacityAccumulated >= enrolled)
                 break;
@@ -298,20 +260,9 @@ public class SolutionRepairOperator {
         return result;
     }
 
-    /**
-     * Intenta asegurar que todos los exámenes puedan ser programados.
-     * Reordena los slots para priorizar exámenes más difíciles de programar
-     * (más salones, más duración, más estudiantes).
-     */
     private void ensureAllExamsCanBeScheduled(IntegerSolution solution) {
-        if (problem == null) {
-            return; // No podemos hacer esto sin el problema
-        }
-
         int numSlots = numSubjects;
-        int emptyExamIndex = numSubjects;
 
-        // Crear lista de slots con información de dificultad
         List<SlotInfo> slotInfos = new ArrayList<>();
         for (int slot = 0; slot < numSlots; slot++) {
             int examIdx = getExamIndex(solution, slot);
@@ -332,29 +283,22 @@ public class SolutionRepairOperator {
                 int duration = subject.getDurationBlocks();
                 int enrolled = subject.getEnrolledStudents();
 
-                // Calcular "dificultad": más salones, más duración, más estudiantes = más
-                // difícil
                 double difficulty = classrooms.size() * 100.0 + duration * 10.0 + enrolled;
                 slotInfos.add(new SlotInfo(slot, examIdx, classrooms, difficulty));
             }
         }
 
-        // Ordenar por dificultad (más difícil primero) para que se programen antes
         slotInfos.sort((a, b) -> Double.compare(b.difficulty, a.difficulty));
 
-        // Reordenar los slots en la solución
-        // Crear un mapeo de nuevo orden
         int[] newSlotOrder = new int[numSlots];
         for (int i = 0; i < numSlots; i++) {
             newSlotOrder[i] = -1;
         }
 
-        // Asignar slots ordenados a las primeras posiciones
         for (int i = 0; i < slotInfos.size(); i++) {
             newSlotOrder[i] = slotInfos.get(i).slot;
         }
 
-        // Llenar slots restantes con exámenes que no están en slotInfos
         int nextPos = slotInfos.size();
         for (int slot = 0; slot < numSlots; slot++) {
             boolean alreadyAssigned = false;
@@ -369,11 +313,8 @@ public class SolutionRepairOperator {
             }
         }
 
-        // Crear nueva solución con slots reordenados
-        // Guardar el estado actual
         List<Integer> currentState = new ArrayList<>(solution.variables());
 
-        // Reordenar
         for (int newSlot = 0; newSlot < numSlots; newSlot++) {
             int oldSlot = newSlotOrder[newSlot];
             if (oldSlot >= 0 && oldSlot < numSlots) {
@@ -385,8 +326,7 @@ public class SolutionRepairOperator {
                     }
                 }
             } else {
-                // Slot vacío
-                setExamIndex(solution, newSlot, emptyExamIndex);
+                setExamIndex(solution, newSlot, numSubjects);
                 for (int i = 0; i < ClassroomAssignmentProblem.MAX_CLASSROOMS_PER_SLOT; i++) {
                     setClassroomIndex(solution, newSlot, i, numClassrooms);
                 }
@@ -411,22 +351,12 @@ public class SolutionRepairOperator {
         }
     }
 
-    // ==================== MÉTODOS AUXILIARES ====================
-
     private int getExamIndex(IntegerSolution solution, int slot) {
         return solution.variables().get(slot * ClassroomAssignmentProblem.SLOT_SIZE);
     }
 
     private void setExamIndex(IntegerSolution solution, int slot, int examIndex) {
         solution.variables().set(slot * ClassroomAssignmentProblem.SLOT_SIZE, examIndex);
-    }
-
-    private int getDayIndex(IntegerSolution solution, int slot) {
-        return solution.variables().get(slot * ClassroomAssignmentProblem.SLOT_SIZE + 1);
-    }
-
-    private void setDayIndex(IntegerSolution solution, int slot, int dayIndex) {
-        solution.variables().set(slot * ClassroomAssignmentProblem.SLOT_SIZE + 1, dayIndex);
     }
 
     private int getClassroomIndex(IntegerSolution solution, int slot, int classroomPos) {

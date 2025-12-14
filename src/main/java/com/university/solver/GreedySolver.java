@@ -10,9 +10,6 @@ import java.util.*;
 /**
  * Algoritmo Greedy puro para asignación de salones.
  * Usa una estrategia best-fit para asignar materias a salones.
- * 
- * Este solver genera soluciones usando la representación basada en slots,
- * donde el orden de los slots determina la prioridad de asignación de horarios.
  */
 public class GreedySolver {
 
@@ -24,16 +21,7 @@ public class GreedySolver {
         this.problem = problem;
     }
 
-    /**
-     * Resuelve el problema de forma puramente greedy.
-     * Para cada materia, asigna el salón más pequeño que pueda contener a todos los
-     * inscriptos.
-     * Si no cabe en un solo salón, usa múltiples salones.
-     * Los horarios se asignan automáticamente durante la decodificación (el más
-     * temprano disponible).
-     */
     public IntegerSolution solve() {
-        // Usar la solución greedy del problema
         IntegerSolution solution = problem.createGreedySolution();
         problem.evaluate(solution);
         return solution;

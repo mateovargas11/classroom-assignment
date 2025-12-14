@@ -36,27 +36,12 @@ public class Subject {
         return enrolledStudents;
     }
 
-    public void setEnrolledStudents(int enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
-
     public double getDurationHours() {
         return durationHours;
     }
 
-    public void setDurationHours(double durationHours) {
-        this.durationHours = durationHours;
-    }
-
     public int getDurationBlocks() {
         return (int) Math.ceil(durationHours * 2);
-    }
-
-    /**
-     * Devuelve la duración en slots de 1 hora (redondeado hacia arriba).
-     */
-    public int getDurationSlots() {
-        return (int) Math.ceil(durationHours);
     }
 
     @Override

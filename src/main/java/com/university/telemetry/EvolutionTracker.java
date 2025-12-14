@@ -31,8 +31,6 @@ public class EvolutionTracker {
 
     /**
      * Actualiza el tracker con los datos de una generación.
-     * 
-     * @param population La población de la generación
      */
     public void update(List<IntegerSolution> population) {
         generation++;
@@ -46,7 +44,6 @@ public class EvolutionTracker {
         int bestRealAssignments = Integer.MAX_VALUE;
         double sumRealAssignments = 0;
 
-        // También trackear mejor de todas las soluciones (incluso infactibles)
         double bestObj1All = Double.MAX_VALUE;
         double bestObj2All = Double.MAX_VALUE;
         int bestRealAssignmentsAll = Integer.MAX_VALUE;
@@ -58,7 +55,6 @@ public class EvolutionTracker {
             double obj1 = sol.objectives()[0];
             double obj2 = sol.objectives()[1];
 
-            // Verificar factibilidad
             boolean feasible = true;
             for (double c : sol.constraints()) {
                 if (c < 0) {
@@ -67,13 +63,11 @@ public class EvolutionTracker {
                 }
             }
 
-            // Calcular asignaciones reales para todas las soluciones
             int realAssignments = countRealAssignments(sol);
             sumObj1All += obj1;
             sumObj2All += obj2;
             sumRealAssignmentsAll += realAssignments;
 
-            // Trackear mejor de todas las soluciones
             if (obj1 < bestObj1All) {
                 bestObj1All = obj1;
                 bestRealAssignmentsAll = realAssignments;
@@ -82,14 +76,12 @@ public class EvolutionTracker {
                 bestObj2All = obj2;
             }
 
-            // Solo considerar factibles para mejor y promedio factible
             if (feasible) {
                 sumObj1Feasible += obj1;
                 sumObj2Feasible += obj2;
                 feasibleCount++;
                 sumRealAssignments += realAssignments;
 
-                // Mejor solo de soluciones factibles (según objetivo 1)
                 if (obj1 < bestObj1) {
                     bestObj1 = obj1;
                     bestRealAssignments = realAssignments;
@@ -100,17 +92,14 @@ public class EvolutionTracker {
             }
         }
 
-        // Promedio solo de soluciones factibles
         double avgObj1 = feasibleCount > 0 ? sumObj1Feasible / feasibleCount : 0;
         double avgObj2 = feasibleCount > 0 ? sumObj2Feasible / feasibleCount : 0;
         double avgRealAssignments = feasibleCount > 0 ? sumRealAssignments / feasibleCount : 0;
 
-        // Promedio de todas las soluciones
         double avgObj1All = population.size() > 0 ? sumObj1All / population.size() : 0;
         double avgObj2All = population.size() > 0 ? sumObj2All / population.size() : 0;
         double avgRealAssignmentsAll = population.size() > 0 ? sumRealAssignmentsAll / population.size() : 0;
 
-        // Si no hay factibles, usar el mejor de todas las soluciones
         if (bestObj1 == Double.MAX_VALUE) {
             bestRealAssignments = bestRealAssignmentsAll != Integer.MAX_VALUE ? bestRealAssignmentsAll : 0;
             bestObj1 = bestObj1All != Double.MAX_VALUE ? bestObj1All : 0;
@@ -119,14 +108,12 @@ public class EvolutionTracker {
             bestObj2 = bestObj2All != Double.MAX_VALUE ? bestObj2All : 0;
         }
 
-        // Si no hay factibles, usar promedios de todas las soluciones
         if (feasibleCount == 0) {
             avgObj1 = avgObj1All;
             avgObj2 = avgObj2All;
             avgRealAssignments = avgRealAssignmentsAll;
         }
 
-        // Calcular desviación estándar (segunda pasada)
         double sumSquaredDiffObj1 = 0;
         double sumSquaredDiffObj2 = 0;
         double sumSquaredDiffRealAssignments = 0;
@@ -144,7 +131,6 @@ public class EvolutionTracker {
                 }
             }
 
-            // Solo considerar factibles si hay factibles, sino considerar todas
             if ((feasibleCount > 0 && feasible) || (feasibleCount == 0)) {
                 double obj1 = sol.objectives()[0];
                 double obj2 = sol.objectives()[1];
@@ -156,7 +142,6 @@ public class EvolutionTracker {
             }
         }
 
-        // Calcular desviación estándar
         double stdDevObj1 = countForStdDev > 1
                 ? Math.sqrt(sumSquaredDiffObj1 / countForStdDev)
                 : 0.0;
@@ -168,34 +153,27 @@ public class EvolutionTracker {
                 : 0.0;
 
         long elapsedTime = System.currentTimeMillis() - startTime;
-        double bestSeparation = -bestObj2; // Convertir a positivo (mayor es mejor)
+        double bestSeparation = -bestObj2;
         double avgSeparation = -avgObj2;
 
         GenerationData data = new GenerationData(
                 generation,
-                bestRealAssignments, // Usar asignaciones reales en lugar de objetivo 1
+                bestRealAssignments,
                 avgRealAssignments,
                 bestSeparation,
                 avgSeparation,
-                bestObj1, // Fitness objetivo 1 (mejor)
-                avgObj1, // Fitness objetivo 1 (promedio)
-                bestObj2, // Fitness objetivo 2 (mejor)
-                avgObj2, // Fitness objetivo 2 (promedio)
-                stdDevObj1, // Desviación estándar objetivo 1
-                stdDevObj2, // Desviación estándar objetivo 2
-                stdDevRealAssignments, // Desviación estándar asignaciones reales
+                bestObj1,
+                avgObj1,
+                bestObj2,
+                avgObj2,
+                stdDevObj1,
+                stdDevObj2,
+                stdDevRealAssignments,
                 feasibleCount,
                 population.size(),
                 elapsedTime);
 
         history.add(data);
-
-        // Imprimir información de la generación (usando asignaciones reales)
-        String feasibleMarker = feasibleCount == 0 ? " [INFEASIBLE]" : "";
-        System.out.printf("Generation %d: Best = ( %d asignaciones reales, %.2f días separación )%s, "
-                + "Avg = ( %.2f, %.2f ), Factibles = %d/%d\n",
-                generation, bestRealAssignments, bestSeparation, feasibleMarker, avgRealAssignments, avgSeparation,
-                feasibleCount, population.size());
     }
 
     /**
@@ -210,13 +188,7 @@ public class EvolutionTracker {
 
     }
 
-    /**
-     * Guarda los datos de evolución a un archivo CSV.
-     * 
-     * @param baseFileName Nombre base del archivo (sin extensión)
-     * @return El nombre completo del archivo generado
-     */
-    public String saveToCsv(String baseFileName) {
+    public void saveToCsv(String baseFileName) {
         String dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
         String fileName = baseFileName + "_" + dateTime + ".csv";
 
@@ -249,147 +221,9 @@ public class EvolutionTracker {
                         data.elapsedTimeMs));
             }
 
-            System.out.println("Results from evolution tracker saved to: " + fileName);
-            return fileName;
         } catch (IOException e) {
             System.err.println("An error occurred while saving the results: " + e.getMessage());
-            return null;
         }
-    }
-
-    /**
-     * Genera un script de Python para graficar la evolución.
-     */
-    public void generatePythonPlotScript(String csvPath, String scriptPath) throws IOException {
-        Files.createDirectories(Paths.get(scriptPath).getParent());
-
-        try (FileWriter writer = new FileWriter(scriptPath)) {
-            writer.write("#!/usr/bin/env python3\n");
-            writer.write("# -*- coding: utf-8 -*-\n");
-            writer.write("\"\"\"\n");
-            writer.write("Script para graficar la evolución del algoritmo NSGA-II\n");
-            writer.write("Generado automáticamente por EvolutionTracker\n");
-            writer.write("\"\"\"\n\n");
-            writer.write("import pandas as pd\n");
-            writer.write("import matplotlib.pyplot as plt\n");
-            writer.write("import numpy as np\n");
-            writer.write("import sys\n");
-            writer.write("import os\n\n");
-            writer.write("# Obtener archivo CSV desde argumentos de línea de comandos o usar el predeterminado\n");
-            writer.write("if len(sys.argv) > 1:\n");
-            writer.write("    csv_file = sys.argv[1]\n");
-            writer.write("else:\n");
-            writer.write("    # Buscar el archivo más reciente de evolución\n");
-            writer.write("    import glob\n");
-            writer.write("    evolucion_files = glob.glob('output/*_evolucion_*.csv')\n");
-            writer.write("    if evolucion_files:\n");
-            writer.write("        csv_file = max(evolucion_files, key=os.path.getmtime)\n");
-            writer.write("    else:\n");
-            writer.write("        csv_file = '" + csvPath + "'\n\n");
-            writer.write("# Cargar datos\n");
-            writer.write("if not os.path.exists(csv_file):\n");
-            writer.write("    print(f\"Error: El archivo {csv_file} no existe\")\n");
-            writer.write("    sys.exit(1)\n\n");
-            writer.write("df = pd.read_csv(csv_file)\n");
-            writer.write("df = df.sort_values('generacion').reset_index(drop=True)\n\n");
-            writer.write("print(f'Datos cargados: {len(df)} registros')\n");
-            writer.write(
-                    "print(f'Rango de generaciones: {df[\"generacion\"].min()} - {df[\"generacion\"].max()}')\n\n");
-            writer.write("# Crear figura con subplots\n");
-            writer.write("fig, axes = plt.subplots(2, 2, figsize=(14, 10))\n");
-            writer.write("fig.suptitle('Evolución del Algoritmo NSGA-II', fontsize=14, fontweight='bold')\n\n");
-            writer.write("# Gráfica 1: Asignaciones (Objetivo 1)\n");
-            writer.write("ax1 = axes[0, 0]\n");
-            writer.write(
-                    "ax1.plot(df['generacion'], df['mejor_asignaciones'], 'b-', label='Mejor', linewidth=2, marker='o', markersize=4)\n");
-            writer.write(
-                    "ax1.plot(df['generacion'], df['promedio_asignaciones'], 'b--', alpha=0.6, label='Promedio', linewidth=1.5)\n");
-            writer.write("ax1.set_xlabel('Generación', fontsize=11)\n");
-            writer.write("ax1.set_ylabel('Asignaciones', fontsize=11)\n");
-            writer.write("ax1.set_title('Objetivo 1: Minimizar Asignaciones', fontsize=12, fontweight='bold')\n");
-            writer.write("ax1.legend(loc='best', fontsize=10)\n");
-            writer.write("ax1.grid(True, alpha=0.3, linestyle=':')\n\n");
-            writer.write("# Gráfica 2: Separación (Objetivo 2)\n");
-            writer.write("ax2 = axes[0, 1]\n");
-            writer.write(
-                    "ax2.plot(df['generacion'], df['mejor_separacion'], 'g-', label='Mejor', linewidth=2, marker='s', markersize=4)\n");
-            writer.write(
-                    "ax2.plot(df['generacion'], df['promedio_separacion'], 'g--', alpha=0.6, label='Promedio', linewidth=1.5)\n");
-            writer.write("ax2.set_xlabel('Generación', fontsize=11)\n");
-            writer.write("ax2.set_ylabel('Separación (días)', fontsize=11)\n");
-            writer.write("ax2.set_title('Objetivo 2: Maximizar Separación', fontsize=12, fontweight='bold')\n");
-            writer.write("ax2.legend(loc='best', fontsize=10)\n");
-            writer.write("ax2.grid(True, alpha=0.3, linestyle=':')\n\n");
-            writer.write("# Gráfica 3: Soluciones factibles\n");
-            writer.write("ax3 = axes[1, 0]\n");
-            writer.write(
-                    "ax3.plot(df['generacion'], df['soluciones_factibles'], 'r-', linewidth=2, marker='^', markersize=4, label='Factibles')\n");
-            writer.write(
-                    "ax3.axhline(y=df['poblacion_total'].iloc[0], color='gray', linestyle='--', linewidth=1.5, label='Población total')\n");
-            writer.write("ax3.set_xlabel('Generación', fontsize=11)\n");
-            writer.write("ax3.set_ylabel('Cantidad', fontsize=11)\n");
-            writer.write("ax3.set_title('Soluciones Factibles por Generación', fontsize=12, fontweight='bold')\n");
-            writer.write("ax3.legend(loc='best', fontsize=10)\n");
-            writer.write("ax3.grid(True, alpha=0.3, linestyle=':')\n\n");
-            writer.write("# Gráfica 4: Evolución en el espacio de objetivos\n");
-            writer.write("ax4 = axes[1, 1]\n");
-            writer.write(
-                    "scatter = ax4.scatter(df['mejor_asignaciones'], df['mejor_separacion'], c=df['generacion'], cmap='viridis', alpha=0.7, s=60, edgecolors='black', linewidths=0.5)\n");
-            writer.write("ax4.set_xlabel('Asignaciones (menor es mejor)', fontsize=11)\n");
-            writer.write("ax4.set_ylabel('Separación (mayor es mejor)', fontsize=11)\n");
-            writer.write("ax4.set_title('Evolución en el Espacio de Objetivos', fontsize=12, fontweight='bold')\n");
-            writer.write("cbar = plt.colorbar(scatter, ax=ax4)\n");
-            writer.write("cbar.set_label('Generación', fontsize=10)\n");
-            writer.write("ax4.grid(True, alpha=0.3, linestyle=':')\n\n");
-            writer.write("plt.tight_layout()\n");
-            writer.write("# Obtener nombre de archivo de salida (opcional, segundo argumento)\n");
-            writer.write("if len(sys.argv) > 2:\n");
-            writer.write("    output_file = sys.argv[2]\n");
-            writer.write("else:\n");
-            writer.write("    output_file = 'output/evolucion_nsga2.png'\n");
-            writer.write("plt.savefig(output_file, dpi=150, bbox_inches='tight')\n");
-            writer.write("print(f'\\n✓ Gráfica guardada en: {output_file}')\n");
-            writer.write(
-                    "# plt.show()  # Comentado para ejecución batch (descomentar para visualización interactiva)\n");
-            writer.write("plt.close()  # Cerrar la figura para liberar memoria\n");
-        }
-
-        System.out.println("  ✓ Script de Python generado: " + scriptPath);
-    }
-
-    /**
-     * Imprime un resumen de la evolución.
-     */
-    public void printSummary() {
-        if (history.isEmpty()) {
-            System.out.println("No hay datos de evolución registrados.");
-            return;
-        }
-
-        GenerationData first = history.get(0);
-        GenerationData last = history.get(history.size() - 1);
-
-        System.out.println("\n=== RESUMEN DE EVOLUCIÓN ===");
-        System.out.println("Generaciones registradas: " + history.size());
-        System.out.println("Última generación: " + last.generation);
-        System.out.println("Tiempo total: " + last.elapsedTimeMs + " ms");
-
-        System.out.println("\nMejora en Objetivo 1 (Asignaciones):");
-        System.out.printf("  Inicial: %.2f → Final: %.2f (%.1f%% mejora)\n",
-                first.bestObj1, last.bestObj1,
-                first.bestObj1 > 0 ? 100.0 * (first.bestObj1 - last.bestObj1) / first.bestObj1 : 0);
-
-        System.out.println("\nMejora en Objetivo 2 (Separación):");
-        System.out.printf("  Inicial: %.2f días → Final: %.2f días (%.1f%% mejora)\n",
-                first.bestSeparation, last.bestSeparation,
-                first.bestSeparation > 0
-                        ? 100.0 * (last.bestSeparation - first.bestSeparation) / first.bestSeparation
-                        : 0);
-
-        System.out.println("\nSoluciones factibles:");
-        System.out.printf("  Inicial: %d/%d → Final: %d/%d\n",
-                first.feasibleCount, first.populationSize,
-                last.feasibleCount, last.populationSize);
     }
 
     public int getGeneration() {
@@ -400,22 +234,19 @@ public class EvolutionTracker {
         return history;
     }
 
-    /**
-     * Clase interna para almacenar datos de una generación.
-     */
     public static class GenerationData {
         public final int generation;
-        public final double bestObj1; // Asignaciones reales (mejor)
-        public final double avgObj1; // Asignaciones reales (promedio)
+        public final double bestObj1;
+        public final double avgObj1;
         public final double bestSeparation;
         public final double avgSeparation;
-        public final double bestFitnessObj1; // Fitness objetivo 1 (mejor) - objectives[0]
-        public final double avgFitnessObj1; // Fitness objetivo 1 (promedio) - objectives[0]
-        public final double bestFitnessObj2; // Fitness objetivo 2 (mejor) - objectives[1]
-        public final double avgFitnessObj2; // Fitness objetivo 2 (promedio) - objectives[1]
-        public final double stdDevObj1; // Desviación estándar objetivo 1
-        public final double stdDevObj2; // Desviación estándar objetivo 2
-        public final double stdDevRealAssignments; // Desviación estándar asignaciones reales
+        public final double bestFitnessObj1;
+        public final double avgFitnessObj1;
+        public final double bestFitnessObj2;
+        public final double avgFitnessObj2;
+        public final double stdDevObj1;
+        public final double stdDevObj2;
+        public final double stdDevRealAssignments;
         public final int feasibleCount;
         public final int populationSize;
         public final long elapsedTimeMs;

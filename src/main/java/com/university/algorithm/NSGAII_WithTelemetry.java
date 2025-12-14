@@ -53,7 +53,6 @@ public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
         generationCount++;
 
         // Registrar cada N generaciones para no sobrecargar
-        // NO reparar aquí para no interferir con el estado interno de NSGA-II
         if (generationCount % recordEveryNGenerations == 0) {
             tracker.update(population);
         }
@@ -61,11 +60,10 @@ public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
 
     @Override
     protected List<IntegerSolution> reproduction(List<IntegerSolution> matingPool) {
-        // Crear descendencia usando el método padre
+        // Crear descendencia
         List<IntegerSolution> offspring = super.reproduction(matingPool);
 
-        // Reparar inmediatamente después de crossover y mutación
-        // Esto es crítico para mantener la factibilidad
+        // Repararcion
         for (IntegerSolution sol : offspring) {
             repairOperator.repair(sol);
         }
@@ -75,8 +73,7 @@ public class NSGAII_WithTelemetry extends NSGAII<IntegerSolution> {
 
     @Override
     protected List<IntegerSolution> evaluatePopulation(List<IntegerSolution> population) {
-        // Las soluciones ya deberían estar reparadas desde reproduction,
-        // pero reparar de nuevo por si acaso (para población inicial)
+        // Repararcion pre evaluación
         for (IntegerSolution sol : population) {
             repairOperator.repair(sol);
         }

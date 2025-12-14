@@ -331,8 +331,8 @@ Asimismo, el porcentaje de soluciones factibles alcanza el 100\% en las primeras
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2.png}
-    \caption{Evolución del algoritmo NSGA-II: objetivos, factibilidad y espacio de búsqueda.}
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_promedio.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia promedio: objetivos, factibilidad y espacio de búsqueda.}
     \label{fig:evolucion_nsga2}
 \end{figure}
 
@@ -410,6 +410,13 @@ Al aplicar NSGA-II, partiendo de una población inicial parcialmente factible, e
 
 El mejor compromiso multiobjetivo identificado por NSGA-II logra una separación promedio de 14.03 días, superando ampliamente al Greedy, a costa de un leve incremento en el uso de salones (284 asignaciones frente a 282). La estabilidad del primer objetivo, reflejada en una desviación estándar nula, indica que este criterio está fuertemente restringido y presenta un óptimo global estable, mientras que la variabilidad del desempeño se concentra en el segundo objetivo.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_febrero.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia Febrero: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_febrero}
+\end{figure}
+
 El análisis de hipervolumen confirma un desempeño consistente del algoritmo, con una mediana de 0.3908 y una desviación estándar reducida, lo que evidencia una buena robustez inter-ejecución.
 
 \begin{table}[H]
@@ -437,6 +444,13 @@ Para la instancia correspondiente al período de julio, el algoritmo Greedy (Bes
 La aplicación de NSGA-II muestra una mejora significativa en el segundo objetivo, correspondiente a la separación temporal entre exámenes, con un incremento del 62.8\% respecto al valor inicial. Sin embargo, a diferencia de la instancia de febrero, el algoritmo no logra preservar la factibilidad al final del proceso evolutivo: ninguna de las soluciones del frente de Pareto final cumple con las restricciones de capacidad, registrándose un déficit acumulado de 423 unidades en la mejor solución no factible.
 
 El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor constante de 288 en todas las ejecuciones, lo que se refleja en una desviación estándar nula y confirma la estabilidad estructural de este criterio. La mejora en la separación se obtiene a costa de violaciones de factibilidad, evidenciando un conflicto más severo entre ambos objetivos en esta instancia particular.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_julio.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia julio: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_julio}
+\end{figure}
 
 El análisis de hipervolumen indica un desempeño consistente del algoritmo en términos de diversidad y convergencia, con una mediana de 0.4018 y una baja desviación estándar. No obstante, este resultado debe interpretarse con cautela, dado que el hipervolumen se calcula sobre soluciones no factibles, lo que refuerza la necesidad de mecanismos más estrictos de manejo de restricciones para esta instancia.
 
@@ -467,6 +481,15 @@ El primer objetivo, asociado a las asignaciones, converge nuevamente a un valor 
 
 El mejor compromiso multiobjetivo identificado presenta una separación promedio de 13.46 días, superando ampliamente al Greedy, a costa de un incremento marginal en el número de asignaciones (278 frente a 277). El análisis de hipervolumen respalda estos resultados, con una mediana de 0.4135 y una desviación estándar reducida, evidenciando un desempeño robusto y consistente del algoritmo en esta instancia.
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\columnwidth]{img/evolucion_nsga2_diciembre.png}
+    \caption{Evolución del algoritmo NSGA-II para la instancia Diciembre: objetivos, factibilidad y espacio de búsqueda.}
+    \label{fig:evolucion_nsga2_diciembre}
+\end{figure}
+
+El hipervolumen obtenido en esta instancia (0.4140) representa el valor más alto entre todas las instancias evaluadas, lo que indica una mejor cobertura del espacio objetivo y una mayor calidad del frente de Pareto aproximado.
+
 \begin{table}[H]
 \centering
 \caption{Resultados agregados para la instancia Diciembre (30 ejecuciones)}
@@ -482,6 +505,18 @@ Peor valor & 277.00 & -13.21 & 0.3933 \\
 \hline
 \end{tabular}
 \end{table}
+
+\section{Conclusiones}
+
+Este trabajo presenta una implementación del algoritmo NSGA-II para resolver el problema de asignación de salones para exámenes, modelado como un problema de optimización multiobjetivo con restricciones. Los resultados obtenidos demuestran la efectividad del enfoque evolutivo para explorar compromisos entre objetivos en conflicto, específicamente entre minimizar el número de asignaciones y maximizar la separación temporal entre exámenes.
+
+El análisis comparativo entre el algoritmo Greedy y NSGA-II revela claramente las fortalezas y limitaciones de cada enfoque. El algoritmo Greedy proporciona soluciones factibles en tiempos de ejecución extremadamente reducidos (22--52 ms), siendo adecuado para contextos donde la rapidez es prioritaria. Sin embargo, su naturaleza determinista limita su capacidad para explorar soluciones de mayor calidad académica. Por el contrario, NSGA-II, aunque requiere un costo computacional significativamente mayor, logra mejoras sustanciales en la separación temporal entre exámenes (incrementos del 52.8\% al 66.9\% según la instancia), con impactos moderados en el número de asignaciones.
+
+Los resultados experimentales sobre las cuatro instancias evaluadas (Promedio, Febrero, Julio y Diciembre) muestran un comportamiento consistente del algoritmo NSGA-II. En todas las instancias, el primer objetivo (número de asignaciones) converge a valores mínimos estables, reflejando la estructura restringida de este criterio. La variabilidad se concentra principalmente en el segundo objetivo, donde el algoritmo demuestra su capacidad para explorar diferentes compromisos en el frente de Pareto. La instancia de Diciembre destaca por alcanzar el mayor hipervolumen (0.4140) y mantener factibilidad completa, mientras que la instancia de Julio presenta desafíos particulares al generar soluciones no factibles en el frente final, sugiriendo la necesidad de mecanismos más estrictos de manejo de restricciones.
+
+La implementación realizada, basada en JMetal 6.6 y Java 21, demuestra la viabilidad de utilizar frameworks especializados para resolver problemas de optimización combinatoria complejos. La codificación basada en slots, junto con la decodificación inteligente y el operador de reparación, permite manejar eficientemente las restricciones del problema. El análisis estadístico mediante pruebas de normalidad (Shapiro-Wilk) y comparación no paramétrica (Kruskal-Wallis) proporciona una base sólida para la selección de parámetros y la evaluación de resultados.
+
+Como trabajo futuro, se propone explorar estrategias más avanzadas de manejo de restricciones para mejorar la factibilidad en instancias problemáticas como Julio, investigar la paralelización del algoritmo para reducir tiempos de ejecución, y extender el modelo para considerar restricciones adicionales del dominio real, como preferencias de horarios o restricciones de recursos humanos.
 
 \begin{thebibliography}{99}
 
