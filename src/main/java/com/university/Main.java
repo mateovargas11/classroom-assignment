@@ -108,7 +108,7 @@ public class Main {
 
         // Configuración NSGA-II
         int maxEvaluations = 25000;
-        int recordEveryNGenerations = 1;
+        int recordEveryNGenerations = 10;
 
         CrossoverOperator<IntegerSolution> crossover = new TwoPointCrossover(crossoverProbability);
         MutationOperator<IntegerSolution> mutation = new IntegerPolynomialMutation(mutationProbability, 5);
